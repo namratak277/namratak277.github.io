@@ -1,5 +1,25 @@
 jQuery(document).ready(function ($) {
 
+	/*======= Load shared navigation *=======*/
+	const navSlot = document.getElementById('nav-slot');
+	if (navSlot) {
+		fetch('/nav.html')
+			.then((response) => response.text())
+			.then((html) => {
+				navSlot.innerHTML = html;
+				const current = window.location.pathname.split('/').pop() || 'index.html';
+				navSlot.querySelectorAll('[data-page]').forEach((link) => {
+					const target = link.getAttribute('data-page');
+					if (current === target || (current === '' && target === 'index.html')) {
+						link.classList.add('active');
+					}
+				});
+			})
+			.catch(() => {
+				navSlot.innerHTML = '<nav class="site-nav"><div class="site-nav__inner container">Navigation unavailable</div></nav>';
+			});
+	}
+
 	/*======= Animate Skillset *=======*/
 	$('.level-bar-inner').css('width', '0');
 	$(window).on('load', function () {
@@ -15,71 +35,54 @@ jQuery(document).ready(function ($) {
 
 
 		/*======= Populate GitHub Projects *=======*/
-		let gitHubUsername = 'YOUR GITHUB USERNAME';
+		const gitHubUsername = 'namratak277';
+		const projectFeed = document.getElementById('project-feed');
+		if (!projectFeed) {
+			return;
+		}
 
-		// Run GitHub API function, passing in the GitHub username
+		projectFeed.innerHTML = '<p class="text-muted">Loading latest repositories...</p>';
+
 		requestUserRepos(gitHubUsername)
-			// resolve promise then parse response into json
 			.then(response => response.json())
-			// resolve promise then iterate through json
 			.then(data => {
-				// update html with data from github
-				let projectList = data.slice(0, 5); //limit to the last 5 repos.....
-				for (let i in projectList) {
+				const projectList = data.slice(0, 4);
+				projectFeed.innerHTML = '';
 
-					// Get the div with id of projects
-					let div = document.getElementById('projects');
+				projectList.forEach(repo => {
+					const item = document.createElement('div');
+					item.classList.add('mb-3');
 
-					// Create variable that will hold items to be added to div
-					let item = document.createElement('div');
-					item.classList.add('card', 'm-3');
+					const languages = document.createElement('ul');
+					languages.classList.add('list-unstyled', 'd-flex', 'flex-wrap', 'gap-2', 'mb-2');
 
-					//Create varibale for list of languages
-					let languages = document.createElement('ul');
+					requestRepoLanguages(repo.languages_url)
+						.then(response => response.json())
+						.then(langData => {
+							Object.keys(langData).forEach(lang => {
+								const langItem = document.createElement('li');
+								langItem.classList.add('pill');
+								langItem.textContent = lang;
+								languages.appendChild(langItem);
+							});
+						});
 
-					//Get the list of languages for each repo by calling a second fetch
-					requestRepoLanguages(projectList[i].languages_url).then(response => response.json()).then(langData => {
+					item.innerHTML = `
+						<div class="d-flex align-items-start justify-content-between">
+							<h4 class="mb-1">${repo.name}</h4>
+							<a href="${repo.html_url}" class="icon-link" aria-label="GitHub link"><i class="fa fa-github"></i></a>
+						</div>
+						<p class="mb-1">${repo.description || 'No description yet.'}</p>
+						<p class="meta mb-2">Updated ${new Date(repo.updated_at).toLocaleDateString()}</p>
+					`;
 
-						for (let lang in langData) {
-
-							let langItem = document.createElement('li');
-							let name = document.createElement('p');
-
-							name.innerHTML = `${lang}`;
-							langItem.appendChild(name);
-							languages.appendChild(langItem);
-
-						};
-					});
-
-					// Create the html markup for each item
-					item.innerHTML = (`
-					 <div class="card-header">
-                       <h3 class="card-title">${projectList[i].name}
-                           <span class="place" style="float:right;">
-                                <a href="${projectList[i].html_url}">
-                                    <i class="fa fa-github-alt"></i>
-                                </a>
-                           </span>
-                       </h3>
-                      </div>
-
-					 <div class="card-body">
-
-                    <p class="card-text"> ${projectList[i].description}</p>
-                    <p class="card-text"> Created: ${new Date(projectList[i].created_at).toLocaleDateString()}</p>
-                    <p class="card-text"> Updated: ${new Date(projectList[i].updated_at).toLocaleDateString()}</p>
-                    <hr>
-                    <p class="card-text"> Languages:</p>
-                    </div>
-					`);
-
-					//Append each language list to the item
 					item.appendChild(languages);
-					// Append each item to the div
-					div.appendChild(item);
-				}
+					projectFeed.appendChild(item);
+				});
 			})
+			.catch(() => {
+				projectFeed.innerHTML = '<p class="text-danger">Could not load GitHub projects right now.</p>';
+			});
 	});
 
 
