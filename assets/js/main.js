@@ -3,7 +3,8 @@ jQuery(document).ready(function ($) {
 	/*======= Load shared navigation *=======*/
 	const navSlot = document.getElementById('nav-slot');
 	if (navSlot) {
-		fetch('/nav.html')
+		// Use relative path so it works on GitHub Pages under any base URL
+		fetch('nav.html')
 			.then((response) => response.text())
 			.then((html) => {
 				navSlot.innerHTML = html;
