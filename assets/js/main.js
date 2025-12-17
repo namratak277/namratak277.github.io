@@ -17,7 +17,7 @@ jQuery(document).ready(function ($) {
 				});
 			})
 			.catch(() => {
-				navSlot.innerHTML = '<nav class="site-nav"><div class="site-nav__inner container">Navigation unavailable</div></nav>';
+				navSlot.innerHTML = '<nav class="nav"><div class="navLayout container">Navigation unavailable</div></nav>';
 			});
 	}
 
