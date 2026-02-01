@@ -987,16 +987,8 @@ a.dotted-link:hover {
   overflow: hidden;
   margin: 0 auto 2.5rem auto;
   max-width: 900px;
-  transition: all 0.3s ease;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
   scroll-margin-top: 100px;
-}
-
-.hobby-box:hover {
-  background: linear-gradient(135deg, rgba(123, 168, 216, 0.2) 0%, rgba(179, 217, 255, 0.12) 100%);
-  box-shadow: 0 10px 30px rgba(255, 107, 157, 0.2);
-  transform: translateY(-3px);
-  border-color: var(--accent-pink);
 }
 
 .box-header {
@@ -1007,8 +999,14 @@ a.dotted-link:hover {
 
 .box-title {
   color: var(--white);
-  font-size: 2rem;
+  font-size: 1.6rem;
   margin: 0;
+  font-weight: 600;
+}
+
+.hobby-overview-title {
+  text-align: center;
+  font-size: 2rem;
   font-weight: 700;
 }
 
@@ -1024,6 +1022,57 @@ a.dotted-link:hover {
 }
 
 /* Hobbies List */
+.hobby-category {
+  margin-bottom: 2rem;
+}
+
+.hobby-category:last-child {
+  margin-bottom: 0;
+}
+
+.hobby-category h4 {
+  color: var(--light-blue);
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.hobby-category h4 a {
+  color: var(--light-blue);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.hobby-category h4 a:hover {
+  color: var(--accent-pink);
+}
+
+/* Category Wrapper */
+.category-wrapper {
+  background: linear-gradient(135deg, rgba(123, 168, 216, 0.08) 0%, rgba(179, 217, 255, 0.05) 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Category Section */
+.category-section {
+  scroll-margin-top: 100px;
+  margin-bottom: 1.5rem;
+}
+
+.category-title {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  border: none;
+  background: none;
+}
+
 .hobbies-list .hobby-list {
   list-style: none;
   padding: 0;
@@ -1036,11 +1085,11 @@ a.dotted-link:hover {
 .hobbies-list .hobby-list li {
   background: rgba(197, 222, 255, 0.15);
   border: 1px solid rgba(197, 222, 255, 0.4);
-  padding: 1.2rem;
+  padding: 1.5rem 1.2rem;
   border-radius: 8px;
   color: var(--light-blue);
   font-weight: 500;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   text-align: center;
   transition: all 0.3s ease;
 }
