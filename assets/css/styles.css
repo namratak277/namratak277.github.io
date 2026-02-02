@@ -516,7 +516,7 @@ a.dotted-link:hover {
 .section .heading {
   margin-top: 0;
   margin-bottom: 30px;
-  color: var(--white);
+  color: var(--navy-dark);
   font-size: 28px;
   border-bottom: 3px solid rgba(255, 255, 255, 0.4);
   padding-bottom: 10px;
@@ -620,10 +620,6 @@ a.dotted-link:hover {
   text-transform: uppercase;
   color: #fff;
   background-color: #a5d6ff;
-  -webkit-transform: rotate(45deg) translate3d(0, 0, 0);
-  -moz-transform: rotate(45deg) translate3d(0, 0, 0);
-  -ms-transform: rotate(45deg) translate3d(0, 0, 0);
-  -o-transform: rotate(45deg) translate3d(0, 0, 0);
   }
 
 .latest .has-ribbon .ribbon .text:before, .latest .has-ribbon .ribbon .text:after {
@@ -717,31 +713,107 @@ a.dotted-link:hover {
 .info li:last-child {
   margin-bottom: 0;
 }
+.info .descriptor-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.info .descriptor-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 0.95rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: var(--white);
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
 /* Skills Section */
 .skills .intro {
   margin-bottom: 30px;
 }
+.skills .skillset {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.skills .skill-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.skills .skill-group-title {
+  font-size: 1.25rem;
+  color: var(--navy-dark);
+  font-weight: 700;
+  margin: 0;
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.35);
+}
+
+.skills .skill-group-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem 1rem;
+  align-items: stretch;
+}
+
 .skills .skillset .item {
-  margin-bottom: 30px;
+  margin-bottom: 0;
+  padding: 0.25rem 0;
+  display: flex;
 }
 .skills .skillset .level-title {
-  font-size: 18px;
+  font-size: 16px;
   position: relative;
   margin-top: 0;
-  margin-bottom: 10;
+  margin-bottom: 0;
   color: var(--white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.4rem 0.7rem;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: default;
+  min-height: 40px;
 }
 .skills .skillset .level-title .level-label {
   color: var(--white);
   font-size: 16px;
   font-weight: 400;
   font-family: "Lato", arial, sans-serif;
+  display: none;
+}
+.skills .skillset .level-title::after {
+  content: attr(data-level);
   position: absolute;
-  right: 0;
-  top: 0;
-  background: rgba(0, 0, 0, 0.2);
-  padding: 2px 6px;
-  border-radius: 4px;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%) translateY(4px);
+  background: var(--navy-dark);
+  color: var(--white);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.skills .skillset .level-title:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 .skills .skillset .level-bar {
   height: 15px;
@@ -753,6 +825,12 @@ a.dotted-link:hover {
   height: 15px;
   background: linear-gradient(90deg, var(--white), rgba(255, 255, 255, 0.7));
   border-radius: 8px;
+}
+
+@media (min-width: 992px) {
+  .skills .skill-group-list {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 /* Testimonials section */
 .testimonials .item {
@@ -797,7 +875,7 @@ a.dotted-link:hover {
 .education .item .university {
   font-family: "Lato", arial, sans-serif;
   font-size: 18px;
-  color: #999;
+  color: #cfe3ff;
   font-weight: 600;
   padding-left: 15px;
 }
@@ -811,6 +889,17 @@ a.dotted-link:hover {
 .education .item .university .year {
   color: #b0b7bf;
   font-weight: 500;
+}
+.education .classes-grid {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.education .classes-column {
+  flex: 1;
+  min-width: 220px;
 }
 /* Language Section */
 .languages .item {
