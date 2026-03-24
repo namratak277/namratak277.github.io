@@ -21,19 +21,7 @@
 </head>
 
 <body>
-    <!-- ======= Navigation ======= -->
-    <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="navbar-brand">
-                <i class="fa fa-code"></i> Namrata Karki
-            </a>
-            <ul class="navbar-menu">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="interests.html">Interests</a></li>
-            </ul>
-        </div>
-    </nav>
+    <div id="nav-slot"></div>
     
     <header class="header">
         <div class="container header-wrapper">
@@ -42,7 +30,7 @@
                 <div class="profile-content">
                     <h1 class="name">Namrata Karki</h1>
                     <h2 class="desc">Computer Science student with IT Minor</h2>
-                    <p class="about-intro">I'm a detailed oriented student majoring in Computer Science and Minoring in IT, eager to gain experience with Technology and Business. Looking to learn and grow with people with similar passion.</p>
+                    <p class="about-intro">Computer Science student with an IT minor and hands-on experience in front-end development, technical support, and cross-functional collaboration, seeking software engineering or technology internship opportunities.</p>
                     <div class="header-actions">
                         <ul class="social list-inline">
                             <li class="list-inline-item social-item">
@@ -58,7 +46,7 @@
                                 <span class="social-label">GitHub</span>
                             </li>
                             <li class="list-inline-item social-item">
-                                <a href="assets/files/2025 Resume.docx" target="_blank" title="Download Resume">
+                                <a href="resume.html" title="View Resume Page">
                                     <i class="fa fa-file-pdf-o"></i>
                                 </a>
                                 <span class="social-label">Resume</span>
@@ -102,9 +90,9 @@
                         <!--//item-->
                         <div class="item">
                             <h3 class="title">
-                                <i class="fa fa-graduation-cap"></i>BS Computer Science
-                                <span class="university">University of North Carolina at Greensboro (UNCG)</span> <span
-                                    class="year">(2026)</span>
+                                <i class="fa fa-graduation-cap"></i>Bachelor of Science in Computer Science, Minor in IT
+                                <span class="university">University of North Carolina at Greensboro (UNCG), Greensboro, NC</span> <span
+                                    class="year">(2022 - Dec 2026)</span>
                             </h3>
 
                             <div class="classes-grid">
@@ -134,33 +122,54 @@
                     <!--//section-inner-->
                 </section>
 
-                <!--//section-->
                 <section class="experience section">
                     <div class="section-inner">
                         <h2 class="heading">Work Experience</h2>
                         <div class="content">
                             <div class="item" name="Job1">
-                                <!-- TODO -->
-                                <h3 class="title">6-Tech Campus Supplies <span class="place">
+                                <h3 class="title">6-Tech Classroom Technology <span class="place">
                                         <a href="#">UNCG ITS</a>
                                     </span>
-                                    <span class="year">(2024-Present)</span>
+                                    <span class="year">(Apr 2024 - Present)</span>
                                 </h3>
-                                <p> • Set up, maintained, and troubleshot audio-visual equipment and technology for classroom use to ensure smooth operation during lectures and presentations.<br>
-                                    • Assisted faculty and students with technical issues, providing timely and effective solutions to enhance the learning experience. <br>
-                                    • Collaborated with IT and facilities management to address and resolve technical problems promptly. <br>
-                                </p>
+                                <ul>
+                                    <li>Provide classroom technology support by installing, maintaining, and troubleshooting AV and network-connected systems.</li>
+                                    <li>Resolve hardware/software issues and partner with IT and facilities to keep classes running with minimal disruption.</li>
+                                </ul>
                             </div>
                             <!--//item-->
                             <div class="item" name="Job2">
-                                <h3 class="title">Residential Advisor<span class="place">
+                                <h3 class="title">Residential Advisor <span class="place">
                                         <a href="#">UNCG Housing and Residential Life</a>
                                     </span>
-                                    <span class="year">(Apr 2024-May 2025)</span>
+                                    <span class="year">(Apr 2024 - May 2025)</span>
                                 </h3>
-                                <p> • Supervised and supported the well-being, academic success, and personal development of over 350 residents in a large, diverse residential community, fostering a positive and inclusive living environment.<br>
-                                    • Responded to emergencies, enforced policies, and mediated conflicts to maintain a safe, supportive environment. <br>
-                                </p>
+                                <ul>
+                                    <li>Supported 350+ residents by promoting safety, academic success, and an inclusive residential environment.</li>
+                                    <li>Handled incidents, policy enforcement, and conflict mediation through clear communication and timely escalation.</li>
+                                </ul>
+                            </div>
+                            <div class="item" name="Job3">
+                                <h3 class="title">Spartan Orientation, Advising, and Registration (SOAR) Intern <span class="place">
+                                        <a href="#">UNCG First Year Experience &amp; Your First Year Experience (FYE&amp;YFY)</a>
+                                    </span>
+                                    <span class="year">(May 2024 - June 2024)</span>
+                                </h3>
+                                <ul>
+                                    <li>Delivered administrative and technical support for SOAR operations, including communications and session logistics.</li>
+                                    <li>Configured presentation systems and resolved live technical issues during orientation events.</li>
+                                </ul>
+                            </div>
+                            <div class="item" name="Job4">
+                                <h3 class="title">Spartan Orientation Staff (SOS) <span class="place">
+                                        <a href="#">UNCG First Year Experience &amp; Your First Year Experience (FYE&amp;YFY)</a>
+                                    </span>
+                                    <span class="year">(Dec 2022 - Jan 2024)</span>
+                                </h3>
+                                <ul>
+                                    <li>Served as a primary point of contact for incoming students and families, representing the university and campus organizations.</li>
+                                    <li>Helped onboard 15,000+ students by communicating key resources, processes, and transition guidance.</li>
+                                </ul>
                             </div>
                         </div>
                         <!--//content-->
@@ -203,6 +212,36 @@
                                             <h3 class="level-title" data-level="Beginner">Ruby <span class="level-label">Beginner</span>
                                             </h3>
                                         </div>
+                                        <div class="item">
+                                            <h3 class="level-title" data-level="Intermediate">C++ <span class="level-label">Intermediate</span>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="skill-group">
+                                    <h3 class="skill-group-title">Database Management</h3>
+                                    <div class="skill-group-list">
+                                        <div class="item">
+                                            <h3 class="level-title" data-level="Expert">MySQL <span class="level-label">Expert</span>
+                                            </h3>
+                                        </div>
+                                        <div class="item">
+                                            <h3 class="level-title" data-level="Expert">PostgreSQL <span class="level-label">Expert</span>
+                                            </h3>
+                                        </div>
+                                        <div class="item">
+                                            <h3 class="level-title" data-level="Intermediate">ERDPlus (Data Modeling) <span class="level-label">Intermediate</span>
+                                            </h3>
+                                        </div>
+                                        <div class="item">
+                                            <h3 class="level-title" data-level="Intermediate">DBeaver <span class="level-label">Intermediate</span>
+                                            </h3>
+                                        </div>
+                                        <div class="item">
+                                            <h3 class="level-title" data-level="Intermediate">Neon <span class="level-label">Intermediate</span>
+                                            </h3>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -210,16 +249,23 @@
                                     <h3 class="skill-group-title">Frameworks</h3>
                                     <div class="skill-group-list">
                                         <div class="item">
-                                            <h3 class="level-title" data-level="Intermediate">Spring Boot <span class="level-label"
-                                                data-placement="left" data-animation="true">Intermediate</span>
+                                            <h3 class="level-title" data-level="Intermediate">Spring Boot <span class="level-label">Intermediate</span>
                                             </h3>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="skill-group">
-                                    <h3 class="skill-group-title">Tools</h3>
+                                    <h3 class="skill-group-title">Technical &amp; Systems</h3>
                                     <div class="skill-group-list">
+                                        <div class="item">
+                                            <h3 class="level-title" data-level="Intermediate">ServiceNow (IT Ticketing System) <span class="level-label">Intermediate</span>
+                                            </h3>
+                                        </div>
+                                        <div class="item">
+                                            <h3 class="level-title" data-level="Intermediate">Extron AV Systems <span class="level-label">Intermediate</span>
+                                            </h3>
+                                        </div>
                                         <div class="item">
                                             <h3 class="level-title" data-level="Expert">Git <span class="level-label">Expert</span>
                                             </h3>
@@ -228,30 +274,40 @@
                                             <h3 class="level-title" data-level="Expert">API <span class="level-label">Expert</span>
                                             </h3>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="skill-group">
+                                    <h3 class="skill-group-title">Leadership</h3>
+                                    <div class="skill-group-list">
                                         <div class="item">
-                                            <h3 class="level-title" data-level="Expert">PostgreSQL <span class="level-label">Expert</span>
+                                            <h3 class="level-title" data-level="Leadership">3yr President, UNCG Jalwa (Bollywood Dance Club) <span class="level-label">Leadership</span>
                                             </h3>
                                         </div>
                                         <div class="item">
-                                            <h3 class="level-title" data-level="Expert">MySQL <span class="level-label">Expert</span>
+                                            <h3 class="level-title" data-level="Leadership">2yr Vice President, UNCG Nepalese Student Association <span class="level-label">Leadership</span>
+                                            </h3>
+                                        </div>
+                                        <div class="item">
+                                            <h3 class="level-title" data-level="Award">UNCG Bronze Leadership Award <span class="level-label">Award</span>
                                             </h3>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="skill-group">
-                                    <h3 class="skill-group-title">Soft Skills</h3>
+                                    <h3 class="skill-group-title">Languages</h3>
                                     <div class="skill-group-list">
                                         <div class="item">
-                                            <h3 class="level-title" data-level="Proficient">Communication <span class="level-label">Proficient</span>
+                                            <h3 class="level-title" data-level="Native">Nepali <span class="level-label">Native</span>
                                             </h3>
                                         </div>
                                         <div class="item">
-                                            <h3 class="level-title" data-level="Proficient">Teamwork <span class="level-label">Proficient</span>
+                                            <h3 class="level-title" data-level="Native">English <span class="level-label">Native</span>
                                             </h3>
                                         </div>
                                         <div class="item">
-                                            <h3 class="level-title" data-level="Proficient">Problem Solving <span class="level-label">Proficient</span>
+                                            <h3 class="level-title" data-level="Professional">Hindi <span class="level-label">Professional Proficiency</span>
                                             </h3>
                                         </div>
                                     </div>

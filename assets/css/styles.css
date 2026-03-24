@@ -707,6 +707,73 @@ a.dotted-link:hover {
 .github-graph .js-calendar-graph-svg {
   max-width: 100%;
 }
+.github-gallery .section-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 18px;
+}
+
+.github-gallery .heading {
+  text-align: center;
+}
+
+.repo-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.repo-card {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  padding: 1rem;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.repo-title {
+  margin: 0 0 0.6rem;
+  font-size: 1.2rem;
+}
+
+.repo-title a {
+  color: var(--white);
+}
+
+.repo-title a:hover {
+  color: var(--light-blue);
+}
+
+.repo-description {
+  font-size: 0.95rem;
+  color: var(--text-gray);
+  margin-bottom: 0.7rem;
+  flex-grow: 1;
+}
+
+.repo-meta {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 0.65rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: var(--white);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
 .ghfeed {
   height: 600px;
 }
@@ -717,6 +784,113 @@ a.dotted-link:hover {
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
+}
+
+/* Resume page readability tuning */
+.resume-page .header,
+.resume-page .sections-wrapper {
+  font-size: 18px;
+}
+
+.resume-page .header {
+  margin-bottom: 0;
+  padding-top: 1rem !important;
+  padding-bottom: 0.75rem !important;
+}
+
+.resume-page .sections-wrapper {
+  padding-top: 0.5rem;
+}
+
+.resume-page .primary {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.resume-page .desc {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.resume-page .section {
+  margin-bottom: 0;
+}
+
+.resume-page .row.g-3 {
+  --bs-gutter-x: 16px;
+  --bs-gutter-y: 16px;
+}
+
+.resume-page .section .section-inner {
+  padding: 18px;
+}
+
+.resume-page .section .heading {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+}
+
+.resume-page .item .title {
+  font-size: 1.2rem;
+  margin-bottom: 6px;
+}
+
+.resume-page .sections-wrapper p,
+.resume-page .sections-wrapper li {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.resume-page .sections-wrapper ul {
+  margin-bottom: 0.6rem;
+  padding-left: 1.1rem;
+}
+
+.resume-page .experience .item {
+  margin-bottom: 0;
+}
+
+.resume-page .resume-exp-card {
+  height: 100%;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 768px) {
+  .resume-page .header,
+  .resume-page .sections-wrapper {
+    font-size: 17px;
+  }
+
+  .resume-page .header {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.25rem !important;
+  }
+
+  .resume-page .sections-wrapper {
+    padding-top: 0.15rem;
+  }
+
+  .resume-page .header .d-flex {
+    gap: 0.5rem !important;
+  }
+
+  .resume-page .header .profile-image {
+    width: 130px;
+    height: 130px;
+  }
+
+  .resume-page .primary {
+    gap: 14px;
+  }
+
+  .resume-page .section .section-inner {
+    padding: 16px;
+  }
 }
 /* Info Section */
 .info .fa {
@@ -1236,6 +1410,10 @@ a.dotted-link:hover {
   margin: 0;
 }
 
+.hobby-summary {
+  margin-bottom: 1rem !important;
+}
+
 /* Hobbies List */
 .hobbies-list {
   display: grid;
@@ -1314,6 +1492,71 @@ a.dotted-link:hover {
   background: none;
 }
 
+/* Category color themes (interests page) */
+.category-wrapper.category-arts {
+  background: linear-gradient(135deg, rgba(132, 108, 180, 0.22) 0%, rgba(177, 152, 222, 0.13) 100%);
+}
+
+.category-wrapper.category-arts .category-title {
+  color: #efe6ff;
+}
+
+.category-wrapper.category-arts .hobby-box {
+  border-color: rgba(188, 161, 233, 0.62);
+}
+
+.category-wrapper.category-arts .box-header {
+  background: linear-gradient(135deg, #7c5ab0 0%, #60439a 100%);
+}
+
+.category-wrapper.category-sports {
+  background: linear-gradient(135deg, rgba(55, 134, 131, 0.24) 0%, rgba(101, 173, 168, 0.13) 100%);
+}
+
+.category-wrapper.category-sports .category-title {
+  color: #ddfffb;
+}
+
+.category-wrapper.category-sports .hobby-box {
+  border-color: rgba(114, 193, 185, 0.62);
+}
+
+.category-wrapper.category-sports .box-header {
+  background: linear-gradient(135deg, #2f8f8a 0%, #256f74 100%);
+}
+
+.category-wrapper.category-entertainment {
+  background: linear-gradient(135deg, rgba(161, 88, 117, 0.24) 0%, rgba(208, 133, 159, 0.13) 100%);
+}
+
+.category-wrapper.category-entertainment .category-title {
+  color: #ffe5ef;
+}
+
+.category-wrapper.category-entertainment .hobby-box {
+  border-color: rgba(226, 156, 183, 0.62);
+}
+
+.category-wrapper.category-entertainment .box-header {
+  background: linear-gradient(135deg, #a34d72 0%, #7e3758 100%);
+}
+
+.category-wrapper.category-lifestyle {
+  background: linear-gradient(135deg, rgba(169, 130, 72, 0.24) 0%, rgba(216, 175, 111, 0.13) 100%);
+}
+
+.category-wrapper.category-lifestyle .category-title {
+  color: #fff1d8;
+}
+
+.category-wrapper.category-lifestyle .hobby-box {
+  border-color: rgba(235, 192, 126, 0.62);
+}
+
+.category-wrapper.category-lifestyle .box-header {
+  background: linear-gradient(135deg, #b18443 0%, #8d6531 100%);
+}
+
 .hobbies-list .hobby-list {
   list-style: none;
   padding: 0;
@@ -1386,6 +1629,28 @@ a.dotted-link:hover {
 .media-placeholder:hover {
   background: rgba(123, 168, 216, 0.3);
   border-color: var(--section-blue);
+}
+
+.hobby-image-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin-top: 1rem;
+}
+
+.hobby-image-slot {
+  min-height: 120px;
+  border-radius: 10px;
+  border: 2px dashed rgba(197, 222, 255, 0.55);
+  background: rgba(123, 168, 216, 0.16);
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
 
 .video-placeholder {
@@ -1489,6 +1754,14 @@ a.dotted-link:hover {
   
   .project-image {
     margin-bottom: 15px;
+  }
+
+  .hobby-image-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hobby-image-slot {
+    min-height: 100px;
   }
 }
 /* Small devices (tablets, 768px and up) */

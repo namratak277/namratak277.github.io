@@ -3,17 +3,23 @@
 
 <head>
     <title>Namrata Karki | Resume</title>
+    <!-- Meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet'
+        type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.css">
     <link id="theme-style" rel="stylesheet" href="assets/css/styles.css">
 </head>
 
-<body>
+<body class="resume-page">
+    <!-- ======= Navigation ======= -->
     <div id="nav-slot"></div>
 
     <header class="header py-5">
@@ -22,10 +28,9 @@
                 <div>
                     <p class="eyebrow text-uppercase mb-2">Resume</p>
                     <h1 class="name mb-2">Namrata Karki</h1>
-                    <p class="desc mb-3">Computer Science student focused on reliable software, security, and helpful tools for students and educators.</p>
+                    <p class="desc mb-3">Computer Science student with an IT minor and hands-on experience in front-end development, technical support, and cross-functional collaboration, seeking software engineering or technology internship opportunities.</p>
                     <div class="d-flex flex-wrap align-items-center gap-3">
                         <a class="btn btn-cta-primary" href="assets/files/2025 Resume.docx" download><i class="fa fa-download"></i>Download Resume</a>
-                        <a class="btn btn-outline-light" href="assets/files/2025 Resume.docx" target="_blank"><i class="fa fa-file"></i>View Resume</a>
                     </div>
                 </div>
                 <img class="profile-image" src="assets/images/avatar.png" alt="Avatar" />
@@ -35,25 +40,104 @@
 
     <div class="container sections-wrapper">
         <div class="row">
-            <div class="primary col-lg-8 col-sm-12 mx-auto">
+            <div class="primary col-lg-10 col-sm-12 mx-auto">
+                <div class="row g-3">
+                    <div class="col-lg-5">
+                        <section class="education section h-100 mb-0">
+                            <div class="section-inner h-100">
+                                <h2 class="heading">Education</h2>
+                                <div class="content">
+                                    <div class="item">
+                                        <h3 class="title">University of North Carolina at Greensboro <span class="place">Greensboro, NC</span></h3>
+                                        <p>Bachelor of Science in Computer Science and Minor in IT <span class="year">(2022 - Dec 2026)</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-lg-7">
+                        <section class="section h-100 mb-0">
+                            <div class="section-inner h-100">
+                                <h2 class="heading">Skills &amp; Leadership</h2>
+                                <div class="content">
+                                    <ul>
+                                        <li><strong>Programming Languages:</strong> Java, Python, JavaScript, HTML/CSS, C++, Ruby</li>
+                                        <li><strong>Database Management:</strong> MySQL, PostgreSQL, ERDPlus (data modeling), DBeaver, Neon</li>
+                                        <li><strong>Technical &amp; Systems:</strong> ServiceNow (IT Ticketing System), Extron AV Systems</li>
+                                        <li><strong>Leadership:</strong> 3yr President of UNCG Jalwa (Bollywood Dance Club), 2yr Vice President of UNCG Nepalese Student Association, UNCG Bronze Leadership Award</li>
+                                        <li><strong>Languages:</strong> Nepali (Native), English (Native), Hindi (Professional Proficiency)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <section class="section">
+                    <div class="section-inner">
+                        <h2 class="heading">Course Projects (On GitHub)</h2>
+                        <div class="content">
+                            <div class="item">
+                                <h3 class="title">Creative Newsletter</h3>
+                                <p>Designed and developed a responsive front-end newsletter with HTML, CSS, and JavaScript, integrated an Email API, implemented backend functionalities, completed as a duo project.</p>
+                            </div>
+                            <div class="item">
+                                <h3 class="title">Daily Diary</h3>
+                                <p>Built a journaling web app with a habit tracker using JavaScript and local storage, enabling users to create, update, and visualize daily habits.</p>
+                            </div>
+                            <div class="item">
+                                <h3 class="title">Dress Web Store</h3>
+                                <p>Developed a full-stack web application with HTML, CSS, JavaScript, and PostgreSQL, including product and order management with CRUD functionality and a Figma-designed UI.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <section class="experience section">
                     <div class="section-inner">
-                        <h2 class="heading">Experience</h2>
+                        <h2 class="heading">Professional Experience</h2>
                         <div class="content">
-                            <div class="item" name="Job1">
-                                <h3 class="title">6-Tech Classroom Support <span class="place"><a href="#">UNCG ITS</a></span> <span class="year">2024 - Present</span></h3>
-                                <ul>
-                                    <li>Deploy and maintain AV and classroom tech; document fixes and playbooks to reduce repeat incidents.</li>
-                                    <li>Guide faculty and students through quick troubleshooting that keeps sessions on schedule.</li>
-                                    <li>Collaborate with IT and facilities to triage outages and ship improvements.</li>
-                                </ul>
-                            </div>
-                            <div class="item" name="Job2">
-                                <h3 class="title">Residential Advisor <span class="place"><a href="#">UNCG Housing and Residential Life</a></span> <span class="year">Apr 2024 - May 2025</span></h3>
-                                <ul>
-                                    <li>Supported 350+ residents, leading safety checks, conflict resolution, and event logistics.</li>
-                                    <li>Created resource guides and communication plans to keep residents informed.</li>
-                                </ul>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="item resume-exp-card" name="Job1">
+                                        <h3 class="title">6-Tech Classroom Technology <span class="place"><a href="#">UNCG ITS, Greensboro, NC</a></span> <span class="year">Apr 2024 - Present</span></h3>
+                                        <ul>
+                                            <li>Installed, maintained, and troubleshot audio-visual hardware and network-connected device for classroom use.</li>
+                                            <li>Diagnose and resolve hardware, software, and connectivity issues.</li>
+                                            <li>Collaborated with IT and facilities management to address, document, and resolve technical issues brought up by students and faculties.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="item resume-exp-card" name="Job2">
+                                        <h3 class="title">Residential Advisor <span class="place"><a href="#">UNCG Housing and Residence Life, Greensboro, NC</a></span> <span class="year">Apr 2024 - May 2025</span></h3>
+                                        <ul>
+                                            <li>Managed the well-being, academic success, and personal development of 350+ residents in a large, diverse residential community, fostering a positive and inclusive living environment.</li>
+                                            <li>Responded to incidents and emergencies using established protocols, assessed situations quickly, and executed appropriate resolutions under pressure.</li>
+                                            <li>Mediated conflicts and enforced policies through clear communication and documentation, collaborating with staff to escalate and resolve issues efficiently.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="item resume-exp-card" name="Job3">
+                                        <h3 class="title">Spartan Orientation, Advising, and Registration (SOAR) Intern <span class="place"><a href="#">UNCG First Year Experience &amp; Your First Year Experience (FYE&amp;YFY), Greensboro, NC</a></span> <span class="year">May 2024 - June 2024</span></h3>
+                                        <ul>
+                                            <li>Provide administrative and technical support by managing phone and email communications.</li>
+                                            <li>Supported SOAR orientation programs by configuring and running presentation systems and troubleshooting real-time technical issues during information sessions.</li>
+                                            <li>Assisted cross-functional FYE &amp; YFY teams (Directors, Coordinators, Business Manager, Technology Manager, Graduate Assistants, and Lead Staff) with program operations, projects, and technical tasks.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="item resume-exp-card" name="Job4">
+                                        <h3 class="title">Spartan Orientation Staff (SOS) <span class="place"><a href="#">UNCG First Year Experience &amp; Your First Year Experience (FYE&amp;YFY), Greensboro, NC</a></span> <span class="year">Dec 2022 - Jan 2024</span></h3>
+                                        <ul>
+                                            <li>Represented the university and campus organizations professionally while serving as a primary point of contact for new students and families.</li>
+                                            <li>Supported the onboarding and transition of 15,000+ incoming students by communicating university systems, policies, procedures, and available resources.</li>
+                                            <li>Mentored new students and promoted community engagement through structured guidance and peer support.</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -68,8 +152,9 @@
         </div>
     </footer>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/jquery-rss/dist/jquery.rss.min.js"></script>
     <script type="text/javascript" src="assets/js/main.js"></script>
 </body>
 
