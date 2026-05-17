@@ -216,3 +216,4 @@ This ensures:
 
 - The GitHub API is unauthenticated in this setup, so very high traffic could hit rate limits.
 - Resume content is maintained in both `index.html` and `resume.html` and should be kept in sync.
+
