@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   // Initialize interests filters if present
   initInterestFilters();
 
-  // Initialize skills carousel auto-scroll
+  // Initialize manual skills slider controls
   initSkillsCarousel();
 
   // Initialize timeline event clicks
@@ -263,88 +263,40 @@ document.addEventListener('DOMContentLoaded', async function() {
   }
 
   // ============================================================
-  // Skills: Carousel auto-scroll
+  // Skills: Manual horizontal slider
   // ============================================================
   function initSkillsCarousel() {
     const carousel = document.querySelector('.skills-carousel-row');
-    if (!carousel) return;
+    const leftButton = document.querySelector('.carousel-arrow-left');
+    const rightButton = document.querySelector('.carousel-arrow-right');
 
-    const cards = Array.from(carousel.children);
-    if (cards.length === 0) return;
+    if (!carousel || !leftButton || !rightButton) return;
 
-    // Duplicate cards so the strip can loop without a hard jump.
-    if (!carousel.dataset.loopReady) {
-      cards.forEach(card => {
-        carousel.appendChild(card.cloneNode(true));
-      });
-      carousel.dataset.loopReady = 'true';
-    }
-
-    // Nudge the strip off the hard zero position so the auto-loop is visible immediately.
-    carousel.scrollLeft = 1;
-
-    let userInteracting = false;
-    let interactionTimer = null;
-    let lastTime = null;
-    let virtualScrollLeft = carousel.scrollLeft;
-    const pixelsPerSecond = 30;
-    const loopWidth = carousel.scrollWidth / 2;
-
-    const setInteraction = (active) => {
-      userInteracting = active;
-      if (interactionTimer) {
-        clearTimeout(interactionTimer);
-        interactionTimer = null;
-      }
-
-      if (active) {
-        virtualScrollLeft = carousel.scrollLeft;
-      } else {
-        interactionTimer = setTimeout(() => {
-          userInteracting = false;
-        }, 150);
-      }
+    const getStep = () => {
+      const card = carousel.querySelector('.skill-card');
+      if (!card) return Math.max(280, Math.floor(carousel.clientWidth * 0.72));
+      const cardWidth = card.getBoundingClientRect().width;
+      const gap = 18;
+      return Math.round(cardWidth + gap);
     };
 
-    carousel.addEventListener('pointerdown', () => setInteraction(true));
-    carousel.addEventListener('pointerup', () => setInteraction(false));
-    carousel.addEventListener('pointercancel', () => setInteraction(false));
-    carousel.addEventListener('pointerleave', () => setInteraction(false));
-    carousel.addEventListener('touchstart', () => setInteraction(true), { passive: true });
-    carousel.addEventListener('touchend', () => setInteraction(false), { passive: true });
-    
-    // Only treat horizontal wheel scroll as carousel interaction, ignore vertical page scroll
-    carousel.addEventListener('wheel', (e) => {
-      if (e.deltaX !== 0) {
-        setInteraction(true);
-      }
-    }, { passive: true });
-
-    carousel.addEventListener('scroll', () => {
-      if (userInteracting) {
-        virtualScrollLeft = carousel.scrollLeft;
-      }
-    }, { passive: true });
-
-    const tick = (time) => {
-      if (lastTime === null) lastTime = time;
-      const delta = time - lastTime;
-      lastTime = time;
-
-      if (!userInteracting && carousel.scrollWidth > carousel.clientWidth) {
-        virtualScrollLeft += (pixelsPerSecond * delta) / 1000;
-
-        if (virtualScrollLeft >= loopWidth) {
-          virtualScrollLeft -= loopWidth;
-        }
-
-        carousel.scrollLeft = virtualScrollLeft;
-      }
-
-      requestAnimationFrame(tick);
+    const updateButtons = () => {
+      const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth - 1;
+      leftButton.disabled = carousel.scrollLeft <= 0;
+      rightButton.disabled = carousel.scrollLeft >= maxScrollLeft;
     };
 
-    requestAnimationFrame(tick);
+    leftButton.addEventListener('click', () => {
+      carousel.scrollBy({ left: -getStep(), behavior: 'smooth' });
+    });
+
+    rightButton.addEventListener('click', () => {
+      carousel.scrollBy({ left: getStep(), behavior: 'smooth' });
+    });
+
+    carousel.addEventListener('scroll', updateButtons, { passive: true });
+    window.addEventListener('resize', updateButtons);
+    updateButtons();
   }
 
   // ============================================================
