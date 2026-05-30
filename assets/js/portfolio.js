@@ -50,6 +50,12 @@ document.addEventListener('DOMContentLoaded', async function() {
   // Initialize timeline event clicks
   initTimelineEvents();
 
+  // Initialize live GitHub stats section
+  initGitHubStats();
+
+  // Initialize contact form AJAX submission
+  initContactForm();
+
   // Scroll effect on navbar
   window.addEventListener('scroll', function() {
     if (window.scrollY > 100) {
@@ -394,5 +400,147 @@ if (!('scrollBehavior' in document.documentElement.style)) {
         if (target) smoothScroll(target);
       }
     });
+  });
+}
+
+// ============================================================
+// GITHUB STATS — fetch repos, animate counts + language bars
+// ============================================================
+async function initGitHubStats() {
+  const statsSection = document.getElementById('github-stats');
+  if (!statsSection) return;
+
+  let data = null;
+
+  try {
+    const res = await fetch('https://api.github.com/users/namratak277/repos?per_page=100&sort=updated');
+    if (!res.ok) throw new Error('GitHub API returned ' + res.status);
+    const repos = await res.json();
+    if (!Array.isArray(repos)) throw new Error('Unexpected response shape');
+
+    const own = repos.filter(r => !r.fork);
+    const totalStars = own.reduce((sum, r) => sum + r.stargazers_count, 0);
+    const totalForks = own.reduce((sum, r) => sum + r.forks_count, 0);
+    data = { own, totalStars, totalForks };
+  } catch (err) {
+    console.warn('GitHub stats unavailable:', err.message);
+    return;
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      observer.disconnect();
+      animateStatCards(data);
+    });
+  }, { threshold: 0.25 });
+  observer.observe(statsSection);
+
+  loadLangBars(data.own);
+}
+
+function animateStatCards({ own, totalStars, totalForks }) {
+  const pairs = [
+    ['gstat-repos', own.length],
+    ['gstat-stars', totalStars],
+    ['gstat-forks', totalForks]
+  ];
+  pairs.forEach(([id, target]) => {
+    const el = document.querySelector(`#${id} .gstat-num`);
+    if (!el) return;
+    let cur = 0;
+    const step = Math.max(1, Math.ceil(target / 45));
+    const timer = setInterval(() => {
+      cur = Math.min(cur + step, target);
+      el.textContent = cur;
+      if (cur >= target) clearInterval(timer);
+    }, 28);
+  });
+}
+
+async function loadLangBars(repos) {
+  const container = document.getElementById('github-lang-bars');
+  if (!container) return;
+
+  const langBytes = {};
+  await Promise.allSettled(
+    repos.slice(0, 12).map(r =>
+      fetch(r.languages_url)
+        .then(res => res.json())
+        .then(langs => {
+          Object.entries(langs).forEach(([lang, bytes]) => {
+            langBytes[lang] = (langBytes[lang] || 0) + bytes;
+          });
+        })
+    )
+  );
+
+  const total = Object.values(langBytes).reduce((a, b) => a + b, 0);
+  if (!total) { container.innerHTML = ''; return; }
+
+  const sorted = Object.entries(langBytes)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6);
+
+  container.innerHTML = sorted.map(([lang, bytes]) => {
+    const pct = Math.round((bytes / total) * 100);
+    return `
+      <div class="lang-bar-row">
+        <span class="lang-name">${lang}</span>
+        <div class="lang-bar-track"><div class="lang-bar-fill" data-pct="${pct}"></div></div>
+        <span class="lang-pct">${pct}%</span>
+      </div>`;
+  }).join('');
+
+  requestAnimationFrame(() => {
+    container.querySelectorAll('.lang-bar-fill').forEach(bar => {
+      bar.style.width = bar.getAttribute('data-pct') + '%';
+    });
+  });
+}
+
+// ============================================================
+// CONTACT FORM — AJAX submit via Formspree, inline status
+// ============================================================
+function initContactForm() {
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const status = document.getElementById('form-status');
+    const submitBtn = form.querySelector('[type="submit"]');
+    const originalHTML = submitBtn.innerHTML;
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+    if (status) { status.className = 'form-status'; status.textContent = ''; }
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (res.ok) {
+        form.reset();
+        if (status) {
+          status.className = 'form-status success';
+          status.textContent = "Message sent! I'll get back to you soon.";
+        }
+      } else {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || 'Server error ' + res.status);
+      }
+    } catch (err) {
+      if (status) {
+        status.className = 'form-status error';
+        status.textContent = 'Something went wrong. Please email me directly at namratak277@gmail.com';
+      }
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalHTML;
+    }
   });
 }

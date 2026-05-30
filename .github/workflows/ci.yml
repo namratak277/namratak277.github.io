@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate-html:
+    name: Validate HTML
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install htmlhint
+        run: npm install -g htmlhint@1
+
+      - name: Validate HTML files
+        run: htmlhint "*.html" --config .htmlhintrc
+
+  audit-assets:
+    name: Audit Local Asset References
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check local asset references exist
+        shell: python3 {0}
+        run: |
+          import os, re, sys
+
+          errors = []
+          html_files = [f for f in os.listdir('.') if f.endswith('.html')]
+
+          for html_file in html_files:
+              with open(html_file, encoding='utf-8') as f:
+                  content = f.read()
+              refs = re.findall(
+                  r'(?:src|href|action)=["\'](?!http|https|mailto|#|javascript|tel)([^"\']+)["\']',
+                  content
+              )
+              for ref in refs:
+                  clean = ref.split('?')[0].split('#')[0]
+                  if clean and not os.path.exists(clean):
+                      errors.append(f'  {html_file} → {clean}')
+
+          if errors:
+              print(f'Missing {len(errors)} local reference(s):')
+              print('\n'.join(errors))
+              sys.exit(1)
+          else:
+              print(f'All local asset references OK across {len(html_files)} HTML file(s).')

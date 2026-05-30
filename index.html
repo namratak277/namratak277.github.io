@@ -215,6 +215,43 @@
     </div>
   </section>
 
+  <section class="section github-stats-section" id="github-stats">
+    <div class="container">
+      <div class="section-label center">GitHub Activity</div>
+      <h2 class="section-title center">By the Numbers</h2>
+      <div class="gstats-grid" id="github-stats-grid">
+        <div class="gstat-card" id="gstat-repos">
+          <div class="gstat-icon"><i class="fas fa-code-branch"></i></div>
+          <div class="gstat-num">—</div>
+          <div class="gstat-label">Public Repositories</div>
+        </div>
+        <div class="gstat-card" id="gstat-stars">
+          <div class="gstat-icon"><i class="fas fa-star"></i></div>
+          <div class="gstat-num">—</div>
+          <div class="gstat-label">Total Stars</div>
+        </div>
+        <div class="gstat-card" id="gstat-forks">
+          <div class="gstat-icon"><i class="fas fa-code-fork"></i></div>
+          <div class="gstat-num">—</div>
+          <div class="gstat-label">Total Forks</div>
+        </div>
+        <div class="gstat-card gstat-card-link">
+          <a href="https://github.com/namratak277" target="_blank" rel="noreferrer" class="gstat-card-anchor">
+            <div class="gstat-icon"><i class="fab fa-github"></i></div>
+            <div class="gstat-handle">namratak277</div>
+            <div class="gstat-label">View Profile <i class="fas fa-arrow-up-right-from-square" style="font-size:0.65rem"></i></div>
+          </a>
+        </div>
+      </div>
+      <div class="lang-bars-wrap">
+        <div class="lang-bars-label">Top Languages</div>
+        <div class="lang-bars" id="github-lang-bars">
+          <div class="lang-bars-loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section edu-section" id="education">
     <div class="container">
       <div class="section-label">Education</div>
@@ -266,14 +303,37 @@
           </div>
         </div>
         <div class="contact-cta">
-          <div class="cta-card">
-            <i class="fas fa-paper-plane"></i>
-            <h3>Open to Opportunities</h3>
-            <p>Full-time &middot; Internship &middot; Contract</p>
-            <p class="cta-roles">IT Support &middot; Data Analyst &middot; Business Analyst &middot; Software Engineer &middot; Project Manager</p>
-            <a href="mailto:namratak277@gmail.com" class="btn btn-primary">Send Me a Message</a>
-            <a href="assets/files/2025 Resume.docx" class="btn btn-ghost" download>Download Resume</a>
-          </div>
+          <form id="contact-form" class="contact-form" action="https://formspree.io/f/xqejoebj" method="POST" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cf-name">Name</label>
+                <input id="cf-name" type="text" name="name" placeholder="Your name" required autocomplete="name">
+              </div>
+              <div class="form-group">
+                <label for="cf-email">Email</label>
+                <input id="cf-email" type="email" name="email" placeholder="your@email.com" required autocomplete="email">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cf-subject">Subject</label>
+              <select id="cf-subject" name="subject">
+                <option value="">Select a topic</option>
+                <option>Job Opportunity</option>
+                <option>Internship</option>
+                <option>Project Collaboration</option>
+                <option>General Inquiry</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cf-message">Message</label>
+              <textarea id="cf-message" name="message" placeholder="Tell me about the opportunity or what you have in mind..." rows="5" required></textarea>
+            </div>
+            <div class="form-submit-wrap">
+              <div id="form-status" class="form-status" role="alert"></div>
+              <button type="submit" class="btn btn-primary">Send Message <i class="fas fa-paper-plane"></i></button>
+              <a href="assets/files/2025 Resume.docx" class="btn btn-ghost" download>Download Resume</a>
+            </div>
+          </form>
         </div>
       </div>
     </div>
