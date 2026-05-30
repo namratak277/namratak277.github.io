@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Namrata Karki — Portfolio</title>
   <link rel="shortcut icon" href="favicon.ico">
+  <script>
+    (function(){var t=localStorage.getItem('theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');})();
+  </script>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -26,20 +29,15 @@
       <div class="hero-orb orb-3"></div>
     </div>
     <div class="hero-inner">
-      <div class="hero-visual">
-        <div class="profile-frame">
-          <img src="assets/images/profilepic.png" alt="Namrata Karki" class="profile-img">
-          <div class="profile-ring ring-1"></div>
-          <div class="profile-ring ring-2"></div>
-        </div>
-        <div class="hero-stat stat-1"><span class="stat-num">3+</span><span class="stat-label">Years Experience</span></div>
-        <div class="hero-stat stat-2"><span class="stat-num">15K+</span><span class="stat-label">Students Served</span></div>
-        <div class="hero-stat stat-3"><span class="stat-num">30+</span><span class="stat-label">Classrooms Supported</span></div>
-      </div>
+
+      <!-- Text first in DOM so it leads on mobile -->
       <div class="hero-text">
         <p class="hero-eyebrow">Hello, I'm</p>
-        <h1 class="hero-name">Namrata<br><span>Karki</span></h1>
-        <p class="hero-tagline">IT Support &middot; Data Analysis &middot; Software Development &middot; Project Coordination</p>
+        <h1 class="hero-name">
+          <span class="name-first">Namrata</span>
+          <span class="name-last">Karki</span>
+        </h1>
+        <p class="hero-tagline"><span id="typewriter-role">IT Support Specialist</span><span class="typewriter-cursor"></span></p>
         <p class="hero-bio">Computer Science student at UNCG graduating Dec 2026, with hands-on experience in full-stack development, IT support, cross-functional leadership, and data management.</p>
         <div class="hero-actions">
           <a href="#projects" class="btn btn-primary">View My Work</a>
@@ -51,40 +49,80 @@
           <a href="mailto:namratak277@gmail.com"><i class="fas fa-envelope"></i></a>
         </div>
       </div>
+
+      <!-- Terminal window replaces profile photo -->
+      <div class="hero-visual">
+        <div class="hero-terminal" id="hero-terminal">
+          <div class="terminal-bar">
+            <div class="terminal-dots">
+              <span class="tdot tdot-1"></span>
+              <span class="tdot tdot-2"></span>
+              <span class="tdot tdot-3"></span>
+            </div>
+            <span class="terminal-title">namrata@portfolio: ~</span>
+          </div>
+          <div class="terminal-body">
+            <div id="terminal-output"></div>
+            <div class="terminal-input-line">
+              <span class="t-prompt">❯</span>
+              <span id="terminal-cmd-current"></span>
+              <span class="t-cursor-blink"></span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-stats-row">
+          <div class="hero-stat-pill"><span class="stat-n">3+</span><span class="stat-l">Years Exp</span></div>
+          <div class="hero-stat-pill"><span class="stat-n">15K+</span><span class="stat-l">Students</span></div>
+          <div class="hero-stat-pill"><span class="stat-n">30+</span><span class="stat-l">Classrooms</span></div>
+        </div>
+      </div>
+
     </div>
     <a href="#about" class="scroll-down"><span>Scroll</span><i class="fas fa-chevron-down"></i></a>
   </section>
 
   <section class="section about-section" id="about">
     <div class="container">
-      <div class="about-grid">
-        <div class="about-left">
+      <div class="bento-grid">
+
+        <div class="bento-tile bento-bio">
           <div class="section-label">About Me</div>
           <h2 class="section-title">Building at the<br>intersection of<br><em>tech &amp; business</em></h2>
           <p>I'm a Computer Science student with an IT minor at UNCG, graduating December 2026. My experience spans classroom IT infrastructure, full-stack development, administrative coordination, and community leadership.</p>
           <p>I thrive where technical skills and human-centered thinking come together — whether diagnosing a network issue before a lecture, building a database-backed web app, or managing a community of 350+ residents.</p>
+        </div>
+
+        <div class="bento-tile bento-award">
+          <i class="fas fa-medal award-icon"></i>
+          <strong>UNCG Bronze Leadership Award</strong>
+          <span>University of North Carolina at Greensboro</span>
+        </div>
+
+        <div class="bento-tile bento-meta">
+          <div class="bento-meta-row"><i class="fas fa-map-marker-alt"></i><span>Hillsborough, NC</span></div>
+          <div class="bento-meta-row"><i class="fas fa-graduation-cap"></i><span>B.S. CS &middot; Dec 2026</span></div>
+          <div class="bento-meta-row"><i class="fas fa-globe"></i><div class="lang-pills"><span>English</span><span>Nepali</span><span>Hindi</span></div></div>
+        </div>
+
+        <div class="bento-tile bento-links">
+          <a href="mailto:namratak277@gmail.com" class="bento-contact-link"><i class="fas fa-envelope"></i><span>namratak277@gmail.com</span></a>
+          <a href="https://linkedin.com/in/namrata-karki" target="_blank" class="bento-contact-link"><i class="fab fa-linkedin-in"></i><span>linkedin.com/in/namrata-karki</span></a>
+          <a href="https://github.com/namratak277" target="_blank" class="bento-contact-link"><i class="fab fa-github"></i><span>github.com/namratak277</span></a>
+        </div>
+
+        <div class="bento-tile bento-traits">
           <div class="trait-pills">
             <span>Reliable</span><span>Detail-oriented</span><span>Curious</span>
             <span>Team-focused</span><span>Proactive</span><span>Quick Learner</span>
             <span>Communicative</span><span>Organized</span>
           </div>
         </div>
-        <div class="about-right">
-          <div class="info-card">
-            <div class="info-row"><i class="fas fa-map-marker-alt"></i><span>Hillsborough, NC</span></div>
-            <div class="info-row"><i class="fas fa-envelope"></i><a href="mailto:namratak277@gmail.com">namratak277@gmail.com</a></div>
-            <!-- phone removed per request -->
-            <div class="info-row"><i class="fab fa-linkedin-in"></i><a href="https://linkedin.com/in/namrata-karki" target="_blank">linkedin.com/in/namrata-karki</a></div>
-            <div class="info-row"><i class="fab fa-github"></i><a href="https://github.com/namratak277" target="_blank">github.com/namratak277</a></div>
-            <div class="info-row"><i class="fas fa-graduation-cap"></i><span>B.S. Computer Science, Dec 2026</span></div>
-            <div class="info-row"><i class="fas fa-globe"></i><div class="lang-pills"><span>English</span><span>Nepali</span><span>Hindi</span></div></div>
-            <a href="assets/files/2025 Resume.docx" class="btn btn-primary btn-full" download><i class="fas fa-download"></i> Download Resume</a>
-          </div>
-          <div class="award-card">
-            <i class="fas fa-medal"></i>
-            <div><strong>UNCG Bronze Leadership Award</strong><span>University of North Carolina at Greensboro</span></div>
-          </div>
+
+        <div class="bento-actions">
+          <a href="assets/files/2025 Resume.docx" class="btn btn-primary" download><i class="fas fa-download"></i> Download Resume</a>
+          <a href="https://github.com/namratak277" target="_blank" class="btn btn-ghost"><i class="fab fa-github"></i> View GitHub</a>
         </div>
+
       </div>
     </div>
   </section>

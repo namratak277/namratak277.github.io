@@ -114,6 +114,31 @@ function renderPost(main, post) {
       </div>
     </div>
   `;
+
+  initReadingProgress(main);
+}
+
+function initReadingProgress(main) {
+  const postBody = main.querySelector('.blog-post-body');
+  if (!postBody) return;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'blog-reading-progress';
+  const bar = document.createElement('div');
+  bar.className = 'blog-reading-bar';
+  wrap.appendChild(bar);
+  document.body.appendChild(wrap);
+
+  const update = () => {
+    const bodyTop = postBody.getBoundingClientRect().top + window.scrollY;
+    const range = postBody.offsetHeight - window.innerHeight;
+    if (range <= 0) { bar.style.width = '100%'; return; }
+    const pct = Math.min(100, Math.max(0, ((window.scrollY - bodyTop) / range) * 100));
+    bar.style.width = pct + '%';
+  };
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
 }
 
 function renderNotFound(main, slug) {

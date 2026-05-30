@@ -56,6 +56,15 @@ document.addEventListener('DOMContentLoaded', async function() {
   // Initialize contact form AJAX submission
   initContactForm();
 
+  // Initialize theme toggle (button is inside nav, so call after nav loads)
+  initThemeToggle();
+
+  // New UI features
+  initScrollProgress();
+  initTypewriter();
+  initHeroParticles();
+  initPageTransitions();
+
   // Scroll effect on navbar
   window.addEventListener('scroll', function() {
     if (window.scrollY > 100) {
@@ -183,7 +192,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   // ============================================================
   // CONSOLE MESSAGE
   // ============================================================
-  console.log('%cWelcome to Namrata\'s Portfolio', 'color: #3b74c8; font-size: 20px; font-weight: bold;');
+  console.log('%cWelcome to Namrata\'s Portfolio', 'color: #E09F3E; font-size: 20px; font-weight: bold;');
   console.log('%cDesigned & Built with ❤️ using HTML5, CSS3, and JavaScript', 'color: #99bee8; font-size: 12px;');
 });
 
@@ -224,9 +233,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (existing) existing.remove();
     const modal = document.createElement('div');
     modal.id = 'preview-modal';
-    modal.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(5,14,31,0.75);z-index:3000;padding:2rem;';
-    modal.innerHTML = `<div style="max-width:960px;width:100%;border-radius:12px;overflow:hidden;background:#071024;box-shadow:0 20px 60px rgba(2,6,23,0.8);">
-      <div style="position:relative;padding:1rem 1rem 0;background:#071024"><button id="pm-close" style="position:absolute;right:10px;top:6px;background:none;border:none;color:#fff;font-size:1.25rem;cursor:pointer">✕</button>
+    modal.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(8,4,3,0.85);z-index:3000;padding:2rem;';
+    modal.innerHTML = `<div style="max-width:960px;width:100%;border-radius:12px;overflow:hidden;background:#0c1e24;box-shadow:0 20px 60px rgba(8,3,2,0.85);">
+      <div style="position:relative;padding:1rem 1rem 0;background:#0c1e24"><button id="pm-close" style="position:absolute;right:10px;top:6px;background:none;border:none;color:#FFF3B0;font-size:1.25rem;cursor:pointer">✕</button>
       <img src="${src}" style="width:100%;height:360px;object-fit:cover;display:block" alt="${title}"></div>
       <div style="padding:1rem 1.25rem;color:var(--text-muted)"><h3 style="margin:0 0 .5rem;color:var(--white)">${title}</h3><p style="margin:0">${caption}</p></div>
     </div>`;
@@ -542,5 +551,186 @@ function initContactForm() {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalHTML;
     }
+  });
+}
+
+// ============================================================
+// SCROLL PROGRESS BAR
+// ============================================================
+function initScrollProgress() {
+  const bar = document.createElement('div');
+  bar.className = 'scroll-progress';
+  document.body.prepend(bar);
+  const update = () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+
+// ============================================================
+// TYPEWRITER ROLE CYCLING
+// ============================================================
+function initTypewriter() {
+  const el = document.getElementById('typewriter-role');
+  if (!el) return;
+  const roles = ['IT Support Specialist', 'Data Analyst', 'Software Developer', 'Project Coordinator'];
+  let ri = 0, ci = 0, deleting = false;
+  const TYPE = 80, DEL = 42, PAUSE = 2200, RESTART = 360;
+
+  (function tick() {
+    const word = roles[ri];
+    if (deleting) {
+      el.textContent = word.slice(0, ci - 1);
+      ci--;
+      if (ci === 0) { deleting = false; ri = (ri + 1) % roles.length; setTimeout(tick, RESTART); return; }
+      setTimeout(tick, DEL);
+    } else {
+      el.textContent = word.slice(0, ci + 1);
+      ci++;
+      if (ci === word.length) { deleting = true; setTimeout(tick, PAUSE); return; }
+      setTimeout(tick, TYPE);
+    }
+  })();
+}
+
+// ============================================================
+// HERO CANVAS PARTICLE FIELD
+// ============================================================
+function initHeroParticles() {
+  const hero = document.getElementById('hero');
+  if (!hero || window.matchMedia('(pointer: coarse)').matches) return;
+  const heroBg = hero.querySelector('.hero-bg');
+  if (!heroBg) return;
+
+  const canvas = document.createElement('canvas');
+  canvas.id = 'hero-canvas';
+  heroBg.prepend(canvas);
+  hero.classList.add('hero-canvas-active');
+
+  const ctx = canvas.getContext('2d');
+  const mouse = { x: null, y: null };
+  const COUNT = 65, CONNECT = 130, REPEL = 88;
+  let pts = [], animId = null;
+
+  const resize = () => { canvas.width = hero.offsetWidth; canvas.height = hero.offsetHeight; };
+
+  function Pt() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.vx = (Math.random() - 0.5) * 0.5;
+    this.vy = (Math.random() - 0.5) * 0.5;
+    this.r = Math.random() * 1.3 + 0.4;
+    this.a = Math.random() * 0.42 + 0.14;
+  }
+  Pt.prototype.step = function() {
+    if (mouse.x !== null) {
+      const dx = this.x - mouse.x, dy = this.y - mouse.y;
+      const d = Math.sqrt(dx*dx + dy*dy);
+      if (d < REPEL) { const f = ((REPEL - d) / REPEL) * 1.7; this.vx += dx/d*f; this.vy += dy/d*f; }
+    }
+    this.vx *= 0.97; this.vy *= 0.97;
+    const s = Math.sqrt(this.vx*this.vx + this.vy*this.vy);
+    if (s > 1.7) { this.vx = this.vx/s*1.7; this.vy = this.vy/s*1.7; }
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0) this.x = canvas.width;
+    if (this.x > canvas.width) this.x = 0;
+    if (this.y < 0) this.y = canvas.height;
+    if (this.y > canvas.height) this.y = 0;
+  };
+
+  const init = () => { pts = Array.from({ length: COUNT }, () => new Pt()); };
+
+  const lines = () => {
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i + 1; j < pts.length; j++) {
+        const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+        const d = Math.sqrt(dx*dx + dy*dy);
+        if (d < CONNECT) {
+          ctx.beginPath();
+          ctx.moveTo(pts[i].x, pts[i].y);
+          ctx.lineTo(pts[j].x, pts[j].y);
+          ctx.strokeStyle = `rgba(51,92,103,${(1 - d/CONNECT) * 0.2})`;
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
+        }
+      }
+    }
+  };
+
+  const frame = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pts.forEach(p => { p.step(); ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fillStyle = `rgba(51,92,103,${p.a})`; ctx.fill(); });
+    lines();
+    animId = requestAnimationFrame(frame);
+  };
+
+  resize(); init(); frame();
+
+  window.addEventListener('resize', () => { resize(); init(); }, { passive: true });
+  hero.addEventListener('mousemove', e => { const r = hero.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
+  hero.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
+
+  new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting) { cancelAnimationFrame(animId); animId = null; }
+    else if (!animId) { frame(); }
+  }, { threshold: 0 }).observe(hero);
+}
+
+// ============================================================
+// PAGE TRANSITION OVERLAY
+// ============================================================
+function initPageTransitions() {
+  const ov = document.createElement('div');
+  ov.className = 'page-transition-overlay';
+  ov.style.opacity = '1';
+  document.body.appendChild(ov);
+
+  // Reveal page on load
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    ov.style.transition = 'opacity 0.45s ease';
+    ov.style.opacity = '0';
+  }));
+
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href]');
+    if (!a) return;
+    const href = a.getAttribute('href');
+    if (!href || href[0] === '#' || href.startsWith('http') ||
+        href.startsWith('mailto') || href.startsWith('tel') ||
+        a.hasAttribute('download') || a.getAttribute('target') === '_blank') return;
+    e.preventDefault();
+    ov.style.pointerEvents = 'all';
+    ov.style.transition = 'opacity 0.38s ease';
+    ov.style.opacity = '1';
+    setTimeout(() => { window.location.href = href; }, 400);
+  });
+}
+
+// ============================================================
+// THEME TOGGLE (light / dark)
+// ============================================================
+function initThemeToggle() {
+  const toggle = document.getElementById('theme-toggle');
+  if (!toggle) return;
+
+  const getTheme = () =>
+    localStorage.getItem('theme') ||
+    (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+
+  const apply = theme => {
+    document.documentElement.setAttribute('data-theme', theme);
+    const icon = toggle.querySelector('i');
+    if (icon) icon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+    localStorage.setItem('theme', theme);
+  };
+
+  apply(getTheme());
+  toggle.addEventListener('click', () => {
+    apply(document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+  });
+  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
+    if (!localStorage.getItem('theme')) apply(e.matches ? 'light' : 'dark');
   });
 }
