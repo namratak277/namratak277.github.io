@@ -62,7 +62,8 @@ document.addEventListener('DOMContentLoaded', async function() {
   // New UI features
   initScrollProgress();
   initTypewriter();
-  initHeroParticles();
+  initHeroCharGrid();
+  initHeroTerminal();
   initPageTransitions();
 
   // Scroll effect on navbar
@@ -596,86 +597,267 @@ function initTypewriter() {
 }
 
 // ============================================================
-// HERO CANVAS PARTICLE FIELD
+// HERO CHARACTER GRID — hot-zone code rain
 // ============================================================
-function initHeroParticles() {
+function initHeroCharGrid() {
   const hero = document.getElementById('hero');
-  if (!hero || window.matchMedia('(pointer: coarse)').matches) return;
+  if (!hero) return;
   const heroBg = hero.querySelector('.hero-bg');
   if (!heroBg) return;
 
   const canvas = document.createElement('canvas');
-  canvas.id = 'hero-canvas';
-  heroBg.prepend(canvas);
-  hero.classList.add('hero-canvas-active');
+  canvas.id = 'hero-chargrid';
+  heroBg.appendChild(canvas);
+  hero.classList.add('hero-chargrid-active');
 
   const ctx = canvas.getContext('2d');
-  const mouse = { x: null, y: null };
-  const COUNT = 65, CONNECT = 130, REPEL = 88;
-  let pts = [], animId = null;
 
-  const resize = () => { canvas.width = hero.offsetWidth; canvas.height = hero.offsetHeight; };
+  const CELL      = 32;           // grid cell size px
+  const FONT      = 11;           // character font-size px
+  const RADIUS    = 118;          // cursor heat radius px
+  const CHARS     = '01ABCDEFabcdef39कखगनमरतसहपलवअइउए०१२३४५६७८९'.split('');
+  const isTouch   = window.matchMedia('(pointer: coarse)').matches;
 
-  function Pt() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.vx = (Math.random() - 0.5) * 0.5;
-    this.vy = (Math.random() - 0.5) * 0.5;
-    this.r = Math.random() * 1.3 + 0.4;
-    this.a = Math.random() * 0.42 + 0.14;
-  }
-  Pt.prototype.step = function() {
-    if (mouse.x !== null) {
-      const dx = this.x - mouse.x, dy = this.y - mouse.y;
-      const d = Math.sqrt(dx*dx + dy*dy);
-      if (d < REPEL) { const f = ((REPEL - d) / REPEL) * 1.7; this.vx += dx/d*f; this.vy += dy/d*f; }
+  const mouse   = { x: -9999, y: -9999 };
+  let cells     = [];
+  let drops     = [];
+  let animId    = null;
+  let lastTs    = 0;
+
+  // Ambient scan line — sweeps top→bottom every ~7 s
+  const scan = { y: -CELL, active: false, timer: 0 };
+  const SCAN_PERIOD = 7200;
+  const SCAN_SPEED  = 1.9;
+  const SCAN_HALF   = 40;
+  const SCAN_PEAK   = 0.36;
+
+  // Touch auto-wander
+  let wt = 0;
+
+  function rc() { return CHARS[Math.floor(Math.random() * CHARS.length)]; }
+
+  // Teal (cool) → bright cyan (warm) → gold (hot)
+  function heatColor(h) {
+    let r, g, b, a;
+    if (h <= 0.5) {
+      const t = h * 2;
+      r = Math.round(51  + (82  - 51)  * t);
+      g = Math.round(92  + (210 - 92)  * t);
+      b = Math.round(103 + (230 - 103) * t);
+      a = 0.09 + 0.56 * t;
+    } else {
+      const t = (h - 0.5) * 2;
+      r = Math.round(82  + (224 - 82)  * t);
+      g = Math.round(210 + (159 - 210) * t);
+      b = Math.round(230 + (62  - 230) * t);
+      a = 0.65 + 0.27 * t;
     }
-    this.vx *= 0.97; this.vy *= 0.97;
-    const s = Math.sqrt(this.vx*this.vx + this.vy*this.vy);
-    if (s > 1.7) { this.vx = this.vx/s*1.7; this.vy = this.vy/s*1.7; }
-    this.x += this.vx; this.y += this.vy;
-    if (this.x < 0) this.x = canvas.width;
-    if (this.x > canvas.width) this.x = 0;
-    if (this.y < 0) this.y = canvas.height;
-    if (this.y > canvas.height) this.y = 0;
-  };
+    return `rgba(${r},${g},${b},${a.toFixed(2)})`;
+  }
 
-  const init = () => { pts = Array.from({ length: COUNT }, () => new Pt()); };
-
-  const lines = () => {
-    for (let i = 0; i < pts.length; i++) {
-      for (let j = i + 1; j < pts.length; j++) {
-        const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
-        const d = Math.sqrt(dx*dx + dy*dy);
-        if (d < CONNECT) {
-          ctx.beginPath();
-          ctx.moveTo(pts[i].x, pts[i].y);
-          ctx.lineTo(pts[j].x, pts[j].y);
-          ctx.strokeStyle = `rgba(51,92,103,${(1 - d/CONNECT) * 0.2})`;
-          ctx.lineWidth = 0.7;
-          ctx.stroke();
-        }
+  function buildGrid() {
+    cells = [];
+    const cols = Math.ceil(canvas.width  / CELL) + 1;
+    const rows = Math.ceil(canvas.height / CELL) + 1;
+    for (let c = 0; c < cols; c++) {
+      for (let r = 0; r < rows; r++) {
+        cells.push({
+          x:  c * CELL + CELL * 0.5,
+          y:  r * CELL + CELL * 0.5,
+          ch: rc(),
+          heat: 0,
+          ct:  Math.random() * 3000,
+        });
       }
     }
-  };
+  }
 
-  const frame = () => {
+  function spawnDrop(cell) {
+    if (drops.length > 180) return;
+    drops.push({ x: cell.x, y: cell.y, vy: 1.3 + Math.random() * 1.5, ch: cell.ch, a: 0.80, ct: 0 });
+  }
+
+  function frame(ts) {
+    const dt = Math.min(ts - lastTs, 80);
+    lastTs = ts;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    pts.forEach(p => { p.step(); ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fillStyle = `rgba(51,92,103,${p.a})`; ctx.fill(); });
-    lines();
+    ctx.font         = `${FONT}px 'Fira Code','Cascadia Code','Consolas',monospace`;
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'middle';
+
+    // Scan line
+    scan.timer += dt;
+    if (!scan.active && scan.timer >= SCAN_PERIOD) { scan.y = -CELL; scan.active = true; scan.timer = 0; }
+    if (scan.active) {
+      scan.y += SCAN_SPEED * (dt / 16.67);
+      if (scan.y > canvas.height + CELL) scan.active = false;
+    }
+
+    // Touch auto-wander
+    if (isTouch) {
+      wt += dt * 0.00042;
+      mouse.x = canvas.width  * 0.5 + Math.cos(wt)        * canvas.width  * 0.34;
+      mouse.y = canvas.height * 0.5 + Math.sin(wt * 0.61) * canvas.height * 0.30;
+    }
+
+    // Cells
+    cells.forEach(cell => {
+      const dx = cell.x - mouse.x, dy = cell.y - mouse.y;
+      let target = Math.max(0, 1 - Math.sqrt(dx*dx + dy*dy) / RADIUS);
+      if (scan.active) {
+        const sd = Math.abs(cell.y - scan.y);
+        target = Math.max(target, SCAN_PEAK * Math.max(0, 1 - sd / SCAN_HALF));
+      }
+
+      // Heat rises fast, cools slowly for a lingering glow
+      cell.heat += (target - cell.heat) * (target > cell.heat ? 0.13 : 0.055);
+
+      cell.ct += dt;
+      const interval = cell.heat > 0.08 ? 55 + (1 - cell.heat) * 310 : 2600 + Math.random() * 1600;
+      if (cell.ct >= interval) {
+        cell.ch = rc();
+        cell.ct = 0;
+        if (cell.heat > 0.60 && Math.random() < 0.15) spawnDrop(cell);
+      }
+
+      ctx.fillStyle = heatColor(cell.heat);
+      ctx.fillText(cell.ch, cell.x, cell.y);
+    });
+
+    // Falling drops
+    drops = drops.filter(d => d.a > 0.022);
+    drops.forEach(d => {
+      d.y  += d.vy * (dt / 16.67);
+      d.a  *= 0.953;
+      d.ct += dt;
+      if (d.ct > 105) { d.ch = rc(); d.ct = 0; }
+      ctx.fillStyle = `rgba(224,159,62,${d.a.toFixed(2)})`;
+      ctx.fillText(d.ch, d.x, d.y);
+    });
+
     animId = requestAnimationFrame(frame);
-  };
+  }
 
-  resize(); init(); frame();
+  function resize() {
+    canvas.width  = hero.offsetWidth;
+    canvas.height = hero.offsetHeight;
+    buildGrid();
+  }
 
-  window.addEventListener('resize', () => { resize(); init(); }, { passive: true });
-  hero.addEventListener('mousemove', e => { const r = hero.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
-  hero.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
+  resize();
+  lastTs = performance.now();
+  animId = requestAnimationFrame(frame);
+
+  window.addEventListener('resize', resize, { passive: true });
+  hero.addEventListener('mousemove', e => {
+    const rect = hero.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+  hero.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
 
   new IntersectionObserver(entries => {
     if (!entries[0].isIntersecting) { cancelAnimationFrame(animId); animId = null; }
-    else if (!animId) { frame(); }
+    else if (!animId) { lastTs = performance.now(); animId = requestAnimationFrame(frame); }
   }, { threshold: 0 }).observe(hero);
+}
+
+// ============================================================
+// HERO TERMINAL ANIMATION
+// ============================================================
+function initHeroTerminal() {
+  const outputEl = document.getElementById('terminal-output');
+  const cmdEl    = document.getElementById('terminal-cmd-current');
+  if (!outputEl || !cmdEl) return;
+
+  const cmds = [
+    {
+      cmd: 'whoami',
+      out: [
+        { t: 'kv', k: 'name',     v: 'Namrata Karki' },
+        { t: 'kv', k: 'role',     v: 'CS Student · Developer · IT Specialist' },
+        { t: 'kv', k: 'location', v: 'Hillsborough, NC' },
+      ]
+    },
+    {
+      cmd: 'cat skills.txt',
+      out: [
+        { t: 'raw', v: '▸ Java  Python  JavaScript  HTML/CSS' },
+        { t: 'raw', v: '▸ PostgreSQL  MySQL  Git  Figma' },
+        { t: 'raw', v: '▸ Machine Learning  AI  REST APIs' },
+      ]
+    },
+    {
+      cmd: 'ls projects/',
+      out: [
+        { t: 'dir', v: 'dress-web-store/   daily-diary/   creative-newsletter/' },
+      ]
+    },
+    {
+      cmd: 'echo $availability',
+      out: [
+        { t: 'comment', v: 'Open to opportunities · Graduating Dec 2026' },
+      ]
+    },
+  ];
+
+  const T = 72, CMD_WAIT = 460, LINE_WAIT = 150, SEQ_WAIT = 900, LOOP_WAIT = 4200;
+
+  function lineHtml(item) {
+    if (item.t === 'kv')
+      return `<span class="t-kv-key">${item.k}</span><span class="t-val">${item.v}</span>`;
+    if (item.t === 'dir')
+      return `<span class="t-dir">${item.v}</span>`;
+    if (item.t === 'comment')
+      return `<span class="t-comment"># ${item.v}</span>`;
+    return `<span class="t-val">${item.v}</span>`;
+  }
+
+  function addLine(html) {
+    const s = document.createElement('span');
+    s.className = 't-line';
+    s.innerHTML = html;
+    outputEl.appendChild(s);
+    const body = outputEl.closest('.terminal-body');
+    if (body) body.scrollTop = body.scrollHeight;
+  }
+
+  function runCmd(i) {
+    const { cmd, out } = cmds[i];
+    let ci = 0;
+
+    function typeChar() {
+      cmdEl.textContent = cmd.slice(0, ci);
+      if (ci < cmd.length) { ci++; setTimeout(typeChar, T); return; }
+      setTimeout(commitAndShowOutput, CMD_WAIT);
+    }
+
+    function commitAndShowOutput() {
+      addLine(`<span class="t-prompt">❯</span> <span class="t-cmd">${cmd}</span>`);
+      cmdEl.textContent = '';
+      showOutputLine(0);
+    }
+
+    function showOutputLine(oi) {
+      if (oi >= out.length) {
+        addLine('&nbsp;');
+        const next = (i + 1) % cmds.length;
+        const wait = next === 0 ? LOOP_WAIT : SEQ_WAIT;
+        setTimeout(() => {
+          if (next === 0) outputEl.innerHTML = '';
+          runCmd(next);
+        }, wait);
+        return;
+      }
+      addLine(lineHtml(out[oi]));
+      setTimeout(() => showOutputLine(oi + 1), LINE_WAIT);
+    }
+
+    typeChar();
+  }
+
+  setTimeout(() => runCmd(0), 900);
 }
 
 // ============================================================

@@ -1,8 +1,8 @@
 # namratak277.github.io — Developer Portfolio OS
 
-Personal portfolio site built as a fully static JAMstack system on GitHub Pages. Vanilla HTML, CSS, and JavaScript — no build tools, no framework, no cost.
+Personal portfolio site built as a fully static JAMstack system on GitHub Pages. Vanilla HTML, CSS, and JavaScript with no build tools, no framework, no cost.
 
-**Live site:** https://namratak277.github.io
+Live site: https://namratak277.github.io
 
 ---
 

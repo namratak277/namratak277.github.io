@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/portfolio.css?v=20260517">
+  <link rel="stylesheet" href="assets/css/portfolio.css?v=20260601">
 </head>
 
 <body>
@@ -30,7 +30,7 @@
     </div>
     <div class="hero-inner">
 
-      <!-- Text first in DOM so it leads on mobile -->
+      <!-- Left: text -->
       <div class="hero-text">
         <p class="hero-eyebrow">Hello, I'm</p>
         <h1 class="hero-name">
@@ -38,42 +38,40 @@
           <span class="name-last">Karki</span>
         </h1>
         <p class="hero-tagline"><span id="typewriter-role">IT Support Specialist</span><span class="typewriter-cursor"></span></p>
-        <p class="hero-bio">Computer Science student at UNCG graduating Dec 2026, with hands-on experience in full-stack development, IT support, cross-functional leadership, and data management.</p>
+        <p class="hero-bio">CS student at UNCG (Dec 2026) with hands-on experience in full-stack development, IT support, cross-functional leadership, and data management.</p>
+        <div class="hero-meta-pills">
+          <span class="hero-meta-pill"><i class="fas fa-map-marker-alt"></i>Hillsborough, NC</span>
+          <span class="hero-meta-pill"><i class="fas fa-graduation-cap"></i>UNCG · B.S. CS</span>
+          <span class="hero-meta-pill hero-meta-pill--open"><i class="fas fa-briefcase"></i>Open to Roles</span>
+        </div>
         <div class="hero-actions">
           <a href="#projects" class="btn btn-primary">View My Work</a>
           <a href="#contact" class="btn btn-ghost">Get In Touch</a>
         </div>
         <div class="hero-socials">
-          <a href="https://linkedin.com/in/namrata-karki" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-          <a href="https://github.com/namratak277" target="_blank"><i class="fab fa-github"></i></a>
-          <a href="mailto:namratak277@gmail.com"><i class="fas fa-envelope"></i></a>
+          <a href="https://linkedin.com/in/namrata-karki" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://github.com/namratak277" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+          <a href="mailto:namratak277@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
         </div>
       </div>
 
-      <!-- Terminal window replaces profile photo -->
+      <!-- Right: circular photo + floating stat badges -->
       <div class="hero-visual">
-        <div class="hero-terminal" id="hero-terminal">
-          <div class="terminal-bar">
-            <div class="terminal-dots">
-              <span class="tdot tdot-1"></span>
-              <span class="tdot tdot-2"></span>
-              <span class="tdot tdot-3"></span>
-            </div>
-            <span class="terminal-title">namrata@portfolio: ~</span>
-          </div>
-          <div class="terminal-body">
-            <div id="terminal-output"></div>
-            <div class="terminal-input-line">
-              <span class="t-prompt">❯</span>
-              <span id="terminal-cmd-current"></span>
-              <span class="t-cursor-blink"></span>
-            </div>
-          </div>
+        <div class="hero-photo-wrap">
+          <img src="assets/images/profilepic.png" alt="Namrata Karki" class="hero-photo">
+          <span class="hero-avail"><span class="avail-dot"></span>Available</span>
         </div>
-        <div class="hero-stats-row">
-          <div class="hero-stat-pill"><span class="stat-n">3+</span><span class="stat-l">Years Exp</span></div>
-          <div class="hero-stat-pill"><span class="stat-n">15K+</span><span class="stat-l">Students</span></div>
-          <div class="hero-stat-pill"><span class="stat-n">30+</span><span class="stat-l">Classrooms</span></div>
+        <div class="hero-stat stat-1">
+          <span class="stat-num">3+</span>
+          <span class="stat-label">Years Exp</span>
+        </div>
+        <div class="hero-stat stat-2">
+          <span class="stat-num">15K+</span>
+          <span class="stat-label">Students Supported</span>
+        </div>
+        <div class="hero-stat stat-3">
+          <span class="stat-num">30+</span>
+          <span class="stat-label">Classrooms</span>
         </div>
       </div>
 
@@ -390,6 +388,6 @@
     </div>
   </footer>
 
-  <script src="assets/js/portfolio.js?v=20260517"></script>
+  <script src="assets/js/portfolio.js?v=20260601"></script>
 </body>
 </html>
