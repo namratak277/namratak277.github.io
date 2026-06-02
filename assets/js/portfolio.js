@@ -77,16 +77,26 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   // ============================================================
   // SMOOTH SCROLL BEHAVIOR
+  // Handles both href="#section" and href="index.html#section"
   // ============================================================
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  document.querySelectorAll('a[href]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
+      const href = this.getAttribute('href');
+      if (!href) return;
+      let hash = null;
+      if (href[0] === '#') {
+        hash = href;
+      } else {
+        try {
+          const url = new URL(href, window.location.href);
+          if (url.hash && url.pathname === window.location.pathname) hash = url.hash;
+        } catch (_) {}
+      }
+      if (!hash) return;
+      const target = document.querySelector(hash);
       if (target) {
-        target.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
   });
@@ -882,6 +892,11 @@ function initPageTransitions() {
     if (!href || href[0] === '#' || href.startsWith('http') ||
         href.startsWith('mailto') || href.startsWith('tel') ||
         a.hasAttribute('download') || a.getAttribute('target') === '_blank') return;
+    // Skip same-page hash links (e.g. "index.html#about" when already on index.html)
+    try {
+      const url = new URL(href, window.location.href);
+      if (url.hash && url.pathname === window.location.pathname) return;
+    } catch (_) {}
     e.preventDefault();
     ov.style.pointerEvents = 'all';
     ov.style.transition = 'opacity 0.38s ease';

@@ -55,23 +55,72 @@
         </div>
       </div>
 
-      <!-- Right: circular photo + floating stat badges -->
+      <!-- Right: circular photo with lotus petals + floating stat badges -->
       <div class="hero-visual">
         <div class="hero-photo-wrap">
-          <img src="assets/images/profilepic.png" alt="Namrata Karki" class="hero-photo">
-          <span class="hero-avail"><span class="avail-dot"></span>Available</span>
+          <!-- Lotus petal ring — 3 layers, sits behind the photo circle -->
+          <svg class="lotus-ring" viewBox="0 0 300 300" overflow="visible" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <g transform="translate(150,150)">
+
+              <!-- Layer 1: large outer petals, every 45°, most transparent -->
+              <g class="lotus-l1">
+                <path d="M0,-116 C54,-142 50,-210 0,-240 C-50,-210 -54,-142 0,-116Z"/>
+                <path d="M0,-116 C54,-142 50,-210 0,-240 C-50,-210 -54,-142 0,-116Z" transform="rotate(45)"/>
+                <path d="M0,-116 C54,-142 50,-210 0,-240 C-50,-210 -54,-142 0,-116Z" transform="rotate(90)"/>
+                <path d="M0,-116 C54,-142 50,-210 0,-240 C-50,-210 -54,-142 0,-116Z" transform="rotate(135)"/>
+                <path d="M0,-116 C54,-142 50,-210 0,-240 C-50,-210 -54,-142 0,-116Z" transform="rotate(180)"/>
+                <path d="M0,-116 C54,-142 50,-210 0,-240 C-50,-210 -54,-142 0,-116Z" transform="rotate(225)"/>
+                <path d="M0,-116 C54,-142 50,-210 0,-240 C-50,-210 -54,-142 0,-116Z" transform="rotate(270)"/>
+                <path d="M0,-116 C54,-142 50,-210 0,-240 C-50,-210 -54,-142 0,-116Z" transform="rotate(315)"/>
+              </g>
+
+              <!-- Layer 2: medium petals, offset 22.5°, mid opacity -->
+              <g class="lotus-l2" transform="rotate(22.5)">
+                <path d="M0,-114 C44,-136 42,-192 0,-216 C-42,-192 -44,-136 0,-114Z"/>
+                <path d="M0,-114 C44,-136 42,-192 0,-216 C-42,-192 -44,-136 0,-114Z" transform="rotate(45)"/>
+                <path d="M0,-114 C44,-136 42,-192 0,-216 C-42,-192 -44,-136 0,-114Z" transform="rotate(90)"/>
+                <path d="M0,-114 C44,-136 42,-192 0,-216 C-42,-192 -44,-136 0,-114Z" transform="rotate(135)"/>
+                <path d="M0,-114 C44,-136 42,-192 0,-216 C-42,-192 -44,-136 0,-114Z" transform="rotate(180)"/>
+                <path d="M0,-114 C44,-136 42,-192 0,-216 C-42,-192 -44,-136 0,-114Z" transform="rotate(225)"/>
+                <path d="M0,-114 C44,-136 42,-192 0,-216 C-42,-192 -44,-136 0,-114Z" transform="rotate(270)"/>
+                <path d="M0,-114 C44,-136 42,-192 0,-216 C-42,-192 -44,-136 0,-114Z" transform="rotate(315)"/>
+              </g>
+
+              <!-- Layer 3: short inner guard petals, every 45°, most opaque -->
+              <g class="lotus-l3">
+                <path d="M0,-112 C32,-124 30,-150 0,-162 C-30,-150 -32,-124 0,-112Z"/>
+                <path d="M0,-112 C32,-124 30,-150 0,-162 C-30,-150 -32,-124 0,-112Z" transform="rotate(45)"/>
+                <path d="M0,-112 C32,-124 30,-150 0,-162 C-30,-150 -32,-124 0,-112Z" transform="rotate(90)"/>
+                <path d="M0,-112 C32,-124 30,-150 0,-162 C-30,-150 -32,-124 0,-112Z" transform="rotate(135)"/>
+                <path d="M0,-112 C32,-124 30,-150 0,-162 C-30,-150 -32,-124 0,-112Z" transform="rotate(180)"/>
+                <path d="M0,-112 C32,-124 30,-150 0,-162 C-30,-150 -32,-124 0,-112Z" transform="rotate(225)"/>
+                <path d="M0,-112 C32,-124 30,-150 0,-162 C-30,-150 -32,-124 0,-112Z" transform="rotate(270)"/>
+                <path d="M0,-112 C32,-124 30,-150 0,-162 C-30,-150 -32,-124 0,-112Z" transform="rotate(315)"/>
+              </g>
+
+            </g>
+          </svg>
+          <div class="photo-circle">
+            <img src="assets/images/profilepic.png" alt="Namrata Karki" class="hero-photo">
+          </div>
         </div>
+
+        <!-- 4 action stats in corner arrangement -->
         <div class="hero-stat stat-1">
-          <span class="stat-num">3+</span>
-          <span class="stat-label">Years Exp</span>
+          <span class="stat-num">300+</span>
+          <span class="stat-label">Classrooms Supported</span>
         </div>
         <div class="hero-stat stat-2">
-          <span class="stat-num">15K+</span>
-          <span class="stat-label">Students Supported</span>
+          <span class="stat-num">500+</span>
+          <span class="stat-label">Residents Supported</span>
         </div>
         <div class="hero-stat stat-3">
-          <span class="stat-num">30+</span>
-          <span class="stat-label">Classrooms</span>
+          <span class="stat-num">5+</span>
+          <span class="stat-label">Programs Organized</span>
+        </div>
+        <div class="hero-stat stat-4">
+          <span class="stat-num">1000+</span>
+          <span class="stat-label">Students Guided</span>
         </div>
       </div>
 
