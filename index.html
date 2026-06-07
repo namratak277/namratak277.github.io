@@ -151,11 +151,6 @@
           <div class="bento-meta-row"><i class="fas fa-globe"></i><div class="lang-pills"><span>English</span><span>Nepali</span><span>Hindi</span></div></div>
         </div>
 
-        <div class="bento-tile bento-links">
-          <a href="mailto:namratak277@gmail.com" class="bento-contact-link"><i class="fas fa-envelope"></i><span>namratak277@gmail.com</span></a>
-          <a href="https://linkedin.com/in/namrata-karki" target="_blank" class="bento-contact-link"><i class="fab fa-linkedin-in"></i><span>linkedin.com/in/namrata-karki</span></a>
-          <a href="https://github.com/namratak277" target="_blank" class="bento-contact-link"><i class="fab fa-github"></i><span>github.com/namratak277</span></a>
-        </div>
 
         <div class="bento-tile bento-traits">
           <div class="trait-pills">
@@ -413,35 +408,29 @@
     <div class="container">
       <div class="section-label center">GitHub Activity</div>
       <h2 class="section-title center">By the Numbers</h2>
-      <div class="gstats-grid" id="github-stats-grid">
-        <div class="gstat-card" id="gstat-repos">
+      <div class="gh-bento">
+
+        <div class="gh-tile gh-tile-repos">
           <div class="gstat-icon"><i class="fas fa-code-branch"></i></div>
-          <div class="gstat-num">—</div>
-          <div class="gstat-label">Public Repositories</div>
+          <div class="gstat-num" id="gstat-repos">—</div>
+          <div class="gstat-label">Public Repos</div>
         </div>
-        <div class="gstat-card" id="gstat-stars">
-          <div class="gstat-icon"><i class="fas fa-star"></i></div>
-          <div class="gstat-num">—</div>
-          <div class="gstat-label">Total Stars</div>
+
+        <div class="gh-tile gh-tile-langs">
+          <div class="lang-bars-label">Top Languages</div>
+          <div class="lang-bars" id="github-lang-bars">
+            <div class="lang-bars-loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+          </div>
         </div>
-        <div class="gstat-card" id="gstat-forks">
-          <div class="gstat-icon"><i class="fas fa-code-fork"></i></div>
-          <div class="gstat-num">—</div>
-          <div class="gstat-label">Total Forks</div>
-        </div>
-        <div class="gstat-card gstat-card-link">
+
+        <div class="gh-tile gh-tile-profile">
           <a href="https://github.com/namratak277" target="_blank" rel="noreferrer" class="gstat-card-anchor">
             <div class="gstat-icon"><i class="fab fa-github"></i></div>
             <div class="gstat-handle">namratak277</div>
             <div class="gstat-label">View Profile <i class="fas fa-arrow-up-right-from-square" style="font-size:0.65rem"></i></div>
           </a>
         </div>
-      </div>
-      <div class="lang-bars-wrap">
-        <div class="lang-bars-label">Top Languages</div>
-        <div class="lang-bars" id="github-lang-bars">
-          <div class="lang-bars-loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
-        </div>
+
       </div>
     </div>
   </section>
@@ -593,7 +582,15 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-inner">
-        <span class="footer-logo">NK</span>
+        <a class="footer-logo" href="index.html" aria-label="Home">
+          <svg width="22" height="22" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <line x1="3"  y1="4" x2="3"  y2="26" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
+            <line x1="3"  y1="4" x2="15" y2="26" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
+            <line x1="15" y1="4" x2="15" y2="26" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
+            <line x1="15" y1="15" x2="27" y2="4"  stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
+            <line x1="15" y1="15" x2="27" y2="26" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
+          </svg>
+        </a>
         <div class="footer-socials">
           <a href="https://linkedin.com/in/namrata-karki" target="_blank"><i class="fab fa-linkedin-in"></i></a>
           <a href="https://github.com/namratak277" target="_blank"><i class="fab fa-github"></i></a>

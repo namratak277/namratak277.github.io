@@ -25,7 +25,7 @@ jobs:
         run: npm install -g htmlhint@1
 
       - name: Validate HTML files
-        run: htmlhint "*.html" --config .htmlhintrc
+        run: htmlhint "index.html" "blog.html" "resume.html" "interests.html" --config .htmlhintrc
 
   audit-assets:
     name: Audit Local Asset References

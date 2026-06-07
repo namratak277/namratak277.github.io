@@ -431,23 +431,17 @@ async function initGitHubStats() {
   loadLangBars(data.own);
 }
 
-function animateStatCards({ own, totalStars, totalForks }) {
-  const pairs = [
-    ['gstat-repos', own.length],
-    ['gstat-stars', totalStars],
-    ['gstat-forks', totalForks]
-  ];
-  pairs.forEach(([id, target]) => {
-    const el = document.querySelector(`#${id} .gstat-num`);
-    if (!el) return;
-    let cur = 0;
-    const step = Math.max(1, Math.ceil(target / 45));
-    const timer = setInterval(() => {
-      cur = Math.min(cur + step, target);
-      el.textContent = cur;
-      if (cur >= target) clearInterval(timer);
-    }, 28);
-  });
+function animateStatCards({ own }) {
+  const el = document.getElementById('gstat-repos');
+  if (!el) return;
+  const target = own.length;
+  let cur = 0;
+  const step = Math.max(1, Math.ceil(target / 45));
+  const timer = setInterval(() => {
+    cur = Math.min(cur + step, target);
+    el.textContent = cur;
+    if (cur >= target) clearInterval(timer);
+  }, 28);
 }
 
 async function loadLangBars(repos) {
