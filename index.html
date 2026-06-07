@@ -40,7 +40,7 @@
         <p class="hero-tagline"><span id="typewriter-role">IT Support Specialist</span><span class="typewriter-cursor"></span></p>
         <p class="hero-bio">CS student at UNCG (Dec 2026) with hands-on experience in full-stack development, IT support, cross-functional leadership, and data management.</p>
         <div class="hero-meta-pills">
-          <span class="hero-meta-pill"><i class="fas fa-map-marker-alt"></i>Hillsborough, NC</span>
+          <span class="hero-meta-pill"><i class="fas fa-map-marker-alt"></i>Mebane, NC</span>
           <span class="hero-meta-pill"><i class="fas fa-graduation-cap"></i>UNCG · B.S. CS</span>
           <span class="hero-meta-pill hero-meta-pill--open"><i class="fas fa-briefcase"></i>Open to Roles</span>
         </div>
@@ -146,7 +146,7 @@
         </div>
 
         <div class="bento-tile bento-meta">
-          <div class="bento-meta-row"><i class="fas fa-map-marker-alt"></i><span>Hillsborough, NC</span></div>
+          <div class="bento-meta-row"><i class="fas fa-map-marker-alt"></i><span>Mebane, NC</span></div>
           <div class="bento-meta-row"><i class="fas fa-graduation-cap"></i><span>B.S. CS &middot; Dec 2026</span></div>
           <div class="bento-meta-row"><i class="fas fa-globe"></i><div class="lang-pills"><span>English</span><span>Nepali</span><span>Hindi</span></div></div>
         </div>
@@ -178,26 +178,92 @@
     <div class="container">
       <div class="section-label center">Technical Skills</div>
       <h2 class="section-title center">What I Work With</h2>
-      <div class="skills-carousel">
+      <div class="skills-view-bar">
+        <button class="skill-view-btn active" data-view="cards"><i class="fas fa-th-large"></i> Cards</button>
+        <button class="skill-view-btn" data-view="cloud"><i class="fas fa-tags"></i> Cloud</button>
+      </div>
+      <div class="skills-cloud-wrap" hidden></div>
+      <div class="skills-carousel" id="skills-carousel-wrap">
         <button class="carousel-arrow carousel-arrow-left" type="button" aria-label="Scroll skills left">
           <i class="fas fa-chevron-left"></i>
         </button>
         <div class="skills-carousel-window">
           <div class="skills-carousel-row">
-            <div class="skill-card"><div class="skill-card-icon"><i class="fas fa-code"></i></div><h3>Programming Languages</h3><div class="skill-tags"><span class="tag high" data-proficiency="Expert">Java</span><span class="tag high" data-proficiency="Expert">Python</span><span class="tag high" data-proficiency="Expert">JavaScript</span><span class="tag high" data-proficiency="Expert">HTML/CSS</span><span class="tag mid" data-proficiency="Intermediate">C++</span><span class="tag low" data-proficiency="Beginner">Ruby</span></span></div></div>
-            <div class="skill-card"><div class="skill-card-icon"><i class="fas fa-database"></i></div><h3>Database &amp; Data</h3><div class="skill-tags"><span class="tag high" data-proficiency="Expert">MySQL</span><span class="tag high" data-proficiency="Expert">PostgreSQL</span><span class="tag mid" data-proficiency="Intermediate">DBeaver</span><span class="tag mid" data-proficiency="Intermediate">Neon</span><span class="tag mid" data-proficiency="Intermediate">ERDPlus</span></div></div>
-            <div class="skill-card"><div class="skill-card-icon"><i class="fas fa-tools"></i></div><h3>Systems &amp; Tools</h3><div class="skill-tags"><span class="tag high" data-proficiency="Expert">Git / GitHub</span><span class="tag mid" data-proficiency="Intermediate">ServiceNow</span><span class="tag mid" data-proficiency="Intermediate">Extron AV</span><span class="tag mid" data-proficiency="Intermediate">Figma</span><span class="tag mid" data-proficiency="Intermediate">Spring Boot</span></div></div>
-            <div class="skill-card"><div class="skill-card-icon"><i class="fas fa-chart-bar"></i></div><h3>Analysis &amp; PM</h3><div class="skill-tags"><span class="tag high" data-proficiency="Expert">Data Modeling</span><span class="tag high" data-proficiency="Expert">CRUD Operations</span><span class="tag mid" data-proficiency="Intermediate">ITSM / ITIL</span><span class="tag mid" data-proficiency="Intermediate">Requirements Gathering</span><span class="tag mid" data-proficiency="Intermediate">Agile</span></div></div>
-            <div class="skill-card"><div class="skill-card-icon"><i class="fas fa-users"></i></div><h3>Leadership</h3><div class="skill-tags"><span class="tag high" data-proficiency="Expert">Team Coordination</span><span class="tag high" data-proficiency="Expert">Conflict Resolution</span><span class="tag high" data-proficiency="Expert">Stakeholder Communication</span><span class="tag mid" data-proficiency="Intermediate">Event Planning</span></div></div>
-            <div class="skill-card"><div class="skill-card-icon"><i class="fas fa-brain"></i></div><h3>Completed Coursework</h3><div class="skill-tags"><span class="tag high" data-proficiency="Expert">Machine Learning</span><span class="tag high" data-proficiency="Expert">Artificial Intelligence</span><span class="tag high" data-proficiency="Expert">Computer Networks</span><span class="tag high" data-proficiency="Expert">Software Engineering</span></div></div>
-            <div class="skill-card"><div class="skill-card-icon"><i class="fas fa-graduation-cap"></i></div><h3>Current Coursework</h3><div class="skill-tags"><span class="tag high" data-proficiency="Expert">Senior Capstone</span></div></div>
+
+            <div class="skill-card">
+              <div class="skill-card-header"><div class="skill-card-icon"><i class="fas fa-code"></i></div><h3>Languages</h3></div>
+              <div class="skb-list">
+                <div class="skb"><span>Java</span><span class="skb-pct">92%</span><div class="skb-track"><div class="skb-fill" data-pct="92"></div></div></div>
+                <div class="skb"><span>JavaScript</span><span class="skb-pct">90%</span><div class="skb-track"><div class="skb-fill" data-pct="90"></div></div></div>
+                <div class="skb"><span>HTML / CSS</span><span class="skb-pct">92%</span><div class="skb-track"><div class="skb-fill" data-pct="92"></div></div></div>
+                <div class="skb"><span>Python</span><span class="skb-pct">88%</span><div class="skb-track"><div class="skb-fill" data-pct="88"></div></div></div>
+                <div class="skb"><span>C++</span><span class="skb-pct">62%</span><div class="skb-track"><div class="skb-fill" data-pct="62"></div></div></div>
+                <div class="skb"><span>Ruby</span><span class="skb-pct">35%</span><div class="skb-track"><div class="skb-fill" data-pct="35"></div></div></div>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card-header"><div class="skill-card-icon"><i class="fas fa-database"></i></div><h3>Database &amp; Data</h3></div>
+              <div class="skb-list">
+                <div class="skb"><span>PostgreSQL</span><span class="skb-pct">90%</span><div class="skb-track"><div class="skb-fill" data-pct="90"></div></div></div>
+                <div class="skb"><span>MySQL</span><span class="skb-pct">88%</span><div class="skb-track"><div class="skb-fill" data-pct="88"></div></div></div>
+                <div class="skb"><span>DBeaver</span><span class="skb-pct">68%</span><div class="skb-track"><div class="skb-fill" data-pct="68"></div></div></div>
+                <div class="skb"><span>ERDPlus</span><span class="skb-pct">68%</span><div class="skb-track"><div class="skb-fill" data-pct="68"></div></div></div>
+                <div class="skb"><span>Neon</span><span class="skb-pct">65%</span><div class="skb-track"><div class="skb-fill" data-pct="65"></div></div></div>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card-header"><div class="skill-card-icon"><i class="fas fa-tools"></i></div><h3>Systems &amp; Tools</h3></div>
+              <div class="skb-list">
+                <div class="skb"><span>Git / GitHub</span><span class="skb-pct">92%</span><div class="skb-track"><div class="skb-fill" data-pct="92"></div></div></div>
+                <div class="skb"><span>ServiceNow</span><span class="skb-pct">72%</span><div class="skb-track"><div class="skb-fill" data-pct="72"></div></div></div>
+                <div class="skb"><span>Extron AV</span><span class="skb-pct">72%</span><div class="skb-track"><div class="skb-fill" data-pct="72"></div></div></div>
+                <div class="skb"><span>Figma</span><span class="skb-pct">68%</span><div class="skb-track"><div class="skb-fill" data-pct="68"></div></div></div>
+                <div class="skb"><span>Spring Boot</span><span class="skb-pct">62%</span><div class="skb-track"><div class="skb-fill" data-pct="62"></div></div></div>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card-header"><div class="skill-card-icon"><i class="fas fa-chart-bar"></i></div><h3>Analysis &amp; PM</h3></div>
+              <div class="skb-list">
+                <div class="skb"><span>CRUD Operations</span><span class="skb-pct">90%</span><div class="skb-track"><div class="skb-fill" data-pct="90"></div></div></div>
+                <div class="skb"><span>Data Modeling</span><span class="skb-pct">88%</span><div class="skb-track"><div class="skb-fill" data-pct="88"></div></div></div>
+                <div class="skb"><span>Requirements</span><span class="skb-pct">72%</span><div class="skb-track"><div class="skb-fill" data-pct="72"></div></div></div>
+                <div class="skb"><span>Agile</span><span class="skb-pct">70%</span><div class="skb-track"><div class="skb-fill" data-pct="70"></div></div></div>
+                <div class="skb"><span>ITSM / ITIL</span><span class="skb-pct">68%</span><div class="skb-track"><div class="skb-fill" data-pct="68"></div></div></div>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card-header"><div class="skill-card-icon"><i class="fas fa-users"></i></div><h3>Leadership</h3></div>
+              <div class="skb-list">
+                <div class="skb"><span>Team Coordination</span><span class="skb-pct">92%</span><div class="skb-track"><div class="skb-fill" data-pct="92"></div></div></div>
+                <div class="skb"><span>Conflict Resolution</span><span class="skb-pct">90%</span><div class="skb-track"><div class="skb-fill" data-pct="90"></div></div></div>
+                <div class="skb"><span>Stakeholder Comm.</span><span class="skb-pct">88%</span><div class="skb-track"><div class="skb-fill" data-pct="88"></div></div></div>
+                <div class="skb"><span>Event Planning</span><span class="skb-pct">70%</span><div class="skb-track"><div class="skb-fill" data-pct="70"></div></div></div>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card-header"><div class="skill-card-icon"><i class="fas fa-brain"></i></div><h3>Coursework</h3></div>
+              <div class="skb-list">
+                <div class="skb"><span>Software Engineering</span><span class="skb-pct">88%</span><div class="skb-track"><div class="skb-fill" data-pct="88"></div></div></div>
+                <div class="skb"><span>Machine Learning</span><span class="skb-pct">82%</span><div class="skb-track"><div class="skb-fill" data-pct="82"></div></div></div>
+                <div class="skb"><span>Computer Networks</span><span class="skb-pct">82%</span><div class="skb-track"><div class="skb-fill" data-pct="82"></div></div></div>
+                <div class="skb"><span>AI</span><span class="skb-pct">80%</span><div class="skb-track"><div class="skb-fill" data-pct="80"></div></div></div>
+                <div class="skb"><span>Senior Capstone</span><span class="skb-pct">75%</span><div class="skb-track"><div class="skb-fill" data-pct="75"></div></div></div>
+              </div>
+            </div>
+
           </div>
         </div>
         <button class="carousel-arrow carousel-arrow-right" type="button" aria-label="Scroll skills right">
           <i class="fas fa-chevron-right"></i>
         </button>
       </div>
-    </div>
+      <div id="skills-bars-grid" hidden></div>
+        </div>
   </section>
 
   <section class="section experience-section" id="experience">
@@ -205,11 +271,12 @@
       <div class="section-label">Experience</div>
       <h2 class="section-title center">Where I've Made an Impact</h2>
       <div class="timeline-track" aria-label="Experience timeline">
-        <article class="timeline-event">
-          <div class="timeline-event-top">
-            <span class="timeline-dot"></span>
+
+        <article class="timeline-event active">
+          <div class="tl-header">
+            <h3>IT Support Specialist</h3>
+            <i class="fas fa-chevron-down tl-chevron"></i>
           </div>
-          <h3>IT Support Specialist</h3>
           <div class="timeline-hover-content">
             <span class="timeline-year">Apr 2024 - Present</span>
             <p class="timeline-org">UNCG Information Technology Services</p>
@@ -220,11 +287,12 @@
             <div class="tcard-tags"><span>ServiceNow</span><span>AV Systems</span><span>IT Support</span><span>Incident Management</span></div>
           </div>
         </article>
-        <article class="timeline-event">
-          <div class="timeline-event-top">
-            <span class="timeline-dot"></span>
+
+        <article class="timeline-event active">
+          <div class="tl-header">
+            <h3>Assistant Manager</h3>
+            <i class="fas fa-chevron-down tl-chevron"></i>
           </div>
-          <h3>Assistant Manager</h3>
           <div class="timeline-hover-content">
             <span class="timeline-year">Aug 2022 - Present</span>
             <p class="timeline-org">Family Fare</p>
@@ -235,11 +303,12 @@
             <div class="tcard-tags"><span>Operations</span><span>Data Analysis</span><span>Team Leadership</span></div>
           </div>
         </article>
-        <article class="timeline-event">
-          <div class="timeline-event-top">
-            <span class="timeline-dot"></span>
+
+        <article class="timeline-event active">
+          <div class="tl-header">
+            <h3>Residential Advisor</h3>
+            <i class="fas fa-chevron-down tl-chevron"></i>
           </div>
-          <h3>Residential Advisor</h3>
           <div class="timeline-hover-content">
             <span class="timeline-year">Apr 2024 - May 2025</span>
             <p class="timeline-org">UNCG Housing and Residence Life</p>
@@ -250,11 +319,12 @@
             <div class="tcard-tags"><span>Crisis Management</span><span>Documentation</span><span>Community Leadership</span></div>
           </div>
         </article>
-        <article class="timeline-event">
-          <div class="timeline-event-top">
-            <span class="timeline-dot"></span>
+
+        <article class="timeline-event active">
+          <div class="tl-header">
+            <h3>SOAR Intern &amp; Orientation Staff</h3>
+            <i class="fas fa-chevron-down tl-chevron"></i>
           </div>
-          <h3>SOAR Intern &amp; Orientation Staff</h3>
           <div class="timeline-hover-content">
             <span class="timeline-year">Dec 2022 - Jun 2024</span>
             <p class="timeline-org">UNCG First Year Experience</p>
@@ -265,6 +335,7 @@
             <div class="tcard-tags"><span>Event Coordination</span><span>AV Tech</span><span>Cross-functional</span></div>
           </div>
         </article>
+
       </div>
     </div>
   </section>
@@ -274,6 +345,44 @@
       <div class="section-label center">Projects</div>
       <h2 class="section-title center">Things I've Built</h2>
       <p class="section-subtitle">All projects live on <a href="https://github.com/namratak277" target="_blank">GitHub: namratak277</a></p>
+
+      <!-- Capstone Spotlight -->
+      <div class="capstone-spotlight">
+        <div class="capstone-header">
+          <div class="capstone-badges">
+            <span class="badge-live"><span class="badge-live-dot"></span> In Progress</span>
+            <span class="badge-type">Senior Capstone · Dec 2026</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/namratak277" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        <div class="capstone-body">
+          <div class="capstone-left">
+            <h3>Senior Capstone: <em>Full-Stack Application</em></h3>
+            <p>My capstone applies every dimension of the CS curriculum to one cohesive product — spanning requirements gathering, system design, database architecture, REST API development, and a React frontend. The project is built using Agile/Scrum methodology with iterative sprints and stakeholder reviews.</p>
+            <p>Currently in the architecture design phase: defining the entity-relationship diagram, API contracts, and component hierarchy before any code is written — the same discipline I practiced on the Dress Web Store.</p>
+            <div class="capstone-stack">
+              <span>Java / Spring Boot</span>
+              <span>PostgreSQL</span>
+              <span>React</span>
+              <span>REST API</span>
+              <span>Figma</span>
+              <span>Agile / Scrum</span>
+            </div>
+          </div>
+          <div class="capstone-right">
+            <div class="capstone-progress">
+              <div class="progress-step done"><span class="step-dot"></span><span>Requirements</span></div>
+              <div class="progress-step active"><span class="step-dot"></span><span>Architecture Design</span></div>
+              <div class="progress-step"><span class="step-dot"></span><span>Development</span></div>
+              <div class="progress-step"><span class="step-dot"></span><span>Testing &amp; QA</span></div>
+              <div class="progress-step"><span class="step-dot"></span><span>Deployment</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="projects-grid">
         <div class="project-card featured">
           <div class="project-card-top"><div class="project-icon"><i class="fas fa-store"></i></div><div class="project-links"><a href="https://github.com/namratak277" target="_blank"><i class="fab fa-github"></i></a></div></div>
@@ -355,6 +464,22 @@
     </div>
   </section>
 
+  <section class="section blog-teaser-section" id="blog-teaser">
+    <div class="container">
+      <div class="section-label center">Blog</div>
+      <h2 class="section-title center">Thoughts &amp; <em>Learnings</em></h2>
+      <p class="section-subtitle">Notes on tech, design, and building things that work.</p>
+      <div class="blog-teaser-grid" id="blog-teaser-grid">
+        <div style="text-align:center;padding:2rem;color:var(--text-muted);grid-column:1/-1">
+          <i class="fas fa-spinner fa-spin" style="margin-right:0.5rem"></i>Loading posts...
+        </div>
+      </div>
+      <div class="blog-teaser-cta">
+        <a href="blog.html" class="btn btn-primary">Read All Posts <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
   <section class="section interest-teaser" id="interest-teaser">
     <div class="container">
       <div class="section-label">Interests</div>
@@ -362,11 +487,52 @@
       <p class="section-subtitle">Explore hobbies and creative projects — click any tile to view more.</p>
       <div class="netflix-strip">
         <div class="netflix-row">
-          <div class="netflix-card" data-tags="arts,performance"><img src="assets/images/hobby1.jpg" alt="Dance"><div class="card-title">Dance</div></div>
-          <div class="netflix-card" data-tags="arts,painting"><img src="assets/images/hobby3.jpg" alt="Painting"><div class="card-title">Painting</div></div>
-          <div class="netflix-card" data-tags="arts,photography"><img src="assets/images/hobby2.jpg" alt="Photography"><div class="card-title">Photography</div></div>
-          <div class="netflix-card" data-tags="arts,music"><img src="assets/images/hobby6.jpg" alt="Songwriting"><div class="card-title">Songwriting</div></div>
-          <div class="netflix-card" data-tags="entertainment,shows"><img src="assets/images/hobby5.jpg" alt="Movies/Shows/Dramas"><div class="card-title">Movies/Shows/Dramas</div></div>
+
+          <div class="netflix-card itc" data-tags="arts,performance">
+            <div class="itc-icon"><i class="fas fa-record-vinyl"></i></div>
+            <div class="itc-body">
+              <div class="card-title">Dance</div>
+              <p class="itc-desc">Dancing since elementary school — completely self-taught. I do K-pop, traditional Nepali dances, and trending choreos. Movement has always been my most natural way to express something I can't put into words.</p>
+              <div class="itc-tags"><span>K-Pop</span><span>Nepali</span><span>Trending Choreo</span><span>Self-Taught</span></div>
+            </div>
+          </div>
+
+          <div class="netflix-card itc" data-tags="arts,painting">
+            <div class="itc-icon"><i class="fas fa-palette"></i></div>
+            <div class="itc-body">
+              <div class="card-title">Painting</div>
+              <p class="itc-desc">A meditative creative outlet — mostly canvas work with acrylics. Painting lets me slow down and process things visually that words can't quite capture.</p>
+              <div class="itc-tags"><span>Acrylic</span><span>Canvas</span><span>Abstract</span></div>
+            </div>
+          </div>
+
+          <div class="netflix-card itc" data-tags="arts,photography">
+            <div class="itc-icon"><i class="fas fa-camera"></i></div>
+            <div class="itc-body">
+              <div class="card-title">Photography</div>
+              <p class="itc-desc">Capturing candid moments and everyday details most people walk past. Mostly shoot on my phone — composition and light matter more than the gear.</p>
+              <div class="itc-tags"><span>Candid</span><span>Mobile</span><span>Everyday</span></div>
+            </div>
+          </div>
+
+          <div class="netflix-card itc" data-tags="arts,music">
+            <div class="itc-icon"><i class="fas fa-pen-nib"></i></div>
+            <div class="itc-body">
+              <div class="card-title">Songwriting</div>
+              <p class="itc-desc">Writing lyrics as a form of journaling — turning feelings into verses. Influenced by a mix of Nepali pop, R&amp;B, and whatever's been on repeat that week.</p>
+              <div class="itc-tags"><span>Lyrics</span><span>R&amp;B</span><span>Nepali Pop</span></div>
+            </div>
+          </div>
+
+          <div class="netflix-card itc" data-tags="entertainment,shows">
+            <div class="itc-icon"><i class="fas fa-film"></i></div>
+            <div class="itc-body">
+              <div class="card-title">Movies &amp; Dramas</div>
+              <p class="itc-desc">Horror is the genre I always come back to. I go deep — behind-the-scenes footage and cast interviews help me understand the story behind the story and how everything was intentionally crafted.</p>
+              <div class="itc-tags"><span>Horror</span><span>K-Dramas</span><span>Behind the Scenes</span></div>
+            </div>
+          </div>
+
         </div>
       </div>
       <div style="margin-top:1.25rem"><a href="interests.html" class="btn btn-primary">See All Interests</a></div>

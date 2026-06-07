@@ -22,21 +22,32 @@ document.addEventListener('DOMContentLoaded', async function() {
   const navLinks = document.getElementById('nav-links');
   const navBar = document.querySelector('.nav');
 
-  // Toggle hamburger menu
+  // Mobile nav backdrop
+  const navBackdrop = document.createElement('div');
+  navBackdrop.className = 'nav-backdrop';
+  document.body.appendChild(navBackdrop);
+
+  const closeNav = () => {
+    navLinks.classList.remove('open');
+    hamburger.classList.remove('open');
+    navBackdrop.classList.remove('open');
+  };
+
   if (hamburger) {
     hamburger.addEventListener('click', function() {
-      navLinks.classList.toggle('open');
-      hamburger.classList.toggle('open');
+      const opening = !navLinks.classList.contains('open');
+      navLinks.classList.toggle('open', opening);
+      hamburger.classList.toggle('open', opening);
+      navBackdrop.classList.toggle('open', opening);
     });
 
     // Close menu when a link is clicked
     document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', function() {
-        navLinks.classList.remove('open');
-        hamburger.classList.remove('open');
-      });
+      link.addEventListener('click', closeNav);
     });
   }
+
+  navBackdrop.addEventListener('click', closeNav);
 
   // Initialize index streaming grid if present
   initIndexStreamingGrid();
@@ -65,6 +76,9 @@ document.addEventListener('DOMContentLoaded', async function() {
   initHeroCharGrid();
   initHeroTerminal();
   initPageTransitions();
+  initCustomCursor();
+  initSkillsView();
+  initBlogTeaser();
 
   // Scroll effect on navbar
   window.addEventListener('scroll', function() {
@@ -330,56 +344,14 @@ document.addEventListener('DOMContentLoaded', async function() {
   // ============================================================
   function initTimelineEvents() {
     const timelineEvents = document.querySelectorAll('.timeline-event');
-    const eventsArr = Array.from(timelineEvents);
-    
-    // helper: reset transforms on all events
-    const resetShifts = () => {
-      timelineEvents.forEach(ev => {
-        ev.style.transform = '';
-        ev.style.zIndex = '';
-      });
-    };
-
-    const adjustLayout = (activeEvent) => {
-      // Do not shift or translate sibling events. Only ensure the active event sits above others.
-      timelineEvents.forEach(ev => {
-        ev.style.transform = '';
-        if (ev === activeEvent && activeEvent.classList.contains('active')) {
-          ev.style.zIndex = 30;
-        } else {
-          ev.style.zIndex = '';
-        }
-      });
-    };
 
     timelineEvents.forEach(event => {
-      const dot = event.querySelector('.timeline-dot');
-      const handleClick = (e) => {
+      event.addEventListener('click', (e) => {
         e.stopPropagation();
-        timelineEvents.forEach(otherEvent => { if (otherEvent !== event) otherEvent.classList.remove('active'); });
-        const willOpen = !event.classList.contains('active');
-        event.classList.toggle('active', willOpen);
-        if (willOpen) adjustLayout(event); else resetShifts();
-        if (dot) dot.setAttribute('aria-expanded', String(willOpen));
-      };
-      // attach click for all devices; info shows only on click now
-      event.addEventListener('click', handleClick);
+        event.classList.toggle('active');
+      });
     });
     
-    // Close all on outside click
-    document.addEventListener('click', (e) => {
-      const clickedTimeline = e.target.closest('.timeline-event');
-      if (!clickedTimeline) {
-        timelineEvents.forEach(event => {
-          event.classList.remove('active');
-          // reset any transforms
-          event.style.transform = '';
-          event.style.zIndex = '';
-        });
-      }
-    });
-    // reset on resize so layout recalculates
-    window.addEventListener('resize', () => resetShifts());
   }
 
 // ============================================================
@@ -787,7 +759,7 @@ function initHeroTerminal() {
       out: [
         { t: 'kv', k: 'name',     v: 'Namrata Karki' },
         { t: 'kv', k: 'role',     v: 'CS Student · Developer · IT Specialist' },
-        { t: 'kv', k: 'location', v: 'Hillsborough, NC' },
+        { t: 'kv', k: 'location', v: 'Mebane, NC' },
       ]
     },
     {
@@ -903,6 +875,228 @@ function initPageTransitions() {
     ov.style.opacity = '1';
     setTimeout(() => { window.location.href = href; }, 400);
   });
+}
+
+// ============================================================
+// ============================================================
+// CUSTOM CURSOR — gold glow dot + spark particles + labels
+// ============================================================
+function initCustomCursor() {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  const dot   = document.createElement('div');   dot.className   = 'cursor-dot';
+  const label = document.createElement('div');   label.className = 'cursor-label';
+  document.body.appendChild(dot);
+  document.body.appendChild(label);
+
+  let mx = -200, my = -200, prevMx = -200, prevMy = -200;
+
+  // ── Spark pool ───────────────────────────────────────────
+  let partCount = 0;
+  const MAX_PARTS = 14;
+
+  function spawnParticle(x, y, vx, vy) {
+    if (partCount >= MAX_PARTS) return;
+    partCount++;
+    const p = document.createElement('div');
+    p.className = 'cursor-particle';
+    document.body.appendChild(p);
+    const angle = Math.atan2(vy, vx) + (Math.random() - 0.5) * 1.6;
+    const spd = 0.6 + Math.random() * 1.6;
+    const life = 320 + Math.random() * 130;
+    let px = x, py = y, age = 0;
+    const pvx = Math.cos(angle) * spd, pvy = Math.sin(angle) * spd;
+    const tick = setInterval(() => {
+      age += 16; px += pvx; py += pvy;
+      const a = Math.max(0, 1 - age / life);
+      p.style.left = px + 'px'; p.style.top = py + 'px';
+      p.style.opacity = a.toFixed(2);
+      p.style.transform = `translate(-50%,-50%) scale(${(0.3 + a * 0.7).toFixed(2)})`;
+      if (age >= life) { clearInterval(tick); p.remove(); partCount--; }
+    }, 16);
+  }
+
+  // ── Mouse tracking ───────────────────────────────────────
+  document.addEventListener('mousemove', e => {
+    prevMx = mx; prevMy = my;
+    mx = e.clientX; my = e.clientY;
+    dot.style.left   = mx + 'px';
+    dot.style.top    = my + 'px';
+    label.style.left = mx + 'px';
+    label.style.top  = (my + 14) + 'px';
+    const dx = mx - prevMx, dy = my - prevMy;
+    if (Math.hypot(dx, dy) > 8 && Math.random() < 0.4)
+      spawnParticle(mx, my, dx, dy);
+  });
+
+  // ── Contextual labels ────────────────────────────────────
+  const INTERACTIVE = 'a,button,[role="button"],input,textarea,select,.project-card,.skill-card,.timeline-event,.netflix-card,.bento-tile,.gstat-card,.blog-card,.carousel-arrow,.cloud-tag,.skill-view-btn';
+  const LABEL_RULES = [
+    ['.project-card',                                    'VIEW'  ],
+    ['.blog-card',                                       'READ'  ],
+    ['.netflix-card',                                    'OPEN'  ],
+    ['[download],[href*="resume"],[href*="Resume"]',     'SAVE'  ],
+    ['[type="submit"]',                                  'SEND'  ],
+    ['.hero-socials a,.footer-socials a,.contact-link',  'VISIT' ],
+    ['.nav-links a,.nav-logo',                           'GO'    ],
+  ];
+  function detectLabel(t) {
+    for (const [s, l] of LABEL_RULES) { try { if (t.closest(s)) return l; } catch (_) {} }
+    return null;
+  }
+
+  document.addEventListener('mouseover', e => {
+    const el = e.target.closest(INTERACTIVE);
+    if (!el) return;
+    dot.classList.add('hover');
+    const lbl = detectLabel(e.target);
+    if (lbl) { label.textContent = lbl; label.classList.add('visible'); }
+  });
+  document.addEventListener('mouseout', e => {
+    if (!e.target.closest(INTERACTIVE)) return;
+    dot.classList.remove('hover');
+    label.classList.remove('visible');
+  });
+  document.addEventListener('mousedown', () => dot.classList.add('click'));
+  document.addEventListener('mouseup',   () => dot.classList.remove('click'));
+
+  document.documentElement.addEventListener('mouseleave', () => {
+    dot.style.opacity = '0'; label.classList.remove('visible');
+  });
+  document.documentElement.addEventListener('mouseenter', () => {
+    dot.style.opacity = '';
+  });
+}
+
+function initSkillsView() {
+  const section   = document.getElementById('skills');
+  if (!section) return;
+  const viewBar   = section.querySelector('.skills-view-bar');
+  const carousel  = document.getElementById('skills-carousel-wrap');
+  const cloudWrap = section.querySelector('.skills-cloud-wrap');
+  if (!viewBar || !carousel || !cloudWrap) return;
+
+  // ── Animate in-card progress bars on scroll ──────────────
+  let barsAnimated = false;
+  new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting || barsAnimated) return;
+    barsAnimated = true;
+    section.querySelectorAll('.skb-fill').forEach((fill, i) => {
+      const pct = fill.getAttribute('data-pct') || '0';
+      setTimeout(() => { fill.style.width = pct + '%'; }, i * 40);
+    });
+  }, { threshold: 0.2 }).observe(section);
+
+  // ── Build cloud tags ─────────────────────────────────────
+  const ALL_SKILLS = [
+    { name: 'Java',                      cat: 'cat-lang',   sz: 'sz-lg' },
+    { name: 'Python',                    cat: 'cat-lang',   sz: 'sz-lg' },
+    { name: 'JavaScript',                cat: 'cat-lang',   sz: 'sz-lg' },
+    { name: 'HTML / CSS',                cat: 'cat-lang',   sz: 'sz-lg' },
+    { name: 'C++',                       cat: 'cat-lang',   sz: 'sz-md' },
+    { name: 'Ruby',                      cat: 'cat-lang',   sz: 'sz-sm' },
+    { name: 'MySQL',                     cat: 'cat-db',     sz: 'sz-lg' },
+    { name: 'PostgreSQL',                cat: 'cat-db',     sz: 'sz-lg' },
+    { name: 'DBeaver',                   cat: 'cat-db',     sz: 'sz-md' },
+    { name: 'Neon',                      cat: 'cat-db',     sz: 'sz-md' },
+    { name: 'ERDPlus',                   cat: 'cat-db',     sz: 'sz-md' },
+    { name: 'Git / GitHub',              cat: 'cat-sys',    sz: 'sz-lg' },
+    { name: 'ServiceNow',                cat: 'cat-sys',    sz: 'sz-md' },
+    { name: 'Figma',                     cat: 'cat-sys',    sz: 'sz-md' },
+    { name: 'Spring Boot',               cat: 'cat-sys',    sz: 'sz-md' },
+    { name: 'Extron AV',                 cat: 'cat-sys',    sz: 'sz-md' },
+    { name: 'Data Modeling',             cat: 'cat-anal',   sz: 'sz-lg' },
+    { name: 'CRUD Operations',           cat: 'cat-anal',   sz: 'sz-lg' },
+    { name: 'ITIL / ITSM',              cat: 'cat-anal',   sz: 'sz-md' },
+    { name: 'Agile',                     cat: 'cat-anal',   sz: 'sz-md' },
+    { name: 'Requirements Gathering',    cat: 'cat-anal',   sz: 'sz-md' },
+    { name: 'Team Coordination',         cat: 'cat-lead',   sz: 'sz-lg' },
+    { name: 'Conflict Resolution',       cat: 'cat-lead',   sz: 'sz-lg' },
+    { name: 'Stakeholder Communication', cat: 'cat-lead',   sz: 'sz-lg' },
+    { name: 'Event Planning',            cat: 'cat-lead',   sz: 'sz-md' },
+    { name: 'Machine Learning',          cat: 'cat-course', sz: 'sz-lg' },
+    { name: 'Artificial Intelligence',   cat: 'cat-course', sz: 'sz-lg' },
+    { name: 'Computer Networks',         cat: 'cat-course', sz: 'sz-lg' },
+    { name: 'Software Engineering',      cat: 'cat-course', sz: 'sz-lg' },
+    { name: 'Senior Capstone',           cat: 'cat-course', sz: 'sz-md' },
+  ];
+  const pools = {};
+  ALL_SKILLS.forEach(s => { (pools[s.cat] = pools[s.cat] || []).push(s); });
+  const cats = Object.keys(pools);
+  const maxL = Math.max(...cats.map(c => pools[c].length));
+  const shuffled = [];
+  for (let i = 0; i < maxL; i++) {
+    cats.forEach(c => { if (pools[c][i]) shuffled.push(pools[c][i]); });
+  }
+  shuffled.forEach((skill, idx) => {
+    const span = document.createElement('span');
+    span.className = `cloud-tag ${skill.cat} ${skill.sz}`;
+    span.textContent = skill.name;
+    span.style.animationDelay = (idx * 24) + 'ms';
+    cloudWrap.appendChild(span);
+  });
+
+  // ── Toggle between Cards carousel and Cloud ─────────────
+  viewBar.querySelectorAll('.skill-view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      viewBar.querySelectorAll('.skill-view-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (btn.getAttribute('data-view') === 'cloud') {
+        carousel.hidden  = true;
+        cloudWrap.hidden = false;
+      } else {
+        carousel.hidden  = false;
+        cloudWrap.hidden = true;
+      }
+    });
+  });
+
+  // Also re-init carousel arrows after toggle
+  initSkillsCarousel();
+}
+
+// ============================================================
+// BLOG TEASER — loads posts.json and renders 3 preview cards
+// ============================================================
+async function initBlogTeaser() {
+  const grid = document.getElementById('blog-teaser-grid');
+  if (!grid) return;
+
+  function fmtDate(d) {
+    return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  try {
+    const res = await fetch('assets/data/posts.json');
+    if (!res.ok) throw new Error('posts fetch failed');
+    const { posts } = await res.json();
+    const top3 = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
+
+    grid.innerHTML = top3.map(p => `
+      <a class="blog-card fade-in" href="blog.html?post=${p.slug}">
+        <div class="blog-card-meta">
+          <span class="blog-category">${esc(p.category)}</span>
+          <span class="blog-date">${fmtDate(p.date)}</span>
+          <span class="blog-read-time"><i class="fas fa-clock"></i> ${esc(p.readTime)}</span>
+        </div>
+        <h2>${esc(p.title)}</h2>
+        <p>${esc(p.excerpt)}</p>
+        <div class="blog-tags">${p.tags.slice(0, 3).map(t => `<span class="blog-tag">${esc(t)}</span>`).join('')}</div>
+      </a>
+    `).join('');
+
+    requestAnimationFrame(() => {
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+      }, { threshold: 0.08 });
+      grid.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+    });
+  } catch (_) {
+    grid.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:2rem">Could not load posts.</p>';
+  }
 }
 
 // ============================================================
