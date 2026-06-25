@@ -1,0 +1,48 @@
+{
+  "capstone": {
+    "title": "Senior Capstone",
+    "subtitle": "Full-Stack Application",
+    "status": "In Progress",
+    "deadline": "Dec 2026",
+    "description": "My capstone applies every dimension of the CS curriculum to one cohesive product — spanning requirements gathering, system design, database architecture, REST API development, and a React frontend. The project is built using Agile/Scrum methodology with iterative sprints and stakeholder reviews.",
+    "phase_description": "Currently in the architecture design phase: defining the entity-relationship diagram, API contracts, and component hierarchy before any code is written — the same discipline I practiced on the Dress Web Store.",
+    "stack": ["Java / Spring Boot", "PostgreSQL", "React", "REST API", "Figma", "Agile / Scrum"],
+    "progress": [
+      {"label": "Requirements", "state": "done"},
+      {"label": "Architecture Design", "state": "active"},
+      {"label": "Development", "state": ""},
+      {"label": "Testing & QA", "state": ""},
+      {"label": "Deployment", "state": ""}
+    ],
+    "github": "https://github.com/namratak277"
+  },
+  "projects": [
+    {
+      "title": "Dress Web Store",
+      "icon": "fas fa-store",
+      "type": "Full-Stack Web App",
+      "featured": true,
+      "description": "E-commerce platform with product and order management. Designed the database schema, implemented CRUD APIs, and produced Figma UI mockups — demonstrating end-to-end SDLC skills.",
+      "tags": ["HTML/CSS", "JavaScript", "PostgreSQL", "Figma", "REST API"],
+      "github": "https://github.com/namratak277"
+    },
+    {
+      "title": "Daily Diary",
+      "icon": "fas fa-book-open",
+      "type": "Data Visualization App",
+      "featured": false,
+      "description": "Journaling web app with a built-in habit tracker. Users create, update, and visualize trends in personal data — demonstrating front-end data visualization and user-centered design.",
+      "tags": ["JavaScript", "Local Storage", "Data Viz", "UX Design"],
+      "github": "https://github.com/namratak277"
+    },
+    {
+      "title": "Creative Newsletter",
+      "icon": "fas fa-newspaper",
+      "type": "API Integration",
+      "featured": false,
+      "description": "Responsive newsletter platform with Email API integration for automated distribution. Showcases API consumption, cross-functional development, and responsive design.",
+      "tags": ["HTML/CSS", "JavaScript", "Email API", "Responsive"],
+      "github": "https://github.com/namratak277"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "categories": [
+    {
+      "category": "Languages",
+      "icon": "fas fa-code",
+      "skills": [
+        {"name": "Java", "proficiency": 92},
+        {"name": "JavaScript", "proficiency": 90},
+        {"name": "HTML / CSS", "proficiency": 92},
+        {"name": "Python", "proficiency": 88},
+        {"name": "C++", "proficiency": 62},
+        {"name": "Ruby", "proficiency": 35}
+      ]
+    },
+    {
+      "category": "Database & Data",
+      "icon": "fas fa-database",
+      "skills": [
+        {"name": "PostgreSQL", "proficiency": 90},
+        {"name": "MySQL", "proficiency": 88},
+        {"name": "DBeaver", "proficiency": 68},
+        {"name": "ERDPlus", "proficiency": 68},
+        {"name": "Neon", "proficiency": 65}
+      ]
+    },
+    {
+      "category": "Systems & Tools",
+      "icon": "fas fa-tools",
+      "skills": [
+        {"name": "Git / GitHub", "proficiency": 92},
+        {"name": "ServiceNow", "proficiency": 72},
+        {"name": "Extron AV", "proficiency": 72},
+        {"name": "Figma", "proficiency": 68},
+        {"name": "Spring Boot", "proficiency": 62}
+      ]
+    },
+    {
+      "category": "Analysis & PM",
+      "icon": "fas fa-chart-bar",
+      "skills": [
+        {"name": "CRUD Operations", "proficiency": 90},
+        {"name": "Data Modeling", "proficiency": 88},
+        {"name": "Requirements", "proficiency": 72},
+        {"name": "Agile", "proficiency": 70},
+        {"name": "ITSM / ITIL", "proficiency": 68}
+      ]
+    },
+    {
+      "category": "Leadership",
+      "icon": "fas fa-users",
+      "skills": [
+        {"name": "Team Coordination", "proficiency": 92},
+        {"name": "Conflict Resolution", "proficiency": 90},
+        {"name": "Stakeholder Comm.", "proficiency": 88},
+        {"name": "Event Planning", "proficiency": 70}
+      ]
+    },
+    {
+      "category": "Coursework",
+      "icon": "fas fa-brain",
+      "skills": [
+        {"name": "Software Engineering", "proficiency": 88},
+        {"name": "Machine Learning", "proficiency": 82},
+        {"name": "Computer Networks", "proficiency": 82},
+        {"name": "AI", "proficiency": 80},
+        {"name": "Senior Capstone", "proficiency": 75}
+      ]
+    }
+  ]
+}

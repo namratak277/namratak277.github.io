@@ -1,0 +1,39 @@
+{
+  "interests": [
+    {
+      "title": "Dance",
+      "icon": "fas fa-record-vinyl",
+      "description": "Dancing since elementary school — completely self-taught. I do K-pop, traditional Nepali dances, and trending choreos. Movement has always been my most natural way to express something I can't put into words.",
+      "tags": ["K-Pop", "Nepali", "Trending Choreo", "Self-Taught"],
+      "data_tags": "arts,performance"
+    },
+    {
+      "title": "Painting",
+      "icon": "fas fa-palette",
+      "description": "A meditative creative outlet — mostly canvas work with acrylics. Painting lets me slow down and process things visually that words can't quite capture.",
+      "tags": ["Acrylic", "Canvas", "Abstract"],
+      "data_tags": "arts,painting"
+    },
+    {
+      "title": "Photography",
+      "icon": "fas fa-camera",
+      "description": "Capturing candid moments and everyday details most people walk past. Mostly shoot on my phone — composition and light matter more than the gear.",
+      "tags": ["Candid", "Mobile", "Everyday"],
+      "data_tags": "arts,photography"
+    },
+    {
+      "title": "Songwriting",
+      "icon": "fas fa-pen-nib",
+      "description": "Writing lyrics as a form of journaling — turning feelings into verses. Influenced by a mix of Nepali pop, R&B, and whatever's been on repeat that week.",
+      "tags": ["Lyrics", "R&B", "Nepali Pop"],
+      "data_tags": "arts,music"
+    },
+    {
+      "title": "Movies & Dramas",
+      "icon": "fas fa-film",
+      "description": "Horror is the genre I always come back to. I go deep — behind-the-scenes footage and cast interviews help me understand the story behind the story and how everything was intentionally crafted.",
+      "tags": ["Horror", "K-Dramas", "Behind the Scenes"],
+      "data_tags": "entertainment,shows"
+    }
+  ]
+}

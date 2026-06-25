@@ -1,0 +1,52 @@
+{
+  "jobs": [
+    {
+      "title": "IT Support Specialist",
+      "org": "UNCG Information Technology Services",
+      "dates": "Apr 2024 - Present",
+      "summary": "Keeps classroom technology running smoothly by resolving AV and network issues across campus spaces.",
+      "details": [
+        "Deployed, configured, and maintained AV hardware and network-connected devices across 30+ classrooms, ensuring 99%+ uptime for academic operations.",
+        "Applied ITIL-aligned incident management using ServiceNow to track, prioritize, and resolve support tickets from faculty and students.",
+        "Coordinated with IT and facilities teams to document recurring issues, identify root causes, and implement preventive solutions."
+      ],
+      "tags": ["ServiceNow", "AV Systems", "IT Support", "Incident Management"]
+    },
+    {
+      "title": "Assistant Manager",
+      "org": "Family Fare",
+      "dates": "Aug 2022 - Present",
+      "summary": "Oversees store operations, supports the team, and uses data to improve daily efficiency.",
+      "details": [
+        "Managed end-to-end store operations including staff supervision, scheduling, inventory management, and vendor coordination.",
+        "Analyzed sales and inventory data to optimize stock levels, reduce waste, and improve operational efficiency.",
+        "Implemented process improvements in cash handling and compliance documentation demonstrating project ownership."
+      ],
+      "tags": ["Operations", "Data Analysis", "Team Leadership"]
+    },
+    {
+      "title": "Residential Advisor",
+      "org": "UNCG Housing and Residence Life",
+      "dates": "Apr 2024 - May 2025",
+      "summary": "Builds community, handles incidents, and supports residents in a busy campus living environment.",
+      "details": [
+        "Managed programming and community-building for 350+ residents in a diverse residential environment.",
+        "Applied crisis management protocols and incident response procedures, maintaining thorough documentation.",
+        "Mediated conflicts and enforced policies while collaborating with staff to escalate and resolve issues efficiently."
+      ],
+      "tags": ["Crisis Management", "Documentation", "Community Leadership"]
+    },
+    {
+      "title": "SOAR Intern & Orientation Staff",
+      "org": "UNCG First Year Experience",
+      "dates": "Dec 2022 - Jun 2024",
+      "summary": "Coordinated orientation logistics and technical setup for large student welcome events.",
+      "details": [
+        "Coordinated administrative and technical logistics for orientation events serving 15,000+ incoming students and families.",
+        "Configured AV/presentation systems; diagnosed and resolved real-time technical failures during live events.",
+        "Collaborated across a cross-functional team (Directors, Coordinators, Tech Manager) to execute deliverables on time."
+      ],
+      "tags": ["Event Coordination", "AV Tech", "Cross-functional"]
+    }
+  ]
+}

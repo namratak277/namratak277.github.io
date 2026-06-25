@@ -2,6 +2,10 @@
    NAMRATA KARKI PORTFOLIO — Interactive JavaScript
    ============================================================ */
 
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 document.addEventListener('DOMContentLoaded', async function() {
   // Load shared nav from nav.html into #nav-slot to reduce duplication
   try {
@@ -49,17 +53,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   navBackdrop.addEventListener('click', closeNav);
 
-  // Initialize index streaming grid if present
+  // Initialize index streaming grid if present (used on interests.html)
   initIndexStreamingGrid();
 
-  // Initialize interests filters if present
+  // Initialize interests filters if present (used on interests.html)
   initInterestFilters();
-
-  // Initialize manual skills slider controls
-  initSkillsCarousel();
-
-  // Initialize timeline event clicks
-  initTimelineEvents();
 
   // Initialize live GitHub stats section
   initGitHubStats();
@@ -70,15 +68,20 @@ document.addEventListener('DOMContentLoaded', async function() {
   // Initialize theme toggle (button is inside nav, so call after nav loads)
   initThemeToggle();
 
-  // New UI features
+  // UI features
   initScrollProgress();
   initTypewriter();
   initHeroCharGrid();
   initHeroTerminal();
   initPageTransitions();
   initCustomCursor();
-  initSkillsView();
   initBlogTeaser();
+
+  // Data-driven sections — fetch JSON, render dynamically
+  initSkillsFromData();
+  initExperienceFromData();
+  initInterestsTeaserFromData();
+  initProjectsFromData();
 
   // Scroll effect on navbar
   window.addEventListener('scroll', function() {
@@ -130,9 +133,10 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
     });
   }, observerOptions);
+  window._portfolioFadeObserver = observer;
 
-  // Add fade-in class to elements and observe
-  document.querySelectorAll('.section, .skill-card, .project-card, .timeline-card').forEach(el => {
+  // Observe static section wrappers; dynamic cards observed after render
+  document.querySelectorAll('.section, .timeline-card').forEach(el => {
     el.classList.add('fade-in');
     observer.observe(el);
   });
@@ -962,90 +966,105 @@ function initCustomCursor() {
   });
 }
 
-function initSkillsView() {
+async function initSkillsFromData() {
   const section   = document.getElementById('skills');
   if (!section) return;
+  const row       = document.getElementById('skills-carousel-row');
+  const cloudWrap = section.querySelector('.skills-cloud-wrap');
   const viewBar   = section.querySelector('.skills-view-bar');
   const carousel  = document.getElementById('skills-carousel-wrap');
-  const cloudWrap = section.querySelector('.skills-cloud-wrap');
-  if (!viewBar || !carousel || !cloudWrap) return;
+  if (!row) return;
 
-  // ── Animate in-card progress bars on scroll ──────────────
+  let data;
+  try {
+    const res = await fetch('assets/data/skills.json');
+    if (!res.ok) throw new Error('skills fetch failed');
+    data = await res.json();
+  } catch (e) {
+    console.warn('Could not load skills.json:', e);
+    return;
+  }
+
+  const CAT_CLASSES = ['cat-lang','cat-db','cat-sys','cat-anal','cat-lead','cat-course'];
+
+  // ── Render carousel cards ────────────────────────────────
+  row.innerHTML = data.categories.map(cat => `
+    <div class="skill-card fade-in">
+      <div class="skill-card-header">
+        <div class="skill-card-icon"><i class="${esc(cat.icon)}"></i></div>
+        <h3>${esc(cat.category)}</h3>
+      </div>
+      <div class="skb-list">
+        ${cat.skills.map(s => `
+          <div class="skb">
+            <span>${esc(s.name)}</span>
+            <span class="skb-pct">${s.proficiency}%</span>
+            <div class="skb-track"><div class="skb-fill" data-pct="${s.proficiency}"></div></div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  if (window._portfolioFadeObserver) {
+    row.querySelectorAll('.skill-card').forEach(el => window._portfolioFadeObserver.observe(el));
+  }
+
+  // ── Build cloud tags from JSON data ──────────────────────
+  if (cloudWrap) {
+    cloudWrap.innerHTML = '';
+    const pools = {};
+    data.categories.forEach((cat, ci) => {
+      const cls = CAT_CLASSES[ci % CAT_CLASSES.length];
+      cat.skills.forEach(s => {
+        const sz = s.proficiency >= 85 ? 'sz-lg' : s.proficiency >= 65 ? 'sz-md' : 'sz-sm';
+        (pools[cls] = pools[cls] || []).push({ name: s.name, cls, sz });
+      });
+    });
+    const catKeys = Object.keys(pools);
+    const maxL = Math.max(...catKeys.map(c => pools[c].length));
+    let idx = 0;
+    for (let i = 0; i < maxL; i++) {
+      catKeys.forEach(c => {
+        const s = pools[c][i];
+        if (!s) return;
+        const span = document.createElement('span');
+        span.className = `cloud-tag ${s.cls} ${s.sz}`;
+        span.textContent = s.name;
+        span.style.animationDelay = (idx * 24) + 'ms';
+        cloudWrap.appendChild(span);
+        idx++;
+      });
+    }
+  }
+
+  // ── Animate bars on scroll ───────────────────────────────
   let barsAnimated = false;
   new IntersectionObserver(entries => {
     if (!entries[0].isIntersecting || barsAnimated) return;
     barsAnimated = true;
     section.querySelectorAll('.skb-fill').forEach((fill, i) => {
-      const pct = fill.getAttribute('data-pct') || '0';
-      setTimeout(() => { fill.style.width = pct + '%'; }, i * 40);
+      setTimeout(() => { fill.style.width = (fill.getAttribute('data-pct') || '0') + '%'; }, i * 40);
     });
   }, { threshold: 0.2 }).observe(section);
 
-  // ── Build cloud tags ─────────────────────────────────────
-  const ALL_SKILLS = [
-    { name: 'Java',                      cat: 'cat-lang',   sz: 'sz-lg' },
-    { name: 'Python',                    cat: 'cat-lang',   sz: 'sz-lg' },
-    { name: 'JavaScript',                cat: 'cat-lang',   sz: 'sz-lg' },
-    { name: 'HTML / CSS',                cat: 'cat-lang',   sz: 'sz-lg' },
-    { name: 'C++',                       cat: 'cat-lang',   sz: 'sz-md' },
-    { name: 'Ruby',                      cat: 'cat-lang',   sz: 'sz-sm' },
-    { name: 'MySQL',                     cat: 'cat-db',     sz: 'sz-lg' },
-    { name: 'PostgreSQL',                cat: 'cat-db',     sz: 'sz-lg' },
-    { name: 'DBeaver',                   cat: 'cat-db',     sz: 'sz-md' },
-    { name: 'Neon',                      cat: 'cat-db',     sz: 'sz-md' },
-    { name: 'ERDPlus',                   cat: 'cat-db',     sz: 'sz-md' },
-    { name: 'Git / GitHub',              cat: 'cat-sys',    sz: 'sz-lg' },
-    { name: 'ServiceNow',                cat: 'cat-sys',    sz: 'sz-md' },
-    { name: 'Figma',                     cat: 'cat-sys',    sz: 'sz-md' },
-    { name: 'Spring Boot',               cat: 'cat-sys',    sz: 'sz-md' },
-    { name: 'Extron AV',                 cat: 'cat-sys',    sz: 'sz-md' },
-    { name: 'Data Modeling',             cat: 'cat-anal',   sz: 'sz-lg' },
-    { name: 'CRUD Operations',           cat: 'cat-anal',   sz: 'sz-lg' },
-    { name: 'ITIL / ITSM',              cat: 'cat-anal',   sz: 'sz-md' },
-    { name: 'Agile',                     cat: 'cat-anal',   sz: 'sz-md' },
-    { name: 'Requirements Gathering',    cat: 'cat-anal',   sz: 'sz-md' },
-    { name: 'Team Coordination',         cat: 'cat-lead',   sz: 'sz-lg' },
-    { name: 'Conflict Resolution',       cat: 'cat-lead',   sz: 'sz-lg' },
-    { name: 'Stakeholder Communication', cat: 'cat-lead',   sz: 'sz-lg' },
-    { name: 'Event Planning',            cat: 'cat-lead',   sz: 'sz-md' },
-    { name: 'Machine Learning',          cat: 'cat-course', sz: 'sz-lg' },
-    { name: 'Artificial Intelligence',   cat: 'cat-course', sz: 'sz-lg' },
-    { name: 'Computer Networks',         cat: 'cat-course', sz: 'sz-lg' },
-    { name: 'Software Engineering',      cat: 'cat-course', sz: 'sz-lg' },
-    { name: 'Senior Capstone',           cat: 'cat-course', sz: 'sz-md' },
-  ];
-  const pools = {};
-  ALL_SKILLS.forEach(s => { (pools[s.cat] = pools[s.cat] || []).push(s); });
-  const cats = Object.keys(pools);
-  const maxL = Math.max(...cats.map(c => pools[c].length));
-  const shuffled = [];
-  for (let i = 0; i < maxL; i++) {
-    cats.forEach(c => { if (pools[c][i]) shuffled.push(pools[c][i]); });
-  }
-  shuffled.forEach((skill, idx) => {
-    const span = document.createElement('span');
-    span.className = `cloud-tag ${skill.cat} ${skill.sz}`;
-    span.textContent = skill.name;
-    span.style.animationDelay = (idx * 24) + 'ms';
-    cloudWrap.appendChild(span);
-  });
-
-  // ── Toggle between Cards carousel and Cloud ─────────────
-  viewBar.querySelectorAll('.skill-view-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      viewBar.querySelectorAll('.skill-view-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      if (btn.getAttribute('data-view') === 'cloud') {
-        carousel.hidden  = true;
-        cloudWrap.hidden = false;
-      } else {
-        carousel.hidden  = false;
-        cloudWrap.hidden = true;
-      }
+  // ── Toggle Cards / Cloud ─────────────────────────────────
+  if (viewBar && carousel) {
+    viewBar.querySelectorAll('.skill-view-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        viewBar.querySelectorAll('.skill-view-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (btn.getAttribute('data-view') === 'cloud') {
+          carousel.hidden  = true;
+          if (cloudWrap) cloudWrap.hidden = false;
+        } else {
+          carousel.hidden  = false;
+          if (cloudWrap) cloudWrap.hidden = true;
+        }
+      });
     });
-  });
+  }
 
-  // Also re-init carousel arrows after toggle
   initSkillsCarousel();
 }
 
@@ -1058,9 +1077,6 @@ async function initBlogTeaser() {
 
   function fmtDate(d) {
     return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-  }
-  function esc(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
   try {
@@ -1090,6 +1106,153 @@ async function initBlogTeaser() {
     });
   } catch (_) {
     grid.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:2rem">Could not load posts.</p>';
+  }
+}
+
+// ============================================================
+// EXPERIENCE — fetch experience.json, render timeline
+// ============================================================
+async function initExperienceFromData() {
+  const track = document.getElementById('timeline-track');
+  if (!track) return;
+
+  let data;
+  try {
+    const res = await fetch('assets/data/experience.json');
+    if (!res.ok) throw new Error();
+    data = await res.json();
+  } catch (e) {
+    console.warn('Could not load experience.json:', e);
+    return;
+  }
+
+  track.innerHTML = data.jobs.map(job => `
+    <article class="timeline-event active">
+      <div class="tl-header">
+        <h3>${esc(job.title)}</h3>
+        <i class="fas fa-chevron-down tl-chevron"></i>
+      </div>
+      <div class="timeline-hover-content">
+        <span class="timeline-year">${esc(job.dates)}</span>
+        <p class="timeline-org">${esc(job.org)}</p>
+        <p class="timeline-summary">${esc(job.summary)}</p>
+        ${job.details.map(d => `<p>${esc(d)}</p>`).join('')}
+        <div class="tcard-tags">${job.tags.map(t => `<span>${esc(t)}</span>`).join('')}</div>
+      </div>
+    </article>
+  `).join('');
+
+  initTimelineEvents();
+}
+
+// ============================================================
+// INTERESTS TEASER — fetch interests.json, render home cards
+// ============================================================
+async function initInterestsTeaserFromData() {
+  const row = document.getElementById('interests-row');
+  if (!row) return;
+
+  let data;
+  try {
+    const res = await fetch('assets/data/interests.json');
+    if (!res.ok) throw new Error();
+    data = await res.json();
+  } catch (e) {
+    console.warn('Could not load interests.json:', e);
+    return;
+  }
+
+  row.innerHTML = data.interests.map(item => `
+    <div class="netflix-card itc" data-tags="${esc(item.data_tags)}">
+      <div class="itc-icon"><i class="${esc(item.icon)}"></i></div>
+      <div class="itc-body">
+        <div class="card-title">${esc(item.title)}</div>
+        <p class="itc-desc">${esc(item.description)}</p>
+        <div class="itc-tags">${item.tags.map(t => `<span>${esc(t)}</span>`).join('')}</div>
+      </div>
+    </div>
+  `).join('');
+
+  let auto, paused = false;
+  const start = () => {
+    if (auto) clearInterval(auto);
+    auto = setInterval(() => {
+      if (!paused) row.scrollBy({ left: row.clientWidth * 0.25, behavior: 'smooth' });
+    }, 3000);
+  };
+  row.addEventListener('mouseenter', () => { paused = true; });
+  row.addEventListener('mouseleave', () => { paused = false; });
+  start();
+}
+
+// ============================================================
+// PROJECTS — fetch projects.json, render capstone + grid
+// ============================================================
+async function initProjectsFromData() {
+  const capContainer  = document.getElementById('capstone-container');
+  const projectsGrid  = document.getElementById('projects-grid');
+  if (!capContainer && !projectsGrid) return;
+
+  let data;
+  try {
+    const res = await fetch('assets/data/projects.json');
+    if (!res.ok) throw new Error();
+    data = await res.json();
+  } catch (e) {
+    console.warn('Could not load projects.json:', e);
+    return;
+  }
+
+  if (capContainer && data.capstone) {
+    const c = data.capstone;
+    capContainer.innerHTML = `
+      <div class="capstone-spotlight">
+        <div class="capstone-header">
+          <div class="capstone-badges">
+            <span class="badge-live"><span class="badge-live-dot"></span> ${esc(c.status)}</span>
+            <span class="badge-type">Senior Capstone · ${esc(c.deadline)}</span>
+          </div>
+          <div class="project-links">
+            <a href="${esc(c.github)}" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        <div class="capstone-body">
+          <div class="capstone-left">
+            <h3>${esc(c.title)}: <em>${esc(c.subtitle)}</em></h3>
+            <p>${esc(c.description)}</p>
+            <p>${esc(c.phase_description)}</p>
+            <div class="capstone-stack">${c.stack.map(s => `<span>${esc(s)}</span>`).join('')}</div>
+          </div>
+          <div class="capstone-right">
+            <div class="capstone-progress">
+              ${c.progress.map(step => `
+                <div class="progress-step ${esc(step.state)}">
+                  <span class="step-dot"></span><span>${esc(step.label)}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  if (projectsGrid && data.projects) {
+    projectsGrid.innerHTML = data.projects.map(p => `
+      <div class="project-card${p.featured ? ' featured' : ''} fade-in">
+        <div class="project-card-top">
+          <div class="project-icon"><i class="${esc(p.icon)}"></i></div>
+          <div class="project-links"><a href="${esc(p.github)}" target="_blank"><i class="fab fa-github"></i></a></div>
+        </div>
+        <span class="project-type">${esc(p.type)}</span>
+        <h3>${esc(p.title)}</h3>
+        <p>${esc(p.description)}</p>
+        <div class="project-tags">${p.tags.map(t => `<span>${esc(t)}</span>`).join('')}</div>
+      </div>
+    `).join('');
+
+    if (window._portfolioFadeObserver) {
+      projectsGrid.querySelectorAll('.project-card').forEach(el => window._portfolioFadeObserver.observe(el));
+    }
   }
 }
 
