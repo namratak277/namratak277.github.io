@@ -3,7 +3,7 @@ backend:
   repo: namratak277/namratak277.github.io
   branch: main
   auth_type: pkce
-  app_id: YOUR_CLIENT_ID_HERE   # Replace with your GitHub OAuth App Client ID
+  app_id:Ov23li2VFJUG8Ddd7Vqm   # Replace with your GitHub OAuth App Client ID
 
 media_folder: assets/images
 public_folder: assets/images
