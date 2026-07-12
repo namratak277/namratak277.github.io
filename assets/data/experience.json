@@ -4,6 +4,9 @@
       "title": "IT Support Specialist",
       "org": "UNCG Information Technology Services",
       "dates": "Apr 2024 - Present",
+      "icon": "fas fa-headset",
+      "metric": "30+",
+      "metricLabel": "Classrooms Supported",
       "summary": "Keeps classroom technology running smoothly by resolving AV and network issues across campus spaces.",
       "details": [
         "Deployed, configured, and maintained AV hardware and network-connected devices across 30+ classrooms, ensuring 99%+ uptime for academic operations.",
@@ -16,6 +19,9 @@
       "title": "Assistant Manager",
       "org": "Family Fare",
       "dates": "Aug 2022 - Present",
+      "icon": "fas fa-store",
+      "metric": "",
+      "metricLabel": "",
       "summary": "Oversees store operations, supports the team, and uses data to improve daily efficiency.",
       "details": [
         "Managed end-to-end store operations including staff supervision, scheduling, inventory management, and vendor coordination.",
@@ -28,6 +34,9 @@
       "title": "Residential Advisor",
       "org": "UNCG Housing and Residence Life",
       "dates": "Apr 2024 - May 2025",
+      "icon": "fas fa-people-roof",
+      "metric": "350+",
+      "metricLabel": "Residents Supported",
       "summary": "Builds community, handles incidents, and supports residents in a busy campus living environment.",
       "details": [
         "Managed programming and community-building for 350+ residents in a diverse residential environment.",
@@ -40,6 +49,9 @@
       "title": "SOAR Intern & Orientation Staff",
       "org": "UNCG First Year Experience",
       "dates": "Dec 2022 - Jun 2024",
+      "icon": "fas fa-user-graduate",
+      "metric": "15,000+",
+      "metricLabel": "Students & Families",
       "summary": "Coordinated orientation logistics and technical setup for large student welcome events.",
       "details": [
         "Coordinated administrative and technical logistics for orientation events serving 15,000+ incoming students and families.",

@@ -59,11 +59,11 @@ document.addEventListener('DOMContentLoaded', async function() {
   // Initialize interests filters if present (used on interests.html)
   initInterestFilters();
 
-  // Initialize live GitHub stats section
-  initGitHubStats();
-
   // Initialize contact form AJAX submission
   initContactForm();
+
+  // Education "academic foundation" carousel (static content, wire immediately)
+  initCarousel(document.getElementById('edu-carousel-wrap'));
 
   // Initialize theme toggle (button is inside nav, so call after nav loads)
   initThemeToggle();
@@ -75,7 +75,6 @@ document.addEventListener('DOMContentLoaded', async function() {
   initHeroTerminal();
   initPageTransitions();
   initCustomCursor();
-  initBlogTeaser();
 
   // Data-driven sections — fetch JSON, render dynamically
   initSkillsFromData();
@@ -307,55 +306,75 @@ document.addEventListener('DOMContentLoaded', async function() {
   }
 
   // ============================================================
-  // Skills: Manual horizontal slider
+  // Generic infinitely-looping horizontal carousel
+  // Duplicates the row's cards once so the auto-scroll can wrap
+  // seamlessly, then autoplays and exposes manual arrow controls.
   // ============================================================
-  function initSkillsCarousel() {
-    const carousel = document.querySelector('.skills-carousel-row');
-    const leftButton = document.querySelector('.carousel-arrow-left');
-    const rightButton = document.querySelector('.carousel-arrow-right');
+  function initCarousel(wrap) {
+    if (!wrap || wrap._carouselInit) return;
+    wrap._carouselInit = true;
 
-    if (!carousel || !leftButton || !rightButton) return;
+    const row        = wrap.querySelector('.skills-carousel-row');
+    const leftButton  = wrap.querySelector('.carousel-arrow-left');
+    const rightButton = wrap.querySelector('.carousel-arrow-right');
+    if (!row) return;
+
+    // Duplicate the cards once so there's always more track to scroll into
+    if (row.children.length) row.innerHTML += row.innerHTML;
 
     const getStep = () => {
-      const card = carousel.querySelector('.skill-card');
-      if (!card) return Math.max(280, Math.floor(carousel.clientWidth * 0.72));
-      const cardWidth = card.getBoundingClientRect().width;
+      const card = row.firstElementChild;
+      if (!card) return Math.max(280, Math.floor(row.clientWidth * 0.72));
       const gap = 18;
-      return Math.round(cardWidth + gap);
+      return Math.round(card.getBoundingClientRect().width + gap);
     };
 
-    const updateButtons = () => {
-      const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth - 1;
-      leftButton.disabled = carousel.scrollLeft <= 0;
-      rightButton.disabled = carousel.scrollLeft >= maxScrollLeft;
+    const halfWidth = () => row.scrollWidth / 2;
+
+    const normalize = () => {
+      const half = halfWidth();
+      if (row.scrollLeft >= half) row.scrollLeft -= half;
+      else if (row.scrollLeft < 0) row.scrollLeft += half;
     };
 
-    leftButton.addEventListener('click', () => {
-      carousel.scrollBy({ left: -getStep(), behavior: 'smooth' });
+    if (leftButton) leftButton.addEventListener('click', () => {
+      normalize();
+      row.scrollBy({ left: -getStep(), behavior: 'smooth' });
+    });
+    if (rightButton) rightButton.addEventListener('click', () => {
+      normalize();
+      row.scrollBy({ left: getStep(), behavior: 'smooth' });
     });
 
-    rightButton.addEventListener('click', () => {
-      carousel.scrollBy({ left: getStep(), behavior: 'smooth' });
-    });
+    let paused = false;
+    row.addEventListener('mouseenter', () => { paused = true; });
+    row.addEventListener('mouseleave', () => { paused = false; });
 
-    carousel.addEventListener('scroll', updateButtons, { passive: true });
-    window.addEventListener('resize', updateButtons);
-    updateButtons();
+    let normTimer;
+    row.addEventListener('scroll', () => {
+      clearTimeout(normTimer);
+      normTimer = setTimeout(normalize, 150);
+    }, { passive: true });
+
+    setInterval(() => {
+      if (paused || halfWidth() <= row.clientWidth) return;
+      row.scrollBy({ left: getStep(), behavior: 'smooth' });
+    }, 3200);
   }
 
   // ============================================================
-  // TIMELINE EVENTS — Click to toggle details (optional click support)
+  // IMPACT CARDS — click/tap or Enter/Space to flip
   // ============================================================
-  function initTimelineEvents() {
-    const timelineEvents = document.querySelectorAll('.timeline-event');
-
-    timelineEvents.forEach(event => {
-      event.addEventListener('click', (e) => {
-        e.stopPropagation();
-        event.classList.toggle('active');
+  function initImpactCards() {
+    document.querySelectorAll('.impact-card').forEach(card => {
+      card.addEventListener('click', () => card.classList.toggle('flipped'));
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.classList.toggle('flipped');
+        }
       });
     });
-    
   }
 
 // ============================================================
@@ -395,96 +414,6 @@ if (!('scrollBehavior' in document.documentElement.style)) {
         const target = document.querySelector(href);
         if (target) smoothScroll(target);
       }
-    });
-  });
-}
-
-// ============================================================
-// GITHUB STATS — fetch repos, animate counts + language bars
-// ============================================================
-async function initGitHubStats() {
-  const statsSection = document.getElementById('github-stats');
-  if (!statsSection) return;
-
-  let data = null;
-
-  try {
-    const res = await fetch('https://api.github.com/users/namratak277/repos?per_page=100&sort=updated');
-    if (!res.ok) throw new Error('GitHub API returned ' + res.status);
-    const repos = await res.json();
-    if (!Array.isArray(repos)) throw new Error('Unexpected response shape');
-
-    const own = repos.filter(r => !r.fork);
-    const totalStars = own.reduce((sum, r) => sum + r.stargazers_count, 0);
-    const totalForks = own.reduce((sum, r) => sum + r.forks_count, 0);
-    data = { own, totalStars, totalForks };
-  } catch (err) {
-    console.warn('GitHub stats unavailable:', err.message);
-    return;
-  }
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      observer.disconnect();
-      animateStatCards(data);
-    });
-  }, { threshold: 0.25 });
-  observer.observe(statsSection);
-
-  loadLangBars(data.own);
-}
-
-function animateStatCards({ own }) {
-  const el = document.getElementById('gstat-repos');
-  if (!el) return;
-  const target = own.length;
-  let cur = 0;
-  const step = Math.max(1, Math.ceil(target / 45));
-  const timer = setInterval(() => {
-    cur = Math.min(cur + step, target);
-    el.textContent = cur;
-    if (cur >= target) clearInterval(timer);
-  }, 28);
-}
-
-async function loadLangBars(repos) {
-  const container = document.getElementById('github-lang-bars');
-  if (!container) return;
-
-  const langBytes = {};
-  await Promise.allSettled(
-    repos.slice(0, 12).map(r =>
-      fetch(r.languages_url)
-        .then(res => res.json())
-        .then(langs => {
-          Object.entries(langs).forEach(([lang, bytes]) => {
-            langBytes[lang] = (langBytes[lang] || 0) + bytes;
-          });
-        })
-    )
-  );
-
-  const total = Object.values(langBytes).reduce((a, b) => a + b, 0);
-  if (!total) { container.innerHTML = ''; return; }
-
-  const sorted = Object.entries(langBytes)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 6);
-
-  container.innerHTML = sorted.map(([lang, bytes]) => {
-    const pct = Math.round((bytes / total) * 100);
-    return `
-      <div class="lang-bar-row">
-        <span class="lang-name">${lang}</span>
-        <div class="lang-bar-track"><div class="lang-bar-fill" data-pct="${pct}"></div></div>
-        <span class="lang-pct">${pct}%</span>
-      </div>`;
-  }).join('');
-
-  requestAnimationFrame(() => {
-    container.querySelectorAll('.lang-bar-fill').forEach(bar => {
-      bar.style.width = bar.getAttribute('data-pct') + '%';
     });
   });
 }
@@ -928,7 +857,7 @@ function initCustomCursor() {
   });
 
   // ── Contextual labels ────────────────────────────────────
-  const INTERACTIVE = 'a,button,[role="button"],input,textarea,select,.project-card,.skill-card,.timeline-event,.netflix-card,.bento-tile,.gstat-card,.blog-card,.carousel-arrow,.cloud-tag,.skill-view-btn';
+  const INTERACTIVE = 'a,button,[role="button"],input,textarea,select,.project-card,.skill-card,.impact-card,.netflix-card,.bento-tile,.blog-card,.carousel-arrow,.cloud-tag,.skill-view-btn';
   const LABEL_RULES = [
     ['.project-card',                                    'VIEW'  ],
     ['.blog-card',                                       'READ'  ],
@@ -997,9 +926,9 @@ async function initSkillsFromData() {
       <div class="skb-list">
         ${cat.skills.map(s => `
           <div class="skb">
-            <span>${esc(s.name)}</span>
-            <span class="skb-pct">${s.proficiency}%</span>
-            <div class="skb-track"><div class="skb-fill" data-pct="${s.proficiency}"></div></div>
+            <span class="skb-name">${esc(s.name)}</span>
+            <span class="skb-rating">${s.rating}/5</span>
+            <div class="skb-track"><div class="skb-fill" data-pct="${(s.rating / 5) * 100}"></div></div>
           </div>
         `).join('')}
       </div>
@@ -1017,7 +946,7 @@ async function initSkillsFromData() {
     data.categories.forEach((cat, ci) => {
       const cls = CAT_CLASSES[ci % CAT_CLASSES.length];
       cat.skills.forEach(s => {
-        const sz = s.proficiency >= 85 ? 'sz-lg' : s.proficiency >= 65 ? 'sz-md' : 'sz-sm';
+        const sz = s.rating >= 4.5 ? 'sz-lg' : s.rating >= 3 ? 'sz-md' : 'sz-sm';
         (pools[cls] = pools[cls] || []).push({ name: s.name, cls, sz });
       });
     });
@@ -1065,56 +994,15 @@ async function initSkillsFromData() {
     });
   }
 
-  initSkillsCarousel();
+  initCarousel(carousel);
 }
 
 // ============================================================
-// BLOG TEASER — loads posts.json and renders 3 preview cards
-// ============================================================
-async function initBlogTeaser() {
-  const grid = document.getElementById('blog-teaser-grid');
-  if (!grid) return;
-
-  function fmtDate(d) {
-    return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-  }
-
-  try {
-    const res = await fetch('assets/data/posts.json');
-    if (!res.ok) throw new Error('posts fetch failed');
-    const { posts } = await res.json();
-    const top3 = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
-
-    grid.innerHTML = top3.map(p => `
-      <a class="blog-card fade-in" href="blog.html?post=${p.slug}">
-        <div class="blog-card-meta">
-          <span class="blog-category">${esc(p.category)}</span>
-          <span class="blog-date">${fmtDate(p.date)}</span>
-          <span class="blog-read-time"><i class="fas fa-clock"></i> ${esc(p.readTime)}</span>
-        </div>
-        <h2>${esc(p.title)}</h2>
-        <p>${esc(p.excerpt)}</p>
-        <div class="blog-tags">${p.tags.slice(0, 3).map(t => `<span class="blog-tag">${esc(t)}</span>`).join('')}</div>
-      </a>
-    `).join('');
-
-    requestAnimationFrame(() => {
-      const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-      }, { threshold: 0.08 });
-      grid.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
-    });
-  } catch (_) {
-    grid.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:2rem">Could not load posts.</p>';
-  }
-}
-
-// ============================================================
-// EXPERIENCE — fetch experience.json, render timeline
+// EXPERIENCE — fetch experience.json, render flip-card grid
 // ============================================================
 async function initExperienceFromData() {
-  const track = document.getElementById('timeline-track');
-  if (!track) return;
+  const grid = document.getElementById('impact-grid');
+  if (!grid) return;
 
   let data;
   try {
@@ -1126,23 +1014,35 @@ async function initExperienceFromData() {
     return;
   }
 
-  track.innerHTML = data.jobs.map(job => `
-    <article class="timeline-event active">
-      <div class="tl-header">
-        <h3>${esc(job.title)}</h3>
-        <i class="fas fa-chevron-down tl-chevron"></i>
-      </div>
-      <div class="timeline-hover-content">
-        <span class="timeline-year">${esc(job.dates)}</span>
-        <p class="timeline-org">${esc(job.org)}</p>
-        <p class="timeline-summary">${esc(job.summary)}</p>
-        ${job.details.map(d => `<p>${esc(d)}</p>`).join('')}
-        <div class="tcard-tags">${job.tags.map(t => `<span>${esc(t)}</span>`).join('')}</div>
+  grid.innerHTML = data.jobs.map(job => `
+    <article class="impact-card fade-in" tabindex="0" role="button" aria-label="${esc(job.title)} — flip for details">
+      <div class="impact-card-inner">
+        <div class="impact-face impact-front">
+          <div class="impact-icon"><i class="${esc(job.icon)}"></i></div>
+          <h3>${esc(job.title)}</h3>
+          <p class="impact-org">${esc(job.org)} &middot; ${esc(job.dates)}</p>
+          ${job.metric ? `
+            <div class="impact-metric">
+              <span class="impact-metric-num">${esc(job.metric)}</span>
+              <span class="impact-metric-label">${esc(job.metricLabel)}</span>
+            </div>` : ''}
+          <p class="impact-hook">${esc(job.summary)}</p>
+          <span class="impact-flip-hint"><i class="fas fa-arrows-rotate"></i> Flip for details</span>
+        </div>
+        <div class="impact-face impact-back">
+          <h3>${esc(job.title)}</h3>
+          <ul>${job.details.map(d => `<li>${esc(d)}</li>`).join('')}</ul>
+          <div class="impact-tags">${job.tags.map(t => `<span>${esc(t)}</span>`).join('')}</div>
+        </div>
       </div>
     </article>
   `).join('');
 
-  initTimelineEvents();
+  if (window._portfolioFadeObserver) {
+    grid.querySelectorAll('.impact-card').forEach(el => window._portfolioFadeObserver.observe(el));
+  }
+
+  initImpactCards();
 }
 
 // ============================================================
@@ -1186,12 +1086,11 @@ async function initInterestsTeaserFromData() {
 }
 
 // ============================================================
-// PROJECTS — fetch projects.json, render capstone + grid
+// PROJECTS — fetch projects.json, render grid
 // ============================================================
 async function initProjectsFromData() {
-  const capContainer  = document.getElementById('capstone-container');
   const projectsGrid  = document.getElementById('projects-grid');
-  if (!capContainer && !projectsGrid) return;
+  if (!projectsGrid) return;
 
   let data;
   try {
@@ -1201,39 +1100,6 @@ async function initProjectsFromData() {
   } catch (e) {
     console.warn('Could not load projects.json:', e);
     return;
-  }
-
-  if (capContainer && data.capstone) {
-    const c = data.capstone;
-    capContainer.innerHTML = `
-      <div class="capstone-spotlight">
-        <div class="capstone-header">
-          <div class="capstone-badges">
-            <span class="badge-live"><span class="badge-live-dot"></span> ${esc(c.status)}</span>
-            <span class="badge-type">Senior Capstone · ${esc(c.deadline)}</span>
-          </div>
-          <div class="project-links">
-            <a href="${esc(c.github)}" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-          </div>
-        </div>
-        <div class="capstone-body">
-          <div class="capstone-left">
-            <h3>${esc(c.title)}: <em>${esc(c.subtitle)}</em></h3>
-            <p>${esc(c.description)}</p>
-            <p>${esc(c.phase_description)}</p>
-            <div class="capstone-stack">${c.stack.map(s => `<span>${esc(s)}</span>`).join('')}</div>
-          </div>
-          <div class="capstone-right">
-            <div class="capstone-progress">
-              ${c.progress.map(step => `
-                <div class="progress-step ${esc(step.state)}">
-                  <span class="step-dot"></span><span>${esc(step.label)}</span>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        </div>
-      </div>`;
   }
 
   if (projectsGrid && data.projects) {
@@ -1263,9 +1129,7 @@ function initThemeToggle() {
   const toggle = document.getElementById('theme-toggle');
   if (!toggle) return;
 
-  const getTheme = () =>
-    localStorage.getItem('theme') ||
-    (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  const getTheme = () => localStorage.getItem('theme') || 'light';
 
   const apply = theme => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -1277,8 +1141,5 @@ function initThemeToggle() {
   apply(getTheme());
   toggle.addEventListener('click', () => {
     apply(document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
-  });
-  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
-    if (!localStorage.getItem('theme')) apply(e.matches ? 'light' : 'dark');
   });
 }

@@ -6,7 +6,7 @@
   <title>Namrata Karki — Portfolio</title>
   <link rel="shortcut icon" href="favicon.ico">
   <script>
-    (function(){var t=localStorage.getItem('theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');})();
+    (function(){var t=localStorage.getItem('theme');if(t!=='dark')document.documentElement.setAttribute('data-theme','light');})();
   </script>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
@@ -105,22 +105,22 @@
           </div>
         </div>
 
-        <!-- 4 action stats in corner arrangement -->
+        <!-- 4 floating skill bubbles in corner arrangement -->
         <div class="hero-stat stat-1">
-          <span class="stat-num">300+</span>
-          <span class="stat-label">Classrooms Supported</span>
+          <span class="stat-num"><i class="fas fa-headset"></i></span>
+          <span class="stat-label">IT &amp; AV Support</span>
         </div>
         <div class="hero-stat stat-2">
-          <span class="stat-num">500+</span>
-          <span class="stat-label">Residents Supported</span>
+          <span class="stat-num"><i class="fas fa-chart-line"></i></span>
+          <span class="stat-label">Data Analysis</span>
         </div>
         <div class="hero-stat stat-3">
-          <span class="stat-num">5+</span>
-          <span class="stat-label">Programs Organized</span>
+          <span class="stat-num"><i class="fas fa-code"></i></span>
+          <span class="stat-label">Full-Stack Development</span>
         </div>
         <div class="hero-stat stat-4">
-          <span class="stat-num">1000+</span>
-          <span class="stat-label">Students Guided</span>
+          <span class="stat-num"><i class="fas fa-brain"></i></span>
+          <span class="stat-label">AI / LLM</span>
         </div>
       </div>
 
@@ -135,14 +135,15 @@
         <div class="bento-tile bento-bio">
           <div class="section-label">About Me</div>
           <h2 class="section-title">Building at the<br>intersection of<br><em>tech &amp; business</em></h2>
-          <p>I'm a Computer Science student with an IT minor at UNCG, graduating December 2026. My experience spans classroom IT infrastructure, full-stack development, administrative coordination, and community leadership.</p>
           <p>I thrive where technical skills and human-centered thinking come together — whether diagnosing a network issue before a lecture, building a database-backed web app, or managing a community of 350+ residents.</p>
+          <p>I'm drawn to the problem nobody's been assigned yet: the recurring ticket that needs a root-cause fix, the process still done by hand, the workflow that could use one clean interface. That mix of curiosity and follow-through is what I bring to every team I join.</p>
         </div>
 
         <div class="bento-tile bento-award">
-          <i class="fas fa-medal award-icon"></i>
-          <strong>UNCG Bronze Leadership Award</strong>
-          <span>University of North Carolina at Greensboro</span>
+          <div class="section-label">Soft Skills</div>
+          <div class="trait-pills">
+            <span>Reliable</span><span>Detail-oriented</span><span>Curious</span>
+          </div>
         </div>
 
         <div class="bento-tile bento-meta">
@@ -151,14 +152,6 @@
           <div class="bento-meta-row"><i class="fas fa-globe"></i><div class="lang-pills"><span>English</span><span>Nepali</span><span>Hindi</span></div></div>
         </div>
 
-
-        <div class="bento-tile bento-traits">
-          <div class="trait-pills">
-            <span>Reliable</span><span>Detail-oriented</span><span>Curious</span>
-            <span>Team-focused</span><span>Proactive</span><span>Quick Learner</span>
-            <span>Communicative</span><span>Organized</span>
-          </div>
-        </div>
 
         <div class="bento-actions">
           <a href="assets/files/2025 Resume.docx" class="btn btn-primary" download><i class="fas fa-download"></i> Download Resume</a>
@@ -193,11 +186,40 @@
         </div>
   </section>
 
+  <section class="section edu-section" id="education">
+    <div class="container">
+      <div class="section-label">Education</div>
+      <h2 class="section-title">Academic Foundation</h2>
+      <div class="edu-card">
+        <div class="edu-left"><div class="edu-logo"><i class="fas fa-university"></i></div></div>
+        <div class="edu-right">
+          <div class="edu-header"><div><h3>B.S. Computer Science &middot; Minor in Information Technology</h3><p class="edu-school">University of North Carolina at Greensboro &middot; Greensboro, NC</p></div><span class="edu-date">Aug 2022 – Dec 2026</span></div>
+        </div>
+      </div>
+      <div class="skills-carousel" id="edu-carousel-wrap">
+        <button class="carousel-arrow carousel-arrow-left" type="button" aria-label="Scroll courses left">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="skills-carousel-window">
+          <div class="skills-carousel-row" id="edu-carousel-row">
+            <div class="courses-card"><h4>Completed</h4><ul><li>Software Engineering</li><li>Intro to Databases</li><li>Data Structures &amp; Algorithms</li><li>Web Development</li><li>Systems Programming</li></ul></div>
+            <div class="courses-card"><h4>Current</h4><ul><li>Machine Learning</li><li>Artificial Intelligence</li><li>Computer Networks</li></ul></div>
+            <div class="courses-card"><h4>Leadership</h4><ul><li>&#127942; Bronze Leadership Award</li><li>President – Jalwa Dance Club (3 yrs)</li><li>VP – Nepalese Student Assoc. (2 yrs)</li></ul></div>
+          </div>
+        </div>
+        <button class="carousel-arrow carousel-arrow-right" type="button" aria-label="Scroll courses right">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
   <section class="section experience-section" id="experience">
     <div class="container">
-      <div class="section-label">Experience</div>
-      <h2 class="section-title center">Where I've Made an Impact</h2>
-      <div class="timeline-track" id="timeline-track" aria-label="Experience timeline"></div>
+      <div class="section-label center">Experience</div>
+      <h2 class="section-title center">Roles That Shaped Me</h2>
+      <p class="section-subtitle">Click or tap a card to flip it for the full story.</p>
+      <div class="impact-grid" id="impact-grid" aria-label="Experience"></div>
     </div>
   </section>
 
@@ -207,73 +229,7 @@
       <h2 class="section-title center">Things I've Built</h2>
       <p class="section-subtitle">All projects live on <a href="https://github.com/namratak277" target="_blank">GitHub: namratak277</a></p>
 
-      <div id="capstone-container"></div>
       <div class="projects-grid" id="projects-grid"></div>
-    </div>
-  </section>
-
-  <section class="section github-stats-section" id="github-stats">
-    <div class="container">
-      <div class="section-label center">GitHub Activity</div>
-      <h2 class="section-title center">By the Numbers</h2>
-      <div class="gh-bento">
-
-        <div class="gh-tile gh-tile-repos">
-          <div class="gstat-icon"><i class="fas fa-code-branch"></i></div>
-          <div class="gstat-num" id="gstat-repos">—</div>
-          <div class="gstat-label">Public Repos</div>
-        </div>
-
-        <div class="gh-tile gh-tile-langs">
-          <div class="lang-bars-label">Top Languages</div>
-          <div class="lang-bars" id="github-lang-bars">
-            <div class="lang-bars-loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
-          </div>
-        </div>
-
-        <div class="gh-tile gh-tile-profile">
-          <a href="https://github.com/namratak277" target="_blank" rel="noreferrer" class="gstat-card-anchor">
-            <div class="gstat-icon"><i class="fab fa-github"></i></div>
-            <div class="gstat-handle">namratak277</div>
-            <div class="gstat-label">View Profile <i class="fas fa-arrow-up-right-from-square" style="font-size:0.65rem"></i></div>
-          </a>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <section class="section edu-section" id="education">
-    <div class="container">
-      <div class="section-label">Education</div>
-      <h2 class="section-title">Academic Foundation</h2>
-      <div class="edu-card">
-        <div class="edu-left"><div class="edu-logo"><i class="fas fa-university"></i></div></div>
-        <div class="edu-right">
-          <div class="edu-header"><div><h3>B.S. Computer Science &middot; Minor in Information Technology</h3><p class="edu-school">University of North Carolina at Greensboro &middot; Greensboro, NC</p></div><span class="edu-date">Aug 2022 – Dec 2026</span></div>
-          <div class="courses-grid">
-            <div><h4>Completed</h4><ul><li>Software Engineering</li><li>Intro to Databases</li><li>Data Structures &amp; Algorithms</li><li>Web Development</li><li>Systems Programming</li></ul></div>
-            <div><h4>Current</h4><ul><li>Machine Learning</li><li>Artificial Intelligence</li><li>Computer Networks</li></ul></div>
-            <div><h4>Leadership</h4><ul><li>&#127942; Bronze Leadership Award</li><li>President – Jalwa Dance Club (3 yrs)</li><li>VP – Nepalese Student Assoc. (2 yrs)</li></ul></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section blog-teaser-section" id="blog-teaser">
-    <div class="container">
-      <div class="section-label center">Blog</div>
-      <h2 class="section-title center">Thoughts &amp; <em>Learnings</em></h2>
-      <p class="section-subtitle">Notes on tech, design, and building things that work.</p>
-      <div class="blog-teaser-grid" id="blog-teaser-grid">
-        <div style="text-align:center;padding:2rem;color:var(--text-muted);grid-column:1/-1">
-          <i class="fas fa-spinner fa-spin" style="margin-right:0.5rem"></i>Loading posts...
-        </div>
-      </div>
-      <div class="blog-teaser-cta">
-        <a href="blog.html" class="btn btn-primary">Read All Posts <i class="fas fa-arrow-right"></i></a>
-      </div>
     </div>
   </section>
 
@@ -344,13 +300,15 @@
     <div class="container">
       <div class="footer-inner">
         <a class="footer-logo" href="index.html" aria-label="Home">
-          <svg width="22" height="22" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <span class="nav-prompt">&gt;</span>
+          <svg class="nav-monogram" width="19" height="19" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <line x1="3"  y1="4" x2="3"  y2="26" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
             <line x1="3"  y1="4" x2="15" y2="26" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
             <line x1="15" y1="4" x2="15" y2="26" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
             <line x1="15" y1="15" x2="27" y2="4"  stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
             <line x1="15" y1="15" x2="27" y2="26" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
           </svg>
+          <span class="nav-cursor">_</span>
         </a>
         <div class="footer-socials">
           <a href="https://linkedin.com/in/namrata-karki" target="_blank"><i class="fab fa-linkedin-in"></i></a>

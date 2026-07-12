@@ -1,21 +1,4 @@
 {
-  "capstone": {
-    "title": "Senior Capstone",
-    "subtitle": "Full-Stack Application",
-    "status": "In Progress",
-    "deadline": "Dec 2026",
-    "description": "My capstone applies every dimension of the CS curriculum to one cohesive product — spanning requirements gathering, system design, database architecture, REST API development, and a React frontend. The project is built using Agile/Scrum methodology with iterative sprints and stakeholder reviews.",
-    "phase_description": "Currently in the architecture design phase: defining the entity-relationship diagram, API contracts, and component hierarchy before any code is written — the same discipline I practiced on the Dress Web Store.",
-    "stack": ["Java / Spring Boot", "PostgreSQL", "React", "REST API", "Figma", "Agile / Scrum"],
-    "progress": [
-      {"label": "Requirements", "state": "done"},
-      {"label": "Architecture Design", "state": "active"},
-      {"label": "Development", "state": ""},
-      {"label": "Testing & QA", "state": ""},
-      {"label": "Deployment", "state": ""}
-    ],
-    "github": "https://github.com/namratak277"
-  },
   "projects": [
     {
       "title": "Dress Web Store",
