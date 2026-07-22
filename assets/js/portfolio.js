@@ -72,7 +72,6 @@ document.addEventListener('DOMContentLoaded', async function() {
   initScrollProgress();
   initTypewriter();
   initHeroCharGrid();
-  initHeroTerminal();
   initPageTransitions();
   initCustomCursor();
 
@@ -135,7 +134,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   window._portfolioFadeObserver = observer;
 
   // Observe static section wrappers; dynamic cards observed after render
-  document.querySelectorAll('.section, .timeline-card').forEach(el => {
+  document.querySelectorAll('.section').forEach(el => {
     el.classList.add('fade-in');
     observer.observe(el);
   });
@@ -225,28 +224,34 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
 
   // ============================================================
+  // Shared: autoplay a horizontal row, pausing while hovered
+  // ============================================================
+  function initAutoScrollRow(row, fraction = 0.25, intervalMs = 3000) {
+    let auto;
+    let paused = false;
+    const start = () => {
+      clearInterval(auto);
+      auto = setInterval(() => {
+        if (!paused) row.scrollBy({ left: row.clientWidth * fraction, behavior: 'smooth' });
+      }, intervalMs);
+    };
+    row.addEventListener('mouseenter', () => { paused = true; });
+    row.addEventListener('mouseleave', () => { paused = false; });
+    start();
+  }
+
+  // ============================================================
   // Index: Streaming row autoplay + preview modal
+  // (the homepage's #interests-row is populated from JSON and wires
+  // its own autoplay in initInterestsTeaserFromData — skip it here)
   // ============================================================
   function initIndexStreamingGrid() {
-    const rows = document.querySelectorAll('.netflix-row');
-    if (!rows || rows.length === 0) return;
-
-    rows.forEach(row => {
-      let auto; let paused = false;
-      const start = () => {
-        if (auto) clearInterval(auto);
-        auto = setInterval(() => {
-          if (paused) return;
-          row.scrollBy({ left: row.clientWidth * 0.25, behavior: 'smooth' });
-        }, 3000);
-      };
-      row.addEventListener('mouseenter', () => { paused = true; });
-      row.addEventListener('mouseleave', () => { paused = false; });
-      start();
+    document.querySelectorAll('.netflix-row:not(#interests-row)').forEach(row => {
+      initAutoScrollRow(row);
 
       // click to open preview modal
       row.querySelectorAll('.netflix-card').forEach(card => {
-        card.addEventListener('click', (e) => {
+        card.addEventListener('click', () => {
           const img = card.querySelector('img');
           const title = card.querySelector('.card-title') ? card.querySelector('.card-title').textContent : '';
           const caption = card.querySelector('.card-caption') ? card.querySelector('.card-caption').textContent : '';
@@ -376,47 +381,6 @@ document.addEventListener('DOMContentLoaded', async function() {
       });
     });
   }
-
-// ============================================================
-// UTILITY: Smooth scroll polyfill for older browsers
-// ============================================================
-if (!('scrollBehavior' in document.documentElement.style)) {
-  const smoothScroll = function(target) {
-    const targetPosition = target.offsetTop;
-    const startPosition = window.pageYOffset;
-    const distance = targetPosition - startPosition;
-    const duration = 1000;
-    let start = null;
-
-    const animation = (currentTime) => {
-      if (start === null) start = currentTime;
-      const timeElapsed = currentTime - start;
-      const run = ease(timeElapsed, startPosition, distance, duration);
-      window.scrollTo(0, run);
-      if (timeElapsed < duration) requestAnimationFrame(animation);
-    };
-
-    const ease = (t, b, c, d) => {
-      t /= d / 2;
-      if (t < 1) return c / 2 * t * t + b;
-      t--;
-      return -c / 2 * (t * (t - 2) - 1) + b;
-    };
-
-    requestAnimationFrame(animation);
-  };
-
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const href = this.getAttribute('href');
-      if (href !== '#') {
-        e.preventDefault();
-        const target = document.querySelector(href);
-        if (target) smoothScroll(target);
-      }
-    });
-  });
-}
 
 // ============================================================
 // CONTACT FORM — AJAX submit via Formspree, inline status
@@ -670,103 +634,6 @@ function initHeroCharGrid() {
     if (!entries[0].isIntersecting) { cancelAnimationFrame(animId); animId = null; }
     else if (!animId) { lastTs = performance.now(); animId = requestAnimationFrame(frame); }
   }, { threshold: 0 }).observe(hero);
-}
-
-// ============================================================
-// HERO TERMINAL ANIMATION
-// ============================================================
-function initHeroTerminal() {
-  const outputEl = document.getElementById('terminal-output');
-  const cmdEl    = document.getElementById('terminal-cmd-current');
-  if (!outputEl || !cmdEl) return;
-
-  const cmds = [
-    {
-      cmd: 'whoami',
-      out: [
-        { t: 'kv', k: 'name',     v: 'Namrata Karki' },
-        { t: 'kv', k: 'role',     v: 'CS Student · Developer · IT Specialist' },
-        { t: 'kv', k: 'location', v: 'Mebane, NC' },
-      ]
-    },
-    {
-      cmd: 'cat skills.txt',
-      out: [
-        { t: 'raw', v: '▸ Java  Python  JavaScript  HTML/CSS' },
-        { t: 'raw', v: '▸ PostgreSQL  MySQL  Git  Figma' },
-        { t: 'raw', v: '▸ Machine Learning  AI  REST APIs' },
-      ]
-    },
-    {
-      cmd: 'ls projects/',
-      out: [
-        { t: 'dir', v: 'dress-web-store/   daily-diary/   creative-newsletter/' },
-      ]
-    },
-    {
-      cmd: 'echo $availability',
-      out: [
-        { t: 'comment', v: 'Open to opportunities · Graduating Dec 2026' },
-      ]
-    },
-  ];
-
-  const T = 72, CMD_WAIT = 460, LINE_WAIT = 150, SEQ_WAIT = 900, LOOP_WAIT = 4200;
-
-  function lineHtml(item) {
-    if (item.t === 'kv')
-      return `<span class="t-kv-key">${item.k}</span><span class="t-val">${item.v}</span>`;
-    if (item.t === 'dir')
-      return `<span class="t-dir">${item.v}</span>`;
-    if (item.t === 'comment')
-      return `<span class="t-comment"># ${item.v}</span>`;
-    return `<span class="t-val">${item.v}</span>`;
-  }
-
-  function addLine(html) {
-    const s = document.createElement('span');
-    s.className = 't-line';
-    s.innerHTML = html;
-    outputEl.appendChild(s);
-    const body = outputEl.closest('.terminal-body');
-    if (body) body.scrollTop = body.scrollHeight;
-  }
-
-  function runCmd(i) {
-    const { cmd, out } = cmds[i];
-    let ci = 0;
-
-    function typeChar() {
-      cmdEl.textContent = cmd.slice(0, ci);
-      if (ci < cmd.length) { ci++; setTimeout(typeChar, T); return; }
-      setTimeout(commitAndShowOutput, CMD_WAIT);
-    }
-
-    function commitAndShowOutput() {
-      addLine(`<span class="t-prompt">❯</span> <span class="t-cmd">${cmd}</span>`);
-      cmdEl.textContent = '';
-      showOutputLine(0);
-    }
-
-    function showOutputLine(oi) {
-      if (oi >= out.length) {
-        addLine('&nbsp;');
-        const next = (i + 1) % cmds.length;
-        const wait = next === 0 ? LOOP_WAIT : SEQ_WAIT;
-        setTimeout(() => {
-          if (next === 0) outputEl.innerHTML = '';
-          runCmd(next);
-        }, wait);
-        return;
-      }
-      addLine(lineHtml(out[oi]));
-      setTimeout(() => showOutputLine(oi + 1), LINE_WAIT);
-    }
-
-    typeChar();
-  }
-
-  setTimeout(() => runCmd(0), 900);
 }
 
 // ============================================================
@@ -1073,16 +940,7 @@ async function initInterestsTeaserFromData() {
     </div>
   `).join('');
 
-  let auto, paused = false;
-  const start = () => {
-    if (auto) clearInterval(auto);
-    auto = setInterval(() => {
-      if (!paused) row.scrollBy({ left: row.clientWidth * 0.25, behavior: 'smooth' });
-    }, 3000);
-  };
-  row.addEventListener('mouseenter', () => { paused = true; });
-  row.addEventListener('mouseleave', () => { paused = false; });
-  start();
+  initAutoScrollRow(row);
 }
 
 // ============================================================
