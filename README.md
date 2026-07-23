@@ -1,20 +1,48 @@
 # namratak277.github.io — Developer Portfolio OS
 
-Personal portfolio site built as a fully static JAMstack system on GitHub Pages. Vanilla HTML, CSS, and JavaScript with no build tools, no framework, no cost.
+Personal portfolio site built as a fully static system on GitHub Pages. Vanilla HTML, CSS, and JavaScript — no build tools, no framework, no cost.
 
 Live site: https://namratak277.github.io
 
 ---
 
-## Pages
+## Project Brief
 
-| File | Route | Purpose |
-|------|-------|---------|
-| `index.html` | `/` | Main portfolio — hero, about, skills, experience, projects, GitHub stats, education, interests teaser, contact form |
-| `blog.html` | `/blog.html` | Blog listing; `/blog.html?post=<slug>` for single post view |
-| `resume.html` | `/resume.html` | Full printable resume with download link |
-| `interests.html` | `/interests.html` | Hobbies and interests with category filter |
-| `nav.html` | _(partial)_ | Shared navigation — fetched and injected into `#nav-slot` on every page |
+What this site is built to satisfy — useful as a from-scratch build prompt or a reference for what "on-brand" means here.
+
+**Who this is for:** Namrata Karki, a CS student at UNCG (B.S., graduating Dec 2026) with an IT support background, full-stack dev experience, and campus leadership roles. Target audience: recruiters/hiring managers for IT, data analysis, software engineering, and project management roles.
+
+**Tech constraints:**
+- Static site only — plain HTML/CSS/vanilla JS, no framework, no build step.
+- Deploy on GitHub Pages. Font Awesome + Google Fonts (Playfair Display, DM Sans) via CDN.
+- Frequently-changing content (skills, jobs, projects, interests, blog posts) lives in `assets/data/*.json`, fetched client-side and rendered into the DOM — not hardcoded in HTML — so it can be edited without touching markup.
+- Decap CMS (`/admin`) is wired up against those JSON files for GUI-based edits.
+- Shared nav/footer markup lives in one `nav.html`, fetched at runtime into `#nav-slot` on every page.
+- CI lints all HTML with `htmlhint` and verifies every local asset reference resolves to a real file.
+
+**Design system:**
+- Two themes, toggled via a button (persisted in `localStorage`), **light mode as the default**.
+  - Dark: deep navy-blue background, gold/terracotta/espresso accents.
+  - Light: warm beige/rose-gold background (not stark white), maroon/red CTAs and headings, sage/teal secondary accents.
+- One shared circular logo mark — a terminal-style `>` prompt (white) + a line-art monogram SVG + a blinking `_` cursor — identical in the nav bar and footer, gradient-colored per theme.
+- Card-and-pill visual language throughout: rounded tiles, pill-shaped tags/buttons, soft shadows, subtle hover-lift.
+
+**Pages:** `index.html` (main portfolio), `blog.html` (posts), `interests.html` (hobbies grid), `resume.html` (printable resume), `/admin` (Decap CMS).
+
+**Homepage section order:** Hero → About → Skills → Education → Experience → Projects → Interests teaser → Contact → Footer.
+
+- **Hero:** name, typewriter role-title cycling, one-line bio, meta pills, two CTAs, socials, circular profile photo with decorative SVG petal rings, four floating "skill bubble" cards (IT & AV Support / Data Analysis / Full-Stack Development / AI-LLM), and an ambient animated canvas background that reacts to the cursor.
+- **About:** a bento-grid — two-paragraph bio, a "soft skills" trait-pill tile, a quick-facts tile, resume-download + GitHub buttons. No repetition of hero info.
+- **Skills:** JSON-driven, grouped by category. Each skill shows a **5-point bar rating** with the fraction (e.g. "4.5/5"). Toggle between a **Cards** view (infinite-looping autoplay carousel) and a **Cloud** view (tag cloud sized by rating).
+- **Education:** a university info card plus a horizontally scrollable, auto-looping carousel (same mechanism as Skills) of course/activity blocks.
+- **Experience:** JSON-driven **flip cards** — front shows icon, title, org/dates, a standout metric where one exists, and a one-line hook; back (flip on hover or tap/Enter) shows detail bullets + tags.
+- **Projects:** JSON-driven card grid (icon, type, title, description, tags, GitHub link), optional "featured" highlight. Only real, shipped projects.
+- **Interests teaser:** auto-scrolling card row linking to the full interests page.
+- **Contact:** contact links beside an AJAX form (Formspree) with inline success/error state, plus resume download.
+
+**Interaction details:** custom cursor with contextual labels (desktop only), fade-in-on-scroll, page-transition overlay, scroll-progress bar, active-nav-link highlighting, mobile hamburger nav, button ripple.
+
+**Non-goals:** no placeholder/"in progress" projects, no GitHub-stats widget, no homepage blog teaser that duplicates the dedicated blog page.
 
 ---
 
@@ -22,167 +50,77 @@ Live site: https://namratak277.github.io
 
 ```
 namratak277.github.io/
-├── .github/
-│   └── workflows/
-│       └── ci.yml              ← GitHub Actions: HTML validation + asset audit
+├── .github/workflows/ci.yml    ← HTML validation + asset audit (see CI/CD below)
 ├── .htmlhintrc                 ← HTML lint rules
-│
-├── index.html
-├── blog.html
-├── resume.html
-├── interests.html
-├── nav.html
-├── favicon.ico
-│
+├── admin/                      ← Decap CMS (config.yml + editor UI)
+├── index.html                  ← Main portfolio
+├── blog.html                   ← Blog listing; ?post=<slug> for a single post
+├── interests.html              ← Hobbies grid with tag filters
+├── resume.html                 ← Standalone printable resume
+├── nav.html                    ← Shared nav/footer partial, injected into #nav-slot
 └── assets/
     ├── css/
-    │   ├── portfolio.css       ← Primary design system (custom properties, all components)
-    │   └── styles.css          ← Legacy styles scoped to resume.html
+    │   ├── portfolio.css       ← Design system + all component styles (index/blog/interests)
+    │   └── styles.css          ← Older styles, scoped to resume.html only
     ├── js/
-    │   ├── portfolio.js        ← All interactive behavior (nav, scroll, GitHub stats, contact form)
-    │   ├── blog.js             ← Blog page client-side router and renderer
-    │   └── main.js             ← Legacy GitHub API integration (used by resume/interests pages)
-    ├── data/
-    │   └── posts.json          ← Blog CMS: all post content and metadata
-    ├── images/
-    │   └── profilepic.png
-    └── files/
-        └── 2025 Resume.docx
+    │   ├── portfolio.js        ← All shared behavior + JSON-driven rendering
+    │   ├── blog.js              ← Blog listing/reader router
+    │   └── main.js              ← Not currently loaded by any page (unused)
+    ├── data/                   ← skills.json, experience.json, projects.json, interests.json, posts.json
+    ├── images/, files/         ← Photos, hobby images, downloadable resume
+    └── plugins/                ← jQuery/Bootstrap, used only by resume.html
 ```
 
 ---
 
-## Design System
+## Content & Data
 
-**Colors** — CSS custom properties in `:root` inside `portfolio.css`:
+Everything content-driven lives in `assets/data/*.json` and renders client-side — no rebuild needed after an edit.
 
-| Token | Value | Use |
-|-------|-------|-----|
-| `--blue-950` | `#050e1f` | Page background base |
-| `--blue-400` | `#3b74c8` | Primary accent / interactive |
-| `--gold` | `#c9a84c` | Highlight accent |
-| `--gold-lt` | `#f0d78a` | Italic emphasis text |
-| `--text-main` | `#e5eef9` | Body text |
-| `--text-muted` | `#9fb0c7` | Secondary / labels |
-| `--border` | `rgba(122,168,234,0.18)` | Card borders |
+- **Preferred:** edit through the Decap CMS at `/admin`.
+- **Manual fallback:** edit the relevant JSON file directly and push. Each file is a flat array/object matching what its section renders (see the source of truth for exact fields: `skills.json`, `experience.json`, `projects.json`, `interests.json`, `posts.json`).
+- Blog posts additionally support `content` as a raw HTML string — keep it trusted, since it's rendered unescaped.
 
-**Typography:**
-- Display: `Playfair Display` (section titles, blog headings)
-- Body: `DM Sans` (all body copy, UI)
+**Other things to edit directly in code:** nav links → `nav.html`. Design tokens/colors → `:root` in `assets/css/portfolio.css`. Resume page → `resume.html` + `assets/css/styles.css`.
 
 ---
 
-## JavaScript Overview
+## Contact Form Setup
 
-### `portfolio.js`
+The contact section posts to **Formspree** (no backend required):
 
-Loaded on every page. Runs on `DOMContentLoaded`.
+1. Create a form at [formspree.io](https://formspree.io) and copy its form ID.
+2. In `index.html`, set the form's `action` to `https://formspree.io/f/YOUR_FORM_ID`.
 
-| Function | What it does |
-|----------|--------------|
-| _(inline)_ | Fetches `nav.html` → injects into `#nav-slot` |
-| _(inline)_ | Hamburger toggle, scroll effects, active link highlighting |
-| `initIndexStreamingGrid()` | Auto-scrolling Netflix-style interest strip + preview modal |
-| `initInterestFilters()` | Tag-based filtering for the interests grid |
-| `initSkillsCarousel()` | Manual left/right scroll for skill cards |
-| `initTimelineEvents()` | Click-to-expand timeline events |
-| `initGitHubStats()` | Fetches GitHub API → animates repo/star/fork counts + language bar chart |
-| `initContactForm()` | AJAX Formspree submission with inline success/error states |
-
-### `blog.js`
-
-Loaded only on `blog.html`.
-
-| Function | What it does |
-|----------|--------------|
-| _(init)_ | Detects `?post=` URL param; routes to listing or single post |
-| `renderListing()` | Renders sorted blog card grid from `posts.json` |
-| `renderPost()` | Renders a full post with back-nav and HTML content |
-| `renderNotFound()` | Graceful 404 state for unknown slugs |
+Success/error states are handled inline, without a page reload.
 
 ---
 
-## Blog CMS (`assets/data/posts.json`)
+## CI/CD
 
-Posts are plain JSON — no build step, no external CMS. To add a post:
+On every push/PR to `main` (`.github/workflows/ci.yml`):
 
-1. Add a new entry to the `posts` array in `assets/data/posts.json`
-2. Required fields: `slug`, `title`, `date` (YYYY-MM-DD), `category`, `readTime`, `tags` (array), `excerpt`, `content` (HTML string)
-3. Commit and push — the blog updates automatically
+- **validate-html** — lints all `*.html` files with `htmlhint` against `.htmlhintrc`.
+- **audit-assets** — confirms every local `src`/`href`/`action` reference in the HTML resolves to a real file.
 
-**Post URL format:** `blog.html?post=your-slug-here`
-
----
-
-## Contact Form
-
-The contact section uses **Formspree** for AJAX form submissions without a backend.
-
-To activate it:
-1. Sign up at [formspree.io](https://formspree.io), create a new form
-2. Copy the form ID from the endpoint URL
-3. In `index.html`, find the `<form>` action and replace the placeholder:
-   ```html
-   action="https://formspree.io/f/YOUR_FORM_ID"
-   ```
-
-The form handles success and error states inline without page reload.
-
----
-
-## CI/CD (`.github/workflows/ci.yml`)
-
-Runs automatically on every push and pull request to `main`.
-
-**`validate-html` job:**
-- Installs `htmlhint`
-- Validates all `*.html` files against `.htmlhintrc` rules
-- Checks: tag pairs, unique IDs, doctype-first, src/attr not empty, title required
-
-**`audit-assets` job:**
-- Python script parses all local `src=`, `href=`, `action=` attributes
-- Confirms every referenced local file exists on disk
-- Fails the build if any local asset is missing
-
-GitHub Pages deploys automatically from `main` after these checks pass.
+GitHub Pages deploys from `main` once both pass.
 
 ---
 
 ## Running Locally
 
-No build step needed. Serve the root directory with any static server:
+No build step. Serve the root with any static server, e.g.:
 
 ```bash
-# Python (built-in)
 python -m http.server 8080
-
-# Node.js
-npx serve .
-
-# VS Code Live Server / Five Server extensions also work
+# or: npx serve .
 ```
 
-Open `http://localhost:8080/index.html`
-
----
-
-## Updating Content
-
-| What to change | Where |
-|----------------|-------|
-| Hero, about, experience, projects, contact | `index.html` |
-| GitHub stats section | `index.html` + `initGitHubStats()` in `portfolio.js` |
-| Blog posts | `assets/data/posts.json` |
-| Navigation links | `nav.html` |
-| Styles / design tokens | `assets/css/portfolio.css` |
-| Resume page content | `resume.html` + `assets/css/styles.css` |
-| Interests / hobbies | `interests.html` |
-| Animations, carousels, scroll behavior | `assets/js/portfolio.js` |
+Then open `http://localhost:8080/index.html`.
 
 ---
 
 ## Notes
 
-- GitHub API is unauthenticated — rate limit is 60 requests/hour per IP. Stats and language bars gracefully fall back silently if the limit is hit.
-- The blog renders raw HTML from `posts.json` `content` fields — keep content trusted (no user input).
-- `assets/css/styles.css` and `assets/js/main.js` are legacy files scoped to `resume.html` and `interests.html` respectively. New features go into `portfolio.css` / `portfolio.js`.
+- `assets/css/styles.css` is older code retained for `resume.html` only; new features belong in `portfolio.css`.
+- `assets/js/main.js` isn't loaded by any page — it's leftover from an earlier iteration and safe to ignore (or remove) unless you're reviving the GitHub-repo-gallery feature it implements.

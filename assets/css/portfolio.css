@@ -2330,3 +2330,190 @@ img { max-width: 100%; display: block; }
 [data-theme="light"] .skill-view-btn { background: rgba(239,218,192,0.8); border-color: rgba(84,11,14,0.15); color: #3B3B3B; }
 [data-theme="light"] .skill-view-btn.active,
 [data-theme="light"] .skill-view-btn:hover { background: #335C67; color: #FFF3B0; border-color: #335C67; }
+
+/* ============================================================
+   BRAND PAGE (brandcard.html)
+   ============================================================ */
+
+/* ── Logo showcase ── */
+.brand-logo-row { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1.25rem; align-items: center; }
+.brand-logo-tile {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 1.05rem;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  flex-shrink: 0;
+}
+.brand-logo-tile.dark  { background: linear-gradient(135deg, #335C67, #1a3a4e); color: #fff; }
+.brand-logo-tile.light { background: linear-gradient(135deg, #540B0E, #9E2A2B); color: #fff; }
+.brand-logo-tile .bc-cursor { color: #F0BC68; animation: nav-blink 1s step-end infinite; }
+.brand-logo-caption { margin-top: 1.1rem; color: var(--text-muted); font-size: 0.92rem; max-width: 640px; line-height: 1.7; }
+
+/* ── Color swatches ── */
+.brand-swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+.brand-swatch {
+  border-radius: 14px;
+  padding: 2.5rem 0.9rem 0.75rem;
+  min-height: 96px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+.brand-swatch-name { display: block; font-weight: 700; font-size: 0.8rem; }
+.brand-swatch-hex  { display: block; font-size: 0.7rem; opacity: 0.85; font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace; }
+
+/* ── Typography specimen ── */
+.brand-type-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.brand-type-row:last-child { border-bottom: none; padding-bottom: 0; }
+.brand-type-sample { flex-shrink: 0; width: 80px; text-align: center; font-size: 3rem; line-height: 1; color: var(--white); }
+.brand-type-row strong { display: block; font-size: 1.05rem; color: var(--white); }
+.brand-type-row span { color: var(--text-muted); font-size: 0.85rem; }
+
+/* ── Motto ── */
+.brand-motto-alts { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem; margin-top: 1.25rem; }
+.brand-motto-alts span {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--text-muted);
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+/* ============================================================
+   BUSINESS CARD — single card, theme-adaptive
+   Reuses the .impact-card flip mechanics (front/back, click or
+   hover to flip). Each face is styled with fixed colors that do
+   NOT follow the site's toggle — instead, WHICH face-set shows
+   is what switches with the theme: Terminal in dark mode,
+   Editorial (front) + a tile grid (back) in light mode.
+   ============================================================ */
+.brand-card-single {
+  max-width: 380px;
+  margin: 2rem auto 0;
+  perspective: 1400px;
+}
+.brand-card-single .impact-card { height: 215px; }
+.brand-card-single .impact-face { border: none; box-shadow: 0 14px 34px rgba(0,0,0,0.28); }
+
+.brand-card-single .bc-theme-light { display: none; }
+[data-theme="light"] .brand-card-single .bc-theme-dark  { display: none; }
+[data-theme="light"] .brand-card-single .bc-theme-light { display: block; }
+
+/* ── Terminal (dark mode) ── */
+.brand-card-single .bc-terminal.impact-front,
+.brand-card-single .bc-terminal.impact-back {
+  background: linear-gradient(160deg, #152e40, #071a26);
+  color: #e8cc8a;
+  font-family: var(--font-body);
+}
+.bc-terminal .bc-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 0.85rem;
+  margin-bottom: 0.6rem;
+}
+.bc-terminal .bc-logo .bc-prompt { color: #fff; }
+.bc-terminal .bc-logo .bc-cursor { color: #F0BC68; animation: nav-blink 1s step-end infinite; }
+.bc-terminal h3 { margin: 0; font-family: var(--font-display); font-size: 1.3rem; color: #FFF3B0; }
+.bc-terminal .bc-role {
+  margin: 0.35rem 0 0;
+  font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 0.76rem;
+  color: #7ab0be;
+}
+.bc-terminal .bc-tagline { margin: 0.5rem 0 0; font-size: 0.8rem; color: #c8a882; line-height: 1.5; }
+.bc-terminal .bc-pills { margin-top: auto; padding-top: 0.6rem; display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.bc-terminal .bc-pills span {
+  font-size: 0.66rem;
+  font-weight: 700;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(224,159,62,0.3);
+  background: rgba(224,159,62,0.1);
+  color: #F0BC68;
+}
+.bc-terminal.impact-back {
+  font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 0.78rem;
+  justify-content: center;
+}
+.bc-terminal.impact-back .bc-cmd { color: #7ec8e3; margin: 0 0 0.6rem; }
+.bc-terminal.impact-back dl { display: grid; grid-template-columns: auto 1fr; gap: 0.3rem 0.75rem; margin: 0; }
+.bc-terminal.impact-back dt { color: #7ab0be; }
+.bc-terminal.impact-back dd { margin: 0; color: #e8cc8a; }
+.bc-terminal .bc-qr { position: absolute; bottom: 1rem; right: 1rem; width: 54px; height: 54px; border-radius: 8px; opacity: 0.92; }
+
+/* ── Editorial (light mode front) ── */
+.brand-card-single .bc-editorial.impact-front,
+.brand-card-single .bc-editorial.impact-back {
+  background: linear-gradient(160deg, #F5E6D3, #EFDAC0);
+  color: #3B3B3B;
+  align-items: center;
+  text-align: center;
+}
+.bc-editorial h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  color: #540B0E;
+  letter-spacing: 0.01em;
+}
+.bc-editorial .bc-rule { width: 42px; height: 2px; background: #9E2A2B; margin: 0.6rem 0; border: none; }
+.bc-editorial .bc-role {
+  margin: 0;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8C6B3E;
+}
+.bc-editorial .bc-tagline { margin: 0.65rem 0 0; font-size: 0.82rem; font-style: italic; color: #5C5C5C; }
+.bc-editorial.impact-back { justify-content: center; gap: 0.55rem; }
+
+/* ── Editorial (light mode back) — a tile grid of contact links,
+   recolored to match the Editorial palette instead of a plain list ── */
+.bc-editorial.bc-tiles-back { align-items: stretch; justify-content: center; }
+.bc-editorial .bc-grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  width: 100%;
+}
+.bc-editorial .bc-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  border-radius: 10px;
+  background: rgba(84,11,14,0.05);
+  font-size: 0.68rem;
+  color: #3B3B3B;
+  text-align: center;
+  padding: 0.3rem;
+}
+.bc-editorial .bc-tile i { color: #9E2A2B; font-size: 0.95rem; }

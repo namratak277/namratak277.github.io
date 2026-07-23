@@ -65,6 +65,10 @@ document.addEventListener('DOMContentLoaded', async function() {
   // Education "academic foundation" carousel (static content, wire immediately)
   initCarousel(document.getElementById('edu-carousel-wrap'));
 
+  // Any static flip cards already in the DOM (e.g. brandcard.html) — the
+  // Experience section's own cards are wired again after they're rendered
+  initImpactCards();
+
   // Initialize theme toggle (button is inside nav, so call after nav loads)
   initThemeToggle();
 
