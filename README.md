@@ -15,7 +15,7 @@ What this site is built to satisfy — useful as a from-scratch build prompt or 
 **Tech constraints:**
 - Static site only — plain HTML/CSS/vanilla JS, no framework, no build step.
 - Deploy on GitHub Pages. Font Awesome + Google Fonts (Playfair Display, DM Sans) via CDN.
-- Frequently-changing content (skills, jobs, projects, interests, blog posts) lives in `assets/data/*.json`, fetched client-side and rendered into the DOM — not hardcoded in HTML — so it can be edited without touching markup.
+- Frequently-changing content (jobs, projects, interests, blog posts) lives in `assets/data/*.json`, fetched client-side and rendered into the DOM — not hardcoded in HTML — so it can be edited without touching markup. Skills is the one exception: it's static HTML by design (see Skills below).
 - Decap CMS (`/admin`) is wired up against those JSON files for GUI-based edits.
 - Shared nav/footer markup lives in one `nav.html`, fetched at runtime into `#nav-slot` on every page.
 - CI lints all HTML with `htmlhint` and verifies every local asset reference resolves to a real file.
@@ -27,15 +27,15 @@ What this site is built to satisfy — useful as a from-scratch build prompt or 
 - One shared circular logo mark — a terminal-style `>` prompt (white) + a line-art monogram SVG + a blinking `_` cursor — identical in the nav bar and footer, gradient-colored per theme.
 - Card-and-pill visual language throughout: rounded tiles, pill-shaped tags/buttons, soft shadows, subtle hover-lift.
 
-**Pages:** `index.html` (main portfolio), `blog.html` (posts), `interests.html` (hobbies grid), `resume.html` (printable resume), `/admin` (Decap CMS).
+**Pages:** `index.html` (main portfolio), `blog.html` (posts), `interests.html` (hobbies grid), `resume.html` (printable resume), `brand.html` (brand kit: logo, colors, type, motto, a theme-adaptive business card), `/admin` (Decap CMS).
 
 **Homepage section order:** Hero → About → Skills → Education → Experience → Projects → Interests teaser → Contact → Footer.
 
 - **Hero:** name, typewriter role-title cycling, one-line bio, meta pills, two CTAs, socials, circular profile photo with decorative SVG petal rings, four floating "skill bubble" cards (IT & AV Support / Data Analysis / Full-Stack Development / AI-LLM), and an ambient animated canvas background that reacts to the cursor.
 - **About:** a bento-grid — two-paragraph bio, a "soft skills" trait-pill tile, a quick-facts tile, resume-download + GitHub buttons. No repetition of hero info.
-- **Skills:** JSON-driven, grouped by category. Each skill shows a **5-point bar rating** with the fraction (e.g. "4.5/5"). Toggle between a **Cards** view (infinite-looping autoplay carousel) and a **Cloud** view (tag cloud sized by rating).
+- **Skills:** static HTML cards (not JSON-fetched — see note below), grouped by category, each skill showing a **5-point bar rating** with the fraction (e.g. "4.5/5"). Same infinite-looping autoplay carousel as Education.
 - **Education:** a university info card plus a horizontally scrollable, auto-looping carousel (same mechanism as Skills) of course/activity blocks.
-- **Experience:** JSON-driven **flip cards** — front shows icon, title, org/dates, a standout metric where one exists, and a one-line hook; back (flip on hover or tap/Enter) shows detail bullets + tags.
+- **Experience:** JSON-driven **flip cards** — front shows icon, title, org/dates, a standout metric where one exists, a one-line hook, and a few one-word skill/lesson-learned pills; back (click, tap, or Enter/Space when focused — not hover) shows detail bullets + tags.
 - **Projects:** JSON-driven card grid (icon, type, title, description, tags, GitHub link), optional "featured" highlight. Only real, shipped projects.
 - **Interests teaser:** auto-scrolling card row linking to the full interests page.
 - **Contact:** contact links beside an AJAX form (Formspree) with inline success/error state, plus resume download.
@@ -57,6 +57,7 @@ namratak277.github.io/
 ├── blog.html                   ← Blog listing; ?post=<slug> for a single post
 ├── interests.html              ← Hobbies grid with tag filters
 ├── resume.html                 ← Standalone printable resume
+├── brand.html                  ← Brand kit: logo, colors, type, motto, business card
 ├── nav.html                    ← Shared nav/footer partial, injected into #nav-slot
 └── assets/
     ├── css/
@@ -66,7 +67,7 @@ namratak277.github.io/
     │   ├── portfolio.js        ← All shared behavior + JSON-driven rendering
     │   ├── blog.js              ← Blog listing/reader router
     │   └── main.js              ← Not currently loaded by any page (unused)
-    ├── data/                   ← skills.json, experience.json, projects.json, interests.json, posts.json
+    ├── data/                   ← experience.json, projects.json, interests.json, posts.json
     ├── images/, files/         ← Photos, hobby images, downloadable resume
     └── plugins/                ← jQuery/Bootstrap, used only by resume.html
 ```
@@ -75,24 +76,21 @@ namratak277.github.io/
 
 ## Content & Data
 
-Everything content-driven lives in `assets/data/*.json` and renders client-side — no rebuild needed after an edit.
+Most content-driven sections live in `assets/data/*.json` and render client-side — no rebuild needed after an edit.
 
 - **Preferred:** edit through the Decap CMS at `/admin`.
-- **Manual fallback:** edit the relevant JSON file directly and push. Each file is a flat array/object matching what its section renders (see the source of truth for exact fields: `skills.json`, `experience.json`, `projects.json`, `interests.json`, `posts.json`).
+- **Manual fallback:** edit the relevant JSON file directly and push. Each file is a flat array/object matching what its section renders (see the source of truth for exact fields: `experience.json`, `projects.json`, `interests.json`, `posts.json`).
 - Blog posts additionally support `content` as a raw HTML string — keep it trusted, since it's rendered unescaped.
 
-**Other things to edit directly in code:** nav links → `nav.html`. Design tokens/colors → `:root` in `assets/css/portfolio.css`. Resume page → `resume.html` + `assets/css/styles.css`.
+**Other things to edit directly in code:** nav links → `nav.html`. Design tokens/colors → `:root` in `assets/css/portfolio.css`. Resume page → `resume.html` + `assets/css/styles.css`. Skills → the `#skills-carousel-row` markup in `index.html` directly (see note below).
 
 ---
 
 ## Contact Form Setup
 
-The contact section posts to **Formspree** (no backend required):
+The contact section posts to **Formspree** (no backend required) and is already wired up and active — verified working end-to-end. Success/error states are handled inline, without a page reload.
 
-1. Create a form at [formspree.io](https://formspree.io) and copy its form ID.
-2. In `index.html`, set the form's `action` to `https://formspree.io/f/YOUR_FORM_ID`.
-
-Success/error states are handled inline, without a page reload.
+To point it at a different Formspree form instead: create one at [formspree.io](https://formspree.io), copy its form ID, and in `index.html` swap the form's `action` to `https://formspree.io/f/YOUR_FORM_ID`.
 
 ---
 
@@ -109,11 +107,12 @@ GitHub Pages deploys from `main` once both pass.
 
 ## Running Locally
 
-No build step. Serve the root with any static server, e.g.:
+No build step, but **serve the root through an actual HTTP server rather than opening `index.html` directly as a file.** Browsers block `fetch()` to local files under the `file://` protocol, so anything JSON-driven (Experience, Projects, Interests teaser) silently fails to render if you just double-click the file or use a plain file preview — Skills is static HTML specifically so it isn't affected by this, but the rest still needs a server:
 
 ```bash
 python -m http.server 8080
 # or: npx serve .
+# VS Code: use the "Live Server" or "Live Preview" extension, not the built-in file preview
 ```
 
 Then open `http://localhost:8080/index.html`.

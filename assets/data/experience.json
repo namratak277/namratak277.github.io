@@ -8,6 +8,7 @@
       "metric": "30+",
       "metricLabel": "Classrooms Supported",
       "summary": "Keeps classroom technology running smoothly by resolving AV and network issues across campus spaces.",
+      "skills": ["Troubleshooting", "Reliability", "ServiceNow", "Ownership", "Patience"],
       "details": [
         "Deployed, configured, and maintained AV hardware and network-connected devices across 30+ classrooms, ensuring 99%+ uptime for academic operations.",
         "Applied ITIL-aligned incident management using ServiceNow to track, prioritize, and resolve support tickets from faculty and students.",
@@ -23,6 +24,7 @@
       "metric": "",
       "metricLabel": "",
       "summary": "Oversees store operations, supports the team, and uses data to improve daily efficiency.",
+      "skills": ["Leadership", "Operations", "Analytics", "Accountability", "Efficiency"],
       "details": [
         "Managed end-to-end store operations including staff supervision, scheduling, inventory management, and vendor coordination.",
         "Analyzed sales and inventory data to optimize stock levels, reduce waste, and improve operational efficiency.",
@@ -38,6 +40,7 @@
       "metric": "350+",
       "metricLabel": "Residents Supported",
       "summary": "Builds community, handles incidents, and supports residents in a busy campus living environment.",
+      "skills": ["Empathy", "De-escalation", "Resilience", "Documentation", "Trust"],
       "details": [
         "Managed programming and community-building for 350+ residents in a diverse residential environment.",
         "Applied crisis management protocols and incident response procedures, maintaining thorough documentation.",
@@ -53,6 +56,7 @@
       "metric": "15,000+",
       "metricLabel": "Students & Families",
       "summary": "Coordinated orientation logistics and technical setup for large student welcome events.",
+      "skills": ["Coordination", "Adaptability", "Poise", "Collaboration", "Initiative"],
       "details": [
         "Coordinated administrative and technical logistics for orientation events serving 15,000+ incoming students and families.",
         "Configured AV/presentation systems; diagnosed and resolved real-time technical failures during live events.",

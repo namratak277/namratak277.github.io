@@ -62,8 +62,10 @@ document.addEventListener('DOMContentLoaded', async function() {
   // Initialize contact form AJAX submission
   initContactForm();
 
-  // Education "academic foundation" carousel (static content, wire immediately)
+  // Skills and Education carousels (static content, wire immediately)
+  initCarousel(document.getElementById('skills-carousel-wrap'));
   initCarousel(document.getElementById('edu-carousel-wrap'));
+  initSkillBars();
 
   // Any static flip cards already in the DOM (e.g. brandcard.html) — the
   // Experience section's own cards are wired again after they're rendered
@@ -80,7 +82,6 @@ document.addEventListener('DOMContentLoaded', async function() {
   initCustomCursor();
 
   // Data-driven sections — fetch JSON, render dynamically
-  initSkillsFromData();
   initExperienceFromData();
   initInterestsTeaserFromData();
   initProjectsFromData();
@@ -728,7 +729,7 @@ function initCustomCursor() {
   });
 
   // ── Contextual labels ────────────────────────────────────
-  const INTERACTIVE = 'a,button,[role="button"],input,textarea,select,.project-card,.skill-card,.impact-card,.netflix-card,.bento-tile,.blog-card,.carousel-arrow,.cloud-tag,.skill-view-btn';
+  const INTERACTIVE = 'a,button,[role="button"],input,textarea,select,.project-card,.skill-card,.impact-card,.netflix-card,.bento-tile,.blog-card,.carousel-arrow';
   const LABEL_RULES = [
     ['.project-card',                                    'VIEW'  ],
     ['.blog-card',                                       'READ'  ],
@@ -766,79 +767,14 @@ function initCustomCursor() {
   });
 }
 
-async function initSkillsFromData() {
-  const section   = document.getElementById('skills');
+// ============================================================
+// SKILLS — static cards already in the DOM; just animate the
+// rating bars into view once the section is scrolled to
+// ============================================================
+function initSkillBars() {
+  const section = document.getElementById('skills');
   if (!section) return;
-  const row       = document.getElementById('skills-carousel-row');
-  const cloudWrap = section.querySelector('.skills-cloud-wrap');
-  const viewBar   = section.querySelector('.skills-view-bar');
-  const carousel  = document.getElementById('skills-carousel-wrap');
-  if (!row) return;
 
-  let data;
-  try {
-    const res = await fetch('assets/data/skills.json');
-    if (!res.ok) throw new Error('skills fetch failed');
-    data = await res.json();
-  } catch (e) {
-    console.warn('Could not load skills.json:', e);
-    return;
-  }
-
-  const CAT_CLASSES = ['cat-lang','cat-db','cat-sys','cat-anal','cat-lead','cat-course'];
-
-  // ── Render carousel cards ────────────────────────────────
-  row.innerHTML = data.categories.map(cat => `
-    <div class="skill-card fade-in">
-      <div class="skill-card-header">
-        <div class="skill-card-icon"><i class="${esc(cat.icon)}"></i></div>
-        <h3>${esc(cat.category)}</h3>
-      </div>
-      <div class="skb-list">
-        ${cat.skills.map(s => `
-          <div class="skb">
-            <span class="skb-name">${esc(s.name)}</span>
-            <span class="skb-rating">${s.rating}/5</span>
-            <div class="skb-track"><div class="skb-fill" data-pct="${(s.rating / 5) * 100}"></div></div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-  `).join('');
-
-  if (window._portfolioFadeObserver) {
-    row.querySelectorAll('.skill-card').forEach(el => window._portfolioFadeObserver.observe(el));
-  }
-
-  // ── Build cloud tags from JSON data ──────────────────────
-  if (cloudWrap) {
-    cloudWrap.innerHTML = '';
-    const pools = {};
-    data.categories.forEach((cat, ci) => {
-      const cls = CAT_CLASSES[ci % CAT_CLASSES.length];
-      cat.skills.forEach(s => {
-        const sz = s.rating >= 4.5 ? 'sz-lg' : s.rating >= 3 ? 'sz-md' : 'sz-sm';
-        (pools[cls] = pools[cls] || []).push({ name: s.name, cls, sz });
-      });
-    });
-    const catKeys = Object.keys(pools);
-    const maxL = Math.max(...catKeys.map(c => pools[c].length));
-    let idx = 0;
-    for (let i = 0; i < maxL; i++) {
-      catKeys.forEach(c => {
-        const s = pools[c][i];
-        if (!s) return;
-        const span = document.createElement('span');
-        span.className = `cloud-tag ${s.cls} ${s.sz}`;
-        span.textContent = s.name;
-        span.style.animationDelay = (idx * 24) + 'ms';
-        cloudWrap.appendChild(span);
-        idx++;
-      });
-    }
-  }
-
-  // ── Animate bars on scroll ───────────────────────────────
   let barsAnimated = false;
   new IntersectionObserver(entries => {
     if (!entries[0].isIntersecting || barsAnimated) return;
@@ -847,25 +783,6 @@ async function initSkillsFromData() {
       setTimeout(() => { fill.style.width = (fill.getAttribute('data-pct') || '0') + '%'; }, i * 40);
     });
   }, { threshold: 0.2 }).observe(section);
-
-  // ── Toggle Cards / Cloud ─────────────────────────────────
-  if (viewBar && carousel) {
-    viewBar.querySelectorAll('.skill-view-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        viewBar.querySelectorAll('.skill-view-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        if (btn.getAttribute('data-view') === 'cloud') {
-          carousel.hidden  = true;
-          if (cloudWrap) cloudWrap.hidden = false;
-        } else {
-          carousel.hidden  = false;
-          if (cloudWrap) cloudWrap.hidden = true;
-        }
-      });
-    });
-  }
-
-  initCarousel(carousel);
 }
 
 // ============================================================
@@ -886,7 +803,7 @@ async function initExperienceFromData() {
   }
 
   grid.innerHTML = data.jobs.map(job => `
-    <article class="impact-card fade-in" tabindex="0" role="button" aria-label="${esc(job.title)} — flip for details">
+    <article class="impact-card fade-in" tabindex="0" role="button" aria-label="${esc(job.title)} — click for details">
       <div class="impact-card-inner">
         <div class="impact-face impact-front">
           <div class="impact-icon"><i class="${esc(job.icon)}"></i></div>
@@ -898,7 +815,8 @@ async function initExperienceFromData() {
               <span class="impact-metric-label">${esc(job.metricLabel)}</span>
             </div>` : ''}
           <p class="impact-hook">${esc(job.summary)}</p>
-          <span class="impact-flip-hint"><i class="fas fa-arrows-rotate"></i> Flip for details</span>
+          <div class="impact-skill-pills">${job.skills.map(s => `<span>${esc(s)}</span>`).join('')}</div>
+          <span class="impact-flip-hint"><i class="fas fa-arrows-rotate"></i> Click for details</span>
         </div>
         <div class="impact-face impact-back">
           <h3>${esc(job.title)}</h3>

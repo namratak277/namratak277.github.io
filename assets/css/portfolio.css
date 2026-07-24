@@ -779,9 +779,10 @@ img { max-width: 100%; display: block; }
   font-weight: 600;
 }
 .skb-track {
+  position: relative;
   grid-column: 1 / -1;
   height: 4px;
-  background: rgba(51, 92, 103, 0.2);
+  background: rgba(0, 0, 0, 0.35);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -789,13 +790,25 @@ img { max-width: 100%; display: block; }
   height: 100%;
   width: 0;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--blue-400), var(--gold));
+  background: var(--gold);
   transition: width 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+/* Tick marks at the 1/2/3/4/5 (20/40/60/80%) boundaries of the 5-point scale */
+.skb-track::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to right,
+    transparent calc(20% - 0.5px), rgba(0,0,0,0.35) calc(20% - 0.5px), rgba(0,0,0,0.35) calc(20% + 0.5px), transparent calc(20% + 0.5px),
+    transparent calc(40% - 0.5px), rgba(0,0,0,0.35) calc(40% - 0.5px), rgba(0,0,0,0.35) calc(40% + 0.5px), transparent calc(40% + 0.5px),
+    transparent calc(60% - 0.5px), rgba(0,0,0,0.35) calc(60% - 0.5px), rgba(0,0,0,0.35) calc(60% + 0.5px), transparent calc(60% + 0.5px),
+    transparent calc(80% - 0.5px), rgba(0,0,0,0.35) calc(80% - 0.5px), rgba(0,0,0,0.35) calc(80% + 0.5px), transparent calc(80% + 0.5px)
+  );
 }
 [data-theme="light"] .skb-name { color: #3B3B3B; }
 [data-theme="light"] .skb-rating { color: #5a3a1a; }
-[data-theme="light"] .skb-track { background: rgba(84,11,14,0.08); }
-[data-theme="light"] .skb-fill { background: linear-gradient(90deg, #335C67, #C47D20); }
+[data-theme="light"] .skb-fill { background: #C47D20; }
 
 /* ============================================================
    EXPERIENCE — "Impact in the Field" flip cards
@@ -809,7 +822,7 @@ img { max-width: 100%; display: block; }
   perspective: 1400px;
 }
 .impact-card {
-  height: 360px;
+  height: 410px;
   cursor: pointer;
 }
 .impact-card-inner {
@@ -820,10 +833,6 @@ img { max-width: 100%; display: block; }
   transform-style: preserve-3d;
 }
 .impact-card.flipped .impact-card-inner { transform: rotateY(180deg); }
-@media (hover: hover) and (pointer: fine) {
-  .impact-card:hover .impact-card-inner,
-  .impact-card:focus-visible .impact-card-inner { transform: rotateY(180deg); }
-}
 .impact-face {
   position: absolute;
   inset: 0;
@@ -838,7 +847,13 @@ img { max-width: 100%; display: block; }
   flex-direction: column;
   text-align: left;
 }
-.impact-back { transform: rotateY(180deg); overflow-y: auto; }
+.impact-back {
+  transform: rotateY(180deg);
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.impact-back::-webkit-scrollbar { display: none; }
 .impact-icon {
   width: 46px;
   height: 46px;
@@ -892,6 +907,21 @@ img { max-width: 100%; display: block; }
   font-size: 0.88rem;
   line-height: 1.65;
 }
+.impact-skill-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+}
+.impact-skill-pills span {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(122,176,190,0.28);
+  background: rgba(75,134,149,0.12);
+  color: var(--blue-200);
+}
 .impact-flip-hint {
   margin-top: auto;
   padding-top: 0.85rem;
@@ -937,6 +967,11 @@ img { max-width: 100%; display: block; }
 [data-theme="light"] .impact-metric-num { color: #B8780A; }
 [data-theme="light"] .impact-hook { color: #3B3B3B; }
 [data-theme="light"] .impact-tags span {
+  background: rgba(92, 138, 138, 0.1);
+  border-color: rgba(92, 138, 138, 0.28);
+  color: #335C67;
+}
+[data-theme="light"] .impact-skill-pills span {
   background: rgba(92, 138, 138, 0.1);
   border-color: rgba(92, 138, 138, 0.28);
   color: #335C67;
@@ -2138,8 +2173,7 @@ img { max-width: 100%; display: block; }
   body,
   a, button, [role="button"], input, textarea, select, label,
   .project-card, .skill-card, .impact-card, .netflix-card,
-  .bento-tile, .blog-card, .carousel-arrow,
-  .cloud-tag, .skill-view-btn { cursor: none !important; }
+  .bento-tile, .blog-card, .carousel-arrow { cursor: none !important; }
 
   /* Gold glowing dot */
   .cursor-dot {
@@ -2240,96 +2274,6 @@ img { max-width: 100%; display: block; }
   -webkit-backdrop-filter: blur(2px);
 }
 .nav-backdrop.open { display: block; }
-
-/* ============================================================
-   SKILLS VIEW TOGGLE & CLOUD
-   ============================================================ */
-.skills-view-bar {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.4rem;
-  margin-bottom: 0.75rem;
-}
-.skill-view-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.38rem 0.9rem;
-  border-radius: 999px;
-  border: 1px solid rgba(51, 92, 103, 0.18);
-  background: rgba(44, 75, 86, 0.45);
-  color: var(--blue-200);
-  font-size: 0.78rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
-  font-family: var(--font-body);
-}
-.skill-view-btn.active,
-.skill-view-btn:hover {
-  background: rgba(51, 92, 103, 0.22);
-  color: var(--white);
-  border-color: rgba(51, 92, 103, 0.32);
-}
-
-.skills-cloud-wrap[hidden],
-.skills-carousel[hidden] { display: none !important; }
-
-.skills-cloud-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem;
-  padding: 2rem 1.5rem;
-  background: rgba(51, 92, 103, 0.55);
-  border: 1px solid rgba(51, 92, 103, 0.14);
-  border-radius: var(--radius);
-  min-height: 180px;
-  align-content: center;
-  justify-content: center;
-  animation: cloud-fade-up 0.35s ease both;
-}
-@keyframes cloud-fade-up {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.cloud-tag {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 999px;
-  font-weight: 700;
-  cursor: default;
-  border: 1px solid transparent;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  animation: tag-pop 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  user-select: none;
-}
-.cloud-tag:hover { transform: translateY(-3px) scale(1.07); box-shadow: 0 6px 18px rgba(0,0,0,0.28); }
-@keyframes tag-pop {
-  from { opacity: 0; transform: scale(0.7); }
-  to   { opacity: 1; transform: scale(1); }
-}
-/* Category colors */
-.cloud-tag.cat-lang   { background: rgba(75,134,149,0.22); border-color: rgba(75,134,149,0.36); color: #7ec8e3; }
-.cloud-tag.cat-db     { background: rgba(224,159,62,0.14); border-color: rgba(224,159,62,0.28); color: var(--gold-lt); }
-.cloud-tag.cat-sys    { background: rgba(51,92,103,0.22);  border-color: rgba(51,92,103,0.38);  color: var(--blue-200); }
-.cloud-tag.cat-anal   { background: rgba(158,42,43,0.16);  border-color: rgba(158,42,43,0.3);   color: #e88a8a; }
-.cloud-tag.cat-lead   { background: rgba(122,176,190,0.16);border-color: rgba(122,176,190,0.3); color: var(--blue-300); }
-.cloud-tag.cat-course { background: rgba(158,42,43,0.10);  border-color: rgba(158,42,43,0.22);  color: #d46060; }
-/* Proficiency sizes */
-.cloud-tag.sz-lg { padding: 0.52rem 1.25rem; font-size: 1.08rem; }
-.cloud-tag.sz-md { padding: 0.38rem 0.95rem; font-size: 0.9rem; }
-.cloud-tag.sz-sm { padding: 0.26rem 0.72rem; font-size: 0.76rem; opacity: 0.78; }
-
-[data-theme="light"] .skills-cloud-wrap { background: #EFDAC0; border-color: rgba(84,11,14,0.1); }
-[data-theme="light"] .cloud-tag.cat-lang   { background: rgba(92,138,138,0.12); border-color: rgba(92,138,138,0.3); color: #335C67; }
-[data-theme="light"] .cloud-tag.cat-db     { background: rgba(140,107,62,0.12); border-color: rgba(140,107,62,0.28); color: #540B0E; }
-[data-theme="light"] .cloud-tag.cat-sys    { background: rgba(84,11,14,0.07);   border-color: rgba(84,11,14,0.18);  color: #540B0E; }
-[data-theme="light"] .cloud-tag.cat-anal   { background: rgba(84,11,14,0.10);   border-color: rgba(84,11,14,0.22);  color: #9E2A2B; }
-[data-theme="light"] .cloud-tag.cat-lead   { background: rgba(92,138,138,0.10); border-color: rgba(92,138,138,0.24);color: #335C67; }
-[data-theme="light"] .cloud-tag.cat-course { background: rgba(84,11,14,0.07);   border-color: rgba(84,11,14,0.18);  color: #9E2A2B; }
-[data-theme="light"] .skill-view-btn { background: rgba(239,218,192,0.8); border-color: rgba(84,11,14,0.15); color: #3B3B3B; }
-[data-theme="light"] .skill-view-btn.active,
-[data-theme="light"] .skill-view-btn:hover { background: #335C67; color: #FFF3B0; border-color: #335C67; }
 
 /* ============================================================
    BRAND PAGE (brandcard.html)

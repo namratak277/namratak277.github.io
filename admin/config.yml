@@ -10,26 +10,6 @@ public_folder: assets/images
 
 collections:
 
-  - name: "skills"
-    label: "Skills"
-    files:
-      - name: "skills"
-        label: "Skills"
-        file: "assets/data/skills.json"
-        fields:
-          - label: "Categories"
-            name: "categories"
-            widget: "list"
-            fields:
-              - {label: "Category Name", name: "category", widget: "string"}
-              - {label: "Icon", name: "icon", widget: "string", hint: "Font Awesome class — e.g. fas fa-code"}
-              - label: "Skills"
-                name: "skills"
-                widget: "list"
-                fields:
-                  - {label: "Skill Name", name: "name", widget: "string"}
-                  - {label: "Proficiency %", name: "proficiency", widget: "number", value_type: "int", min: 0, max: 100}
-
   - name: "experience"
     label: "Experience"
     files:
