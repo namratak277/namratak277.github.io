@@ -229,7 +229,11 @@ namratak277.github.io/
 
 > **Important:** the page files are templates. Opening `experience.html` in a browser or in VS Code's preview shows **plain words with no design**. That's expected. To see the real site, run Jekyll and open `http://localhost:4000`.
 
-Jekyll needs Ruby; to avoid installing it, run Jekyll in Docker. Start **Docker Desktop**, then in PowerShell from the project folder:
+Jekyll is a Ruby program, so there are two ways to run it: **in Docker** (nothing to install except Docker), or **installed directly** on your computer. Both run the same Jekyll version as GitHub Pages, set by the `github-pages` gem in the `Gemfile`.
+
+#### Option A: Docker (recommended on Windows)
+
+Start **Docker Desktop**, then in PowerShell from the project folder:
 
 ```powershell
 docker run --rm -it -p 4000:4000 -v "${PWD}:/srv/site" -v jekyll-gems:/usr/local/bundle -w /srv/site ruby:3.3 sh -c "bundle install && bundle exec jekyll serve --host 0.0.0.0 --force_polling"
@@ -241,6 +245,56 @@ docker run --rm -it -p 4000:4000 -v "${PWD}:/srv/site" -v jekyll-gems:/usr/local
 - Stop it with `Ctrl+C`.
 - The first run downloads Jekyll and takes a few minutes; later runs are quick.
 - The built site is written to `_site/`, which git ignores.
+
+**What that command does, piece by piece.** In plain terms: Docker borrows a small, throwaway Linux computer that already has Ruby installed, lets it see this project folder, and runs Jekyll inside it. Your own computer never needs Ruby.
+
+| Part | Meaning |
+|---|---|
+| `docker run --rm -it` | Start a temporary container (deleted when stopped), attached to this terminal so `Ctrl+C` works |
+| `ruby:3.3` | The ready-made image to start from: Linux with Ruby 3.3 |
+| `-v "${PWD}:/srv/site"` | Share this project folder into the container at `/srv/site`. Edits you make show up inside it instantly |
+| `-w /srv/site` | Run the commands from inside that folder |
+| `-v jekyll-gems:/usr/local/bundle` | Keep the downloaded Ruby libraries in a named storage volume, so later runs don't download them again |
+| `-p 4000:4000` | Connect the container's port 4000 to your computer's, so `localhost:4000` reaches it |
+| `bundle install` | Read the `Gemfile` and install the `github-pages` gem (the exact Jekyll version and plugins GitHub uses) plus `webrick` (the small web server `jekyll serve` needs) |
+| `bundle exec jekyll serve` | Build the site into `_site/` and serve it |
+| `--host 0.0.0.0` | Accept connections from outside the container (otherwise only the container itself could open the page) |
+| `--force_polling` | Check for file changes by polling. Change notifications don't cross from Windows into Docker reliably |
+
+To run it **in the background** instead (frees the terminal):
+
+```powershell
+docker run -d --name portfolio-preview -p 4000:4000 -v "${PWD}:/srv/site" -v jekyll-gems:/usr/local/bundle -w /srv/site ruby:3.3 sh -c "bundle install && bundle exec jekyll serve --host 0.0.0.0 --force_polling"
+docker logs -f portfolio-preview    # watch it build (Ctrl+C stops watching, not the server)
+docker stop portfolio-preview       # stop it
+docker rm portfolio-preview         # remove it, so the name can be reused
+```
+
+#### Option B: Install Ruby and Jekyll yourself
+
+This is the same thing the container does, done by hand on your own machine.
+
+**Windows**
+1. Download **Ruby+Devkit 3.3** from [rubyinstaller.org](https://rubyinstaller.org/downloads/) and run it with the defaults. On the last screen, leave **"Run 'ridk install'"** checked; when the console window opens, press **Enter** to install the MSYS2 build tools (some gems compile code during install).
+2. Open a **new** PowerShell window and check: `ruby -v` (should print 3.3.x).
+3. In the project folder, install the project's gems once:
+   ```powershell
+   gem install bundler
+   bundle install
+   ```
+4. Start the site. Run this each time you work on it:
+   ```powershell
+   bundle exec jekyll serve --force_polling
+   ```
+5. Open **http://localhost:4000**. Stop it with `Ctrl+C`.
+
+**macOS / Linux:** install Ruby 3.x (macOS: `brew install ruby`; Ubuntu: `sudo apt install ruby-full build-essential`), then run steps 3–5. `--force_polling` isn't needed there.
+
+**If something goes wrong:**
+- **`bundle: command not found`:** open a new terminal after installing Ruby, so it picks up the new PATH.
+- **A gem fails to compile on Windows:** rerun `ridk install` and choose the MSYS2 + MINGW toolchain option.
+- **Port 4000 is already in use** (for example, the Docker preview is still running): stop the other server, or add `--port 4001`.
+- **Changes don't appear:** make sure the server is still running, then refresh. For `_config.yml` changes, restart it.
 
 ### Common edits
 
@@ -289,7 +343,35 @@ The tab bar, the highlighting, the page number, the word cloud and the footer ar
 2. **Validate HTML:** `htmlhint` checks the *built* pages against `.htmlhintrc`: lowercase tags, matched tag pairs, unique IDs, a doctype and a title on every page. The source files aren't linted directly, because they're templates.
 3. **Asset audit:** a short Python script confirms every local `src`, `href` and `action` in the built HTML points to a file that exists.
 
-**Publishing:** GitHub Pages builds and deploys the `main` branch on its own. That depends on **Settings → Pages → Source** being set to "Deploy from a branch". CI runs alongside as the safety check.
+### Publishing
+
+**In plain terms:** publishing is just pushing to GitHub. Within a minute or two, GitHub rebuilds the site with Jekyll and replaces the live version.
+
+**How it works:** the repository's Pages source is **Settings → Pages → "Deploy from a branch" (`main`)**. With that setting, every push to `main` starts GitHub's built-in **"pages build and deployment"** workflow. It runs the same Jekyll builder as CI and publishes the result. If the Source were ever switched to "GitHub Actions", Jekyll would *not* run automatically, and a deploy workflow would have to be added.
+
+GitHub's builder ignores the `Gemfile` for its own versions; the `Gemfile` only exists so local previews match. `Gemfile.lock` and `_site/` are local-only and listed in `.gitignore`, so they're never uploaded.
+
+**Publishing by hand:**
+1. Preview locally (section 7) and check the pages you changed.
+2. Optional: run the exact check GitHub runs (below).
+3. Commit and push:
+   ```bash
+   git add -A
+   git commit -m "Describe the change"
+   git push origin main
+   ```
+4. On GitHub, open the **Actions** tab. Two runs appear: **CI** (the checks) and **pages build and deployment** (the publish). Both should finish with a green ✓.
+5. Visit https://namratak277.github.io and hard-refresh (`Ctrl+F5`) to skip the browser's cached copy.
+
+**Checking with GitHub's exact builder before pushing (optional).** This runs the same Docker image GitHub uses to publish, writing to `_site_check/` (ignored by git). The first run downloads the image.
+
+```powershell
+docker run --rm -v "${PWD}:/github/workspace" -w /github/workspace -e INPUT_SOURCE=. -e INPUT_DESTINATION=./_site_check -e INPUT_FUTURE=false -e INPUT_BUILD_REVISION=local -e INPUT_VERBOSE=false -e INPUT_TOKEN= -e GITHUB_WORKSPACE=/github/workspace ghcr.io/actions/jekyll-build-pages:v1.0.13
+```
+
+If it ends with `done in … seconds`, GitHub will build it too. A warning that "the github-pages gem can't satisfy your Gemfile's dependencies" is caused by a local `Gemfile.lock` left by a preview. Delete `Gemfile.lock` and rerun; it doesn't affect GitHub, because that file is never uploaded.
+
+**If the live site doesn't update:** check the **Actions** tab. A red ✗ on "pages build and deployment" shows the Jekyll error; a red ✗ on CI shows which page or link failed.
 
 ---
 

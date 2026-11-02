@@ -34,6 +34,7 @@ build/
 
 ### Jekyll (built output + caches) ###
 _site/
+_site_check/
 .jekyll-cache/
 .jekyll-metadata
 Gemfile.lock
