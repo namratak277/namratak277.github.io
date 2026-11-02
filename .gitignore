@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Jekyll (built output + caches) ###
+_site/
+.jekyll-cache/
+.jekyll-metadata
+Gemfile.lock

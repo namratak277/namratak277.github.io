@@ -1,0 +1,26 @@
+# Folder tabs, left to right. Each page picks its tab with `tab: <id>` in its
+# front matter; the layout highlights that tab and numbers the page by its
+# position here (cover = 0, about = 1, ...).
+# `leaves: true` = a link out of the folder (drawn with a dashed outline).
+
+- id: cover
+  label: Cover
+  url: index.html
+- id: about
+  label: About
+  url: about.html
+- id: experience
+  label: Experience
+  url: experience.html
+- id: projects
+  label: Projects
+  url: projects.html
+- id: education
+  label: Education
+  url: education.html
+- id: interests
+  label: Interests
+  url: interests.html
+- id: contact
+  label: Contact
+  url: contact.html

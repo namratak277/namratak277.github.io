@@ -1,101 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interests & Hobbies — Namrata Karki</title>
-    <link rel="shortcut icon" href="favicon.ico">
-    <script>
-      (function(){var t=localStorage.getItem('theme');if(t!=='dark')document.documentElement.setAttribute('data-theme','light');})();
-    </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/portfolio.css?v=20260723">
-    <style>
-        .page-hero{padding:6rem 0 3rem;text-align:center}
-        .netflix-section { padding: 3rem 0 6rem; }
-        .card-caption { padding: 0.5rem 0.75rem; color: var(--text-muted); font-size: 0.9rem; }
-    </style>
-</head>
-<body>
-    <div id="nav-slot"></div>
-
-    <main>
-        <section class="page-hero">
-            <div class="container">
-                <div class="section-label center">Interests</div>
-                <h1 class="section-title center">My Interests — Curated Like a Watchlist</h1>
-                <p class="section-subtitle">A Netflix-inspired grid for hobbies and projects — visually focused and easy to browse.</p>
-            </div>
-        </section>
-
-        <section class="section netflix-section">
-            <div class="container">
-                                <div class="section-label">Creative Picks</div>
-                                <h2 class="section-title">Featured</h2>
-                                <div class="filter-bar" style="margin-bottom:1rem">
-                                    <button class="filter-chip" data-filter="all">All</button>
-                                    <button class="filter-chip" data-filter="arts">Arts</button>
-                                    <button class="filter-chip" data-filter="active">Active</button>
-                                    <button class="filter-chip" data-filter="tech">Tech</button>
-                                    <button class="filter-chip" data-filter="food">Food</button>
-                                </div>
-                                <div class="netflix-grid" id="interest-grid">
-                                        <div class="netflix-card" data-tags="arts,performance"><img src="assets/images/hobby1.jpg" alt="Dance"><div class="card-title">Dance & Performance</div><div class="card-caption">Choreography, community shows, and storytelling through movement.</div></div>
-                                        <div class="netflix-card" data-tags="arts,photography"><img src="assets/images/hobby2.jpg" alt="Photography"><div class="card-title">Photography</div><div class="card-caption">Everyday moments captured during hikes and events.</div></div>
-                                        <div class="netflix-card netflix-large" data-tags="arts,painting"><img src="assets/images/hobby3.jpg" alt="Watercolor"><div class="card-title">Watercolor Series</div><div class="card-caption">Explorations of texture and color in small studies.</div></div>
-                                        <div class="netflix-card" data-tags="food,cooking"><img src="assets/images/hobby4.jpg" alt="Cooking"><div class="card-title">Cooking</div><div class="card-caption">Experimenting with recipes and flavors for friends and family.</div></div>
-                                        <div class="netflix-card" data-tags="active,hiking"><img src="assets/images/hobby5.jpg" alt="Hiking"><div class="card-title">Hiking</div><div class="card-caption">Trail runs and weekend hikes around the Triad.</div></div>
-                                        <div class="netflix-card" data-tags="tech,writing"><img src="assets/images/hobby6.jpg" alt="Writing"><div class="card-title">Writing & Newsletters</div><div class="card-caption">Short essays and tech tips I share with my community.</div></div>
-                                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="container">
-                <div class="section-label">Browse</div>
-                <h2 class="section-title">All Interests</h2>
-                <p class="section-subtitle">Explore categories below — click an item to learn more.</p>
-                <div class="netflix-strip">
-                    <div class="netflix-row">
-                        <a class="netflix-card" href="#arts"><img src="assets/images/hobby1.jpg" alt="Arts"><div class="card-title">Arts & Crafts</div></a>
-                        <a class="netflix-card" href="#sports"><img src="assets/images/hobby5.jpg" alt="Sports"><div class="card-title">Active Life</div></a>
-                        <a class="netflix-card" href="#tech"><img src="assets/images/hobby6.jpg" alt="Tech"><div class="card-title">Tech Projects</div></a>
-                        <a class="netflix-card" href="#food"><img src="assets/images/hobby4.jpg" alt="Food"><div class="card-title">Cooking</div></a>
-                        <a class="netflix-card" href="#film"><img src="assets/images/hobby2.jpg" alt="Film"><div class="card-title">Film & Docs</div></a>
-                        <a class="netflix-card" href="#games"><img src="assets/images/hobby7.jpg" alt="Games"><div class="card-title">Gaming</div></a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-inner">
-                <a class="footer-logo" href="index.html" aria-label="Home">
-                  <span class="nav-prompt">&gt;</span>
-                  <svg class="nav-monogram" width="19" height="19" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <line x1="3"  y1="4" x2="3"  y2="26" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
-                    <line x1="3"  y1="4" x2="15" y2="26" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
-                    <line x1="15" y1="4" x2="15" y2="26" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
-                    <line x1="15" y1="15" x2="27" y2="4"  stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
-                    <line x1="15" y1="15" x2="27" y2="26" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
-                  </svg>
-                  <span class="nav-cursor">_</span>
-                </a>
-                <p>&copy; 2026 Namrata Karki &middot; Interests</p>
-                <div class="footer-socials">
-                    <a href="https://linkedin.com/in/namrata-karki" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="https://github.com/namratak277" target="_blank"><i class="fab fa-github"></i></a>
-                    <a href="mailto:namratak277@gmail.com"><i class="fas fa-envelope"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script src="assets/js/portfolio.js?v=20260723"></script>
-</body>
-</html>
+---
+layout: folder
+title: Interests — Namrata Karki
+tab: interests
+---
+  <section class="section folder-panel interest-teaser" id="interest-teaser">
+    <div class="container">
+      {% include file-line.html %}
+      <div class="section-label">Interests</div>
+      <h2 class="section-title">A Peek at My Interests</h2>
+      <p class="section-subtitle">Explore hobbies and creative projects.</p>
+      <div class="netflix-strip">
+        <div class="netflix-row" id="interests-row"></div>
+      </div>
+    </div>
+  </section>

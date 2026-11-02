@@ -1,0 +1,56 @@
+---
+layout: folder
+title: Contact — Namrata Karki
+tab: contact
+---
+  <section class="section folder-panel contact-section" id="contact">
+    <div class="container">
+      {% include file-line.html %}
+      <div class="contact-inner">
+        <div class="contact-text">
+          <div class="section-label">Contact</div>
+          <h2 class="section-title">Let's Work<br>Together</h2>
+          <p>I'm looking for IT, Data Analysis, Business Analysis, Software Engineering, or Project Management opportunities. If you have a role or project in mind, I'd love to connect.</p>
+          <div class="contact-links">
+            <a href="mailto:namratak277@gmail.com" class="contact-link"><i class="fas fa-envelope"></i><div><strong>Email</strong><span>namratak277@gmail.com</span></div></a>
+            <a href="https://linkedin.com/in/namrata-karki" target="_blank" class="contact-link"><i class="fab fa-linkedin-in"></i><div><strong>LinkedIn</strong><span>linkedin.com/in/namrata-karki</span></div></a>
+            <a href="https://github.com/namratak277" target="_blank" class="contact-link"><i class="fab fa-github"></i><div><strong>GitHub</strong><span>github.com/namratak277</span></div></a>
+            <!-- phone contact removed per request -->
+          </div>
+        </div>
+        <div class="contact-cta">
+          <form id="contact-form" class="contact-form" action="https://formspree.io/f/xqejoebj" method="POST" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cf-name">Name</label>
+                <input id="cf-name" type="text" name="name" placeholder="Your name" required autocomplete="name">
+              </div>
+              <div class="form-group">
+                <label for="cf-email">Email</label>
+                <input id="cf-email" type="email" name="email" placeholder="your@email.com" required autocomplete="email">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cf-subject">Subject</label>
+              <select id="cf-subject" name="subject">
+                <option value="">Select a topic</option>
+                <option>Job Opportunity</option>
+                <option>Internship</option>
+                <option>Project Collaboration</option>
+                <option>General Inquiry</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cf-message">Message</label>
+              <textarea id="cf-message" name="message" placeholder="Tell me about the opportunity or what you have in mind..." rows="5" required></textarea>
+            </div>
+            <div class="form-submit-wrap">
+              <div id="form-status" class="form-status" role="alert"></div>
+              <button type="submit" class="btn btn-primary">Send Message <i class="fas fa-paper-plane"></i></button>
+              <a href="assets/files/2025 Resume.docx" class="btn btn-ghost" download>Download Resume</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>

@@ -729,10 +729,9 @@ function initCustomCursor() {
   });
 
   // ── Contextual labels ────────────────────────────────────
-  const INTERACTIVE = 'a,button,[role="button"],input,textarea,select,.project-card,.skill-card,.impact-card,.netflix-card,.bento-tile,.blog-card,.carousel-arrow';
+  const INTERACTIVE = 'a,button,[role="button"],input,textarea,select,.project-card,.skill-card,.impact-card,.netflix-card,.bento-tile,.carousel-arrow';
   const LABEL_RULES = [
     ['.project-card',                                    'VIEW'  ],
-    ['.blog-card',                                       'READ'  ],
     ['.netflix-card',                                    'OPEN'  ],
     ['[download],[href*="resume"],[href*="Resume"]',     'SAVE'  ],
     ['[type="submit"]',                                  'SEND'  ],

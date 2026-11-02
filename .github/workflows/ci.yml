@@ -10,11 +10,20 @@ permissions:
   contents: read
 
 jobs:
-  validate-html:
-    name: Validate HTML
+  build-and-validate:
+    name: Build with Jekyll, then validate the output
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # Same builder GitHub Pages uses, so a pass here means the live build works.
+      # Pages in the repo are templates (front matter + layout), so everything
+      # below checks the finished HTML in _site/ instead of the source files.
+      - name: Build site
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -24,20 +33,16 @@ jobs:
       - name: Install htmlhint
         run: npm install -g htmlhint@1
 
+      # nav.html is a fragment fetched into other pages, not a full document
       - name: Validate HTML files
-        run: htmlhint "index.html" "blog.html" "resume.html" "interests.html" "brand.html" --config .htmlhintrc
-
-  audit-assets:
-    name: Audit Local Asset References
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+        run: htmlhint "_site/*.html" --ignore "**/nav.html" --config .htmlhintrc
 
       - name: Check local asset references exist
         shell: python3 {0}
         run: |
           import os, re, sys
 
+          os.chdir('_site')
           errors = []
           html_files = [f for f in os.listdir('.') if f.endswith('.html')]
 

@@ -1,0 +1,769 @@
+/* ============================================================
+   FOLDER LAYOUT — the manila-folder look shared by every page that
+   uses _layouts/folder.html. Base tokens/components: portfolio.css
+   ============================================================ */
+:root {
+  /* Two fonts only (the brand kit's): Playfair Display for headings and
+     notes, DM Sans for everything else */
+  --font-mono: var(--font-body);
+  --font-hand: var(--font-display);
+
+  --folder-bg:      var(--blue-850);
+  --folder-tab-bg:  var(--blue-900);
+  --folder-bar-bg:  rgba(14, 37, 53, 0.86);
+  --folder-accent:  var(--gold);
+  --folder-edge:    var(--border-strong);
+  --folder-ink:     var(--text-muted);
+
+  /* Paper inside the folder */
+  --paper:        #1e3a4c;
+  --paper-2:      #234356;
+  --paper-line:   rgba(232, 204, 138, 0.08);
+  --paper-strong: rgba(232, 204, 138, 0.28);
+  --paper-rule:   rgba(224, 159, 62, 0.55);
+  --paper-grid:   rgba(122, 176, 190, 0.07);
+  --stamp:        var(--gold);
+  --hand:         var(--gold-lt);
+  --highlight:    rgba(158, 42, 43, 0.6);
+  --tape:         rgba(240, 188, 104, 0.32);
+  --cork:         #13283a;
+  --cork-dot:     rgba(232, 204, 138, 0.05);
+  --airmail-a:    #9E2A2B;
+  --airmail-b:    #E09F3E;
+  --logo-ink:     var(--gold-lt);
+
+  /* Word cloud colors, one per group */
+  --w-code:   #7AB0BE;
+  --w-data:   #E09F3E;
+  --w-it:     #E8CC8A;
+  --w-design: #FFF3B0;
+  --w-people: #F0BC68;
+  --w-lang:   #A8CDD8;
+}
+[data-theme="light"] {
+  --folder-bg:      #EFDAC0;
+  --folder-tab-bg:  #E2C9A4;
+  --folder-bar-bg:  rgba(245, 230, 211, 0.9);
+  --folder-accent:  #9E2A2B;
+  --folder-edge:    rgba(84, 11, 14, 0.22);
+  --folder-ink:     #5C5C5C;
+
+  --paper:        #FCF7EE;
+  --paper-2:      #F6ECDC;
+  --paper-line:   rgba(92, 138, 138, 0.22);
+  --paper-strong: rgba(84, 11, 14, 0.3);
+  --paper-rule:   rgba(158, 42, 43, 0.45);
+  --paper-grid:   rgba(92, 138, 138, 0.13);
+  --stamp:        #9E2A2B;
+  --hand:         #9E2A2B;
+  --highlight:    rgba(240, 188, 104, 0.6);
+  --tape:         rgba(240, 188, 104, 0.5);
+  --cork:         #DCC29C;
+  --cork-dot:     rgba(84, 11, 14, 0.08);
+  --airmail-a:    #9E2A2B;
+  --airmail-b:    #5C8A8A;
+  --logo-ink:     #9E2A2B;
+
+  --w-code:   #335C67;
+  --w-data:   #B8780A;
+  --w-it:     #3B3B3B;
+  --w-design: #540B0E;
+  --w-people: #9E2A2B;
+  --w-lang:   #5C8A8A;
+}
+
+/* The folder tabs replace the shared nav bar on this page */
+#nav-slot { display: none; }
+/* No full-screen fade between pages (portfolio.js adds this overlay) */
+.page-transition-overlay { display: none; }
+body { padding-top: 0; }
+/* "hidden" on html + body makes body a scroll container, which stops the
+   tab bar from sticking; "clip" still blocks sideways scroll without that */
+html, body { overflow-x: clip; }
+
+.folder-wrap {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto 3rem;
+}
+
+/* ---- Tab bar: sticks to the top, tabs stick out of the folder ---- */
+.folder-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  padding-top: 0.9rem;
+  background: var(--folder-bar-bg);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 -40px 0 var(--folder-bar-bg);
+}
+.folder-tabs {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.3rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.folder-tabs::-webkit-scrollbar { display: none; }
+
+/* Tabs sit on the right edge like a real folder; margin-left:auto (not
+   justify-content) keeps the row scrollable when it overflows on phones */
+.folder-tabs > .folder-tab:first-child { margin-left: auto; }
+.folder-tab {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 0.75rem 0.6rem;
+  margin-bottom: -1px;
+  border: 1px solid var(--folder-edge);
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  background: var(--folder-tab-bg);
+  color: var(--folder-ink);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transform: translateY(4px);
+}
+/* Word only — each tab is as wide as its label */
+.folder-tab i { display: none; }
+.folder-tab:hover { color: var(--white); }
+.folder-tab:focus-visible { outline: 2px solid var(--folder-accent); outline-offset: 2px; }
+
+.folder-tab[aria-current="page"] {
+  position: relative;
+  z-index: 1;
+  background: var(--folder-bg);
+  color: var(--white);
+  transform: translateY(0);
+  padding-bottom: 0.85rem;
+  box-shadow: inset 0 3px 0 var(--folder-accent);
+}
+.folder-tab[aria-current="page"] i { color: var(--folder-accent); opacity: 1; }
+
+/* Cover tab carries only the logo, inked for contrast on the tab */
+.folder-tab-cover { gap: 0.15rem; padding-left: 0.95rem; padding-right: 0.95rem; }
+.folder-tab-cover .nav-prompt,
+.folder-tab-cover .nav-monogram { color: var(--logo-ink); }
+.folder-tab-cover .nav-prompt,
+.folder-tab-cover .nav-cursor { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 600; }
+.folder-tab-cover .nav-cursor { color: var(--folder-accent); animation: nav-blink 1s step-end infinite; }
+
+/* Blog leaves the folder, so it reads as a plain link, not a divider */
+.folder-tab-link { background: transparent; border-style: dashed; }
+
+.folder-theme {
+  flex-shrink: 0;
+  align-self: center;
+  margin-bottom: 0.35rem;
+  background: var(--folder-tab-bg);
+}
+
+/* ---- Folder body: the cover and the pages ---- */
+.folder-body {
+  position: relative;
+  overflow: hidden;
+  background: var(--folder-bg);
+  border: 1px solid var(--folder-edge);
+  border-radius: var(--radius) 6px var(--radius) var(--radius);
+  box-shadow: var(--shadow), 6px 6px 0 -1px var(--folder-tab-bg), 6px 6px 0 0 var(--folder-edge);
+}
+
+
+/* Cover = the hero, sized to fill the screen under the tab bar */
+.folder-panel.hero { min-height: calc(100vh - 5.5rem); padding: 3rem 0 3.5rem; }
+.folder-panel.hero .scroll-down { display: none; }
+
+/* portfolio.css stacks photo over text below 1120px, which leaves the
+   cover half empty on laptops — keep them side by side down to tablets */
+@media (min-width: 761px) and (max-width: 1120px) {
+  .folder-panel.hero .hero-inner {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+    grid-template-areas: "visual text";
+    gap: 1.5rem;
+  }
+  .folder-panel.hero .hero-text { justify-self: end; text-align: right; }
+  .folder-panel.hero .hero-actions,
+  .folder-panel.hero .hero-socials { justify-self: end; justify-content: flex-end; }
+  .folder-panel.hero .hero-actions { flex-wrap: wrap; }
+  .folder-panel.hero .hero-visual { justify-self: center; }
+  .folder-panel.hero .hero-name { font-size: clamp(3rem, 7vw, 5rem); }
+}
+
+/* Pages = the sections */
+.folder-panel.section {
+  padding: 1.6rem 0 3rem;
+  min-height: calc(100vh - 5.5rem);
+  border-top: none;
+  border-image: none;
+}
+.folder-panel > .container { width: calc(100% - 3rem); }
+
+/* The tab already names the page, so the pill labels go */
+.folder-panel .section-label { display: none; }
+
+/* Every page opens with a typed file line, then a left-set heading */
+.file-line {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--folder-ink);
+}
+.file-line-rule { flex: 1; border-top: 1px solid var(--folder-edge); }
+.folder-panel .section-title,
+.folder-panel .section-title.center { text-align: left; margin: 0; }
+
+/* Subtitles become handwritten margin notes */
+.folder-panel .section-subtitle {
+  max-width: none;
+  margin: 0.35rem 0 0;
+  text-align: left;
+  font-family: var(--font-hand);
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  color: var(--hand);
+}
+.folder-panel .section-subtitle a { color: inherit; }
+
+/* Shared bits: rubber stamp, paper sheet, tape */
+.stamp {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border: 2px solid var(--stamp);
+  border-radius: 4px;
+  color: var(--stamp);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.88;
+}
+.sheet {
+  position: relative;
+  background: var(--paper);
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05), 0 14px 28px -16px rgba(0, 0, 0, 0.45);
+}
+
+/* ============ 01 ABOUT — a letter on ruled paper + an ID card ============ */
+.about-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(240px, 1fr);
+  gap: 2.2rem;
+  align-items: start;
+  margin-top: 1.6rem;
+}
+.letter {
+  --line: 1.9rem;
+  padding: var(--line) 2rem calc(var(--line) * 1.2) 3.6rem;
+  line-height: var(--line);
+  background:
+    linear-gradient(90deg, transparent 2.6rem, var(--paper-rule) 2.6rem, var(--paper-rule) calc(2.6rem + 1.5px), transparent calc(2.6rem + 1.5px)),
+    repeating-linear-gradient(to bottom, transparent 0 calc(var(--line) - 1px), var(--paper-line) calc(var(--line) - 1px) var(--line)),
+    var(--paper);
+  /* Text rows start on the grid (padding-top = one line); shift the rules so
+     each one sits just under the text, ~77% of the way down its row */
+  background-position: 0 0, 0 calc(var(--line) * -0.23 + 1px), 0 0;
+}
+.letter p { margin: 0 0 var(--line); color: var(--text-main); font-size: 1.04rem; }
+.letter .letter-hi,
+.letter .letter-sign { font-family: var(--font-hand); font-style: italic; font-size: 1.15rem; color: var(--hand); }
+.letter .letter-sign { margin: 0; text-align: right; }
+.clip {
+  position: absolute;
+  top: -16px;
+  left: 4.4rem;
+  width: 16px;
+  height: 50px;
+  border: 2.5px solid #9AA6AA;
+  border-radius: 9px;
+}
+.clip::after {
+  content: "";
+  position: absolute;
+  inset: 7px 2px 9px;
+  border: 2.5px solid #9AA6AA;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+}
+.id-card {
+  padding: 1.6rem 1.3rem 1.3rem;
+  background: var(--paper-2);
+  border: 1px dashed var(--paper-strong);
+  font-family: var(--font-mono);
+}
+.id-card::before {
+  content: "";
+  position: absolute;
+  top: 0.65rem;
+  left: 50%;
+  width: 34px;
+  height: 7px;
+  translate: -50% 0;
+  border-radius: 99px;
+  background: var(--folder-bg);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+.id-card-head {
+  margin: 0.5rem 0 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1.5px solid var(--paper-strong);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--folder-ink);
+}
+.id-card dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 0.65rem 0.9rem; }
+.id-card dt { font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--folder-ink); padding-top: 0.15rem; }
+.id-card dd { margin: 0; font-size: 0.86rem; color: var(--white); }
+.id-links { display: flex; flex-direction: column; gap: 0.45rem; margin-top: 1.3rem; padding-top: 0.9rem; border-top: 1.5px solid var(--paper-strong); }
+.id-links a { color: var(--white); font-size: 0.82rem; text-decoration: underline; text-decoration-color: var(--paper-strong); text-underline-offset: 4px; }
+.id-links a:hover { text-decoration-color: var(--stamp); }
+
+/* ============ 02 EXPERIENCE — index cards with stamped numbers ============ */
+#experience .impact-grid { gap: 1.6rem 1.3rem; margin-top: 1.6rem; }
+/* Index-card grid: a fixed-height header ends at the red rule (--rule),
+   then text rows of --row each, with a blue line ~77% down every row
+   so it sits just under the words */
+#experience .impact-card { height: 360px; }
+#experience .impact-face {
+  --row: 1.6rem;
+  --rule: 6.6rem;
+  border: none;
+  border-radius: 2px;
+  padding: 1.1rem 1.2rem 1rem;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05), 0 16px 26px -16px rgba(0, 0, 0, 0.5);
+  background:
+    linear-gradient(var(--paper-rule), var(--paper-rule)) 0 var(--rule) / 100% 1.5px no-repeat,
+    repeating-linear-gradient(to bottom, transparent 0 calc(var(--row) - 1px), var(--paper-line) calc(var(--row) - 1px) var(--row))
+      0 calc(var(--rule) + var(--row) * -0.23 + 1px) / 100% 100% no-repeat,
+    var(--paper);
+}
+#experience .impact-icon,
+#experience .impact-skill-pills { display: none; }
+/* Header: title (2 lines max) + org (2 lines max) = 1.1 + 3 + 0.4 + 1.8 = 6.3rem */
+#experience .impact-front h3 { font-size: 1.2rem; line-height: 1.5rem; height: 3rem; overflow: hidden; }
+#experience .impact-org { height: 1.8rem; line-height: 0.9rem; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 400; color: var(--folder-ink); }
+/* Back of the card: one short title, so the red rule sits higher */
+/* The back scrolls when the list is long; "local" makes the lines scroll with it */
+#experience .impact-back { --rule: 3.9rem; background-attachment: local, local, local; }
+/* Metric is stamped in the bottom-left corner, clear of the title */
+#experience .impact-metric {
+  position: absolute;
+  left: 1rem;
+  bottom: 0.9rem;
+  margin: 0;
+  padding: 0.3rem 0.45rem;
+  align-items: center;
+  border: 2px solid var(--stamp);
+  border-radius: 4px;
+  opacity: 0.9;
+}
+#experience .impact-metric-num { font-family: var(--font-mono); font-size: 1.05rem; color: var(--stamp); }
+#experience .impact-metric-label { margin-top: 0.15rem; font-family: var(--font-mono); font-size: 0.5rem; color: var(--stamp); max-width: 5.5rem; text-align: center; }
+/* 6.3rem header + 0.3rem = first text row starts exactly at the rule */
+#experience .impact-hook { margin-top: 0.3rem; line-height: var(--row); font-size: 0.92rem; }
+#experience .impact-flip-hint {
+  font-family: var(--font-hand);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--hand);
+  align-self: flex-end;
+}
+/* Shorter hint so it clears the stamp */
+#experience .impact-flip-hint { font-size: 0; }
+#experience .impact-flip-hint::after { content: "flip me \2192"; font-size: 0.9rem; }
+/* Back: 1.1 padding + 2.6 title + 0.2 = list starts at the 3.9rem rule */
+/* flex-shrink: 0 — the face is a flex column, and a long list would
+   otherwise squeeze the fixed-height title (and the grid) out of place */
+#experience .impact-face > * { flex-shrink: 0; }
+#experience .impact-back h3 { font-size: 1.05rem; line-height: 1.3rem; height: 2.6rem; overflow: hidden; }
+#experience .impact-back ul { margin-top: 0.2rem; font-size: 0.82rem; line-height: var(--row); color: var(--text-main); }
+#experience .impact-back ul li:not(:last-child) { margin-bottom: 0; }
+#experience .impact-tags { gap: 0.2rem 0.7rem; }
+#experience .impact-tags span {
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--folder-ink);
+}
+#experience .impact-tags span::before { content: "#"; color: var(--stamp); }
+
+/* ============ 03 PROJECTS — taped spec sheets on graph paper ============ */
+#projects.folder-panel {
+  background-image:
+    linear-gradient(var(--paper-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--paper-grid) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+#projects .projects-grid {
+  counter-reset: fig;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2rem 1.8rem;
+  margin-top: 2rem;
+}
+#projects .project-card {
+  counter-increment: fig;
+  position: relative;
+  gap: 0.6rem;
+  padding: 1.5rem 1.4rem 1.2rem;
+  background: var(--paper);
+  border: none;
+  border-radius: 2px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05), 0 16px 26px -16px rgba(0, 0, 0, 0.5);
+}
+#projects .project-card:hover { transform: none; box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05), 0 22px 30px -16px rgba(0, 0, 0, 0.55); }
+/* Featured project runs the full width as the lead sheet */
+#projects .project-card.featured { grid-column: 1 / -1; padding: 2rem 1.8rem 1.6rem; }
+#projects .project-card.featured p { max-width: 62ch; }
+#projects .project-card::before {
+  content: "";
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  width: 92px;
+  height: 24px;
+  translate: -50% 0;
+  background: var(--tape);
+}
+#projects .project-icon { display: none; }
+#projects .project-card-top { position: absolute; top: 1rem; right: 1.1rem; }
+#projects .project-links a { font-family: var(--font-mono); font-size: 0.72rem; color: var(--folder-ink); text-decoration: underline; text-underline-offset: 3px; }
+#projects .project-links a::after { content: " code"; }
+#projects .project-type,
+#projects .project-card.featured .project-type {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--folder-ink);
+}
+#projects .project-type::before { content: "Fig. 0" counter(fig) " / "; color: var(--stamp); }
+#projects .project-card h3 { font-size: 1.45rem; }
+#projects .project-card.featured h3 { font-size: clamp(1.8rem, 3vw, 2.4rem); }
+#projects .project-card.featured p { font-size: 1.05rem; }
+#projects .project-card p { color: var(--text-main); }
+#projects .project-tags { display: block; padding-top: 0.8rem; border-top: 1px dashed var(--paper-strong); font-family: var(--font-mono); font-size: 0.72rem; color: var(--folder-ink); }
+#projects .project-tags::before { content: "Built with: "; color: var(--stamp); }
+#projects .project-tags span { display: inline; padding: 0; border: none; background: none; color: inherit; font-size: inherit; }
+#projects .project-tags span:not(:last-child)::after { content: "\00a0\00b7\00a0"; }
+
+/* ============ 04 EDUCATION — a transcript ============ */
+.transcript { margin-top: 1.6rem; padding: 1.8rem 2rem 2rem; font-family: var(--font-mono); }
+.transcript-head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 3px double var(--paper-strong);
+}
+.transcript-head > div { display: flex; flex-direction: column; gap: 0.25rem; }
+.mono-label { font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--folder-ink); }
+.transcript-head strong { font-family: var(--font-display); font-size: 1.3rem; line-height: 1.25; color: var(--white); }
+.transcript-head span:last-child { font-size: 0.8rem; color: var(--text-muted); }
+.transcript-body { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 2.2rem; margin-top: 1.4rem; }
+.transcript-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+.transcript-table th {
+  padding: 0 0 0.5rem;
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--folder-ink);
+  border-bottom: 1px solid var(--paper-strong);
+}
+.transcript-table td { padding: 0.55rem 0; border-bottom: 1px dotted var(--paper-strong); color: var(--text-main); }
+.transcript-table td:last-child { text-align: right; color: var(--folder-ink); font-size: 0.74rem; }
+.transcript-table .in-progress td:last-child { color: var(--stamp); }
+.transcript-honors ul { margin: 0.6rem 0 0; padding: 0; list-style: none; font-size: 0.84rem; line-height: 1.6; color: var(--text-main); }
+.transcript-honors li { padding: 0.45rem 0; border-bottom: 1px dotted var(--paper-strong); }
+.transcript-honors li::before { content: "\2014  "; color: var(--stamp); }
+.transcript-honors .stamp { margin-top: 1.6rem; font-size: 0.8rem; }
+
+/* ============ 05 INTERESTS — polaroids on a corkboard ============ */
+#interest-teaser.folder-panel {
+  background:
+    radial-gradient(var(--cork-dot) 1px, transparent 1.6px) 0 0 / 9px 9px,
+    var(--cork);
+}
+#interest-teaser .netflix-strip { margin-top: 2rem; }
+#interest-teaser .netflix-row {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem 1.2rem;
+  overflow: visible;
+  padding: 0.5rem 0 1rem;
+}
+#interest-teaser .netflix-card.itc {
+  position: relative;
+  flex: 0 0 186px;
+  min-height: 0;
+  padding: 0.7rem 0.7rem 1rem;
+  background: #FBF7F0;
+  border: none;
+  border-radius: 2px;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06), 0 18px 28px -14px rgba(0, 0, 0, 0.55);
+}
+#interest-teaser .netflix-card.itc:hover { transform: none; }
+#interest-teaser .netflix-card.itc::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: -10px;
+  left: 50%;
+  width: 74px;
+  height: 22px;
+  translate: -50% 0;
+  background: rgba(240, 188, 104, 0.55);
+}
+#interest-teaser .itc-icon {
+  width: 100%;
+  height: 124px;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  font-size: 2.4rem;
+  background: #335C67;
+  color: #F0BC68;
+}
+#interest-teaser .itc-body { padding: 0.7rem 0.2rem 0; }
+#interest-teaser .netflix-card.itc .card-title { font-family: var(--font-hand); font-style: italic; font-size: 1.15rem; font-weight: 700; color: #540B0E; }
+#interest-teaser .itc-desc { margin: 0.3rem 0 0; font-size: 0.8rem; line-height: 1.5; color: #3B3B3B; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+#interest-teaser .itc-tags { display: none; }
+
+/* ============ 06 CONTACT — a postcard ============ */
+#contact .contact-inner {
+  position: relative;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0;
+  margin-top: 1.8rem;
+  padding: 3.4rem 2rem 2rem;
+  background: var(--paper);
+  border: 12px solid transparent;
+  border-image: repeating-linear-gradient(-45deg, var(--airmail-a) 0 14px, var(--paper) 14px 22px, var(--airmail-b) 22px 36px, var(--paper) 36px 44px) 12;
+  box-shadow: 0 18px 30px -18px rgba(0, 0, 0, 0.55);
+}
+#contact .contact-inner::before {
+  content: "P O S T C A R D";
+  position: absolute;
+  top: 1.2rem;
+  left: 50%;
+  translate: -50% 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  color: var(--folder-ink);
+}
+#contact .contact-inner::after {
+  content: ">NK_";
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  width: 64px;
+  height: 76px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--stamp);
+  background: var(--paper-2);
+  border: 2px dashed var(--stamp);
+}
+#contact .contact-text { padding-right: 2rem; border-right: 1.5px dashed var(--paper-strong); }
+#contact .contact-text p { color: var(--text-main); }
+#contact .contact-links { gap: 0; margin-top: 1.2rem; }
+#contact .contact-link {
+  padding: 0.7rem 0;
+  gap: 0.7rem;
+  background: none;
+  border: none;
+  border-bottom: 1px dotted var(--paper-strong);
+  border-radius: 0;
+  box-shadow: none;
+}
+#contact .contact-link:hover { transform: none; }
+#contact .contact-link i { width: auto; height: auto; background: none; color: var(--stamp); }
+#contact .contact-link strong { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--folder-ink); }
+#contact .contact-link span { color: var(--white); }
+#contact .contact-cta { padding: 4.2rem 0 0 2rem; }
+#contact .contact-form { padding: 0; background: none; border: none; box-shadow: none; }
+#contact .form-group label { font-family: var(--font-mono); font-weight: 500; color: var(--folder-ink); }
+#contact .form-group input,
+#contact .form-group select,
+#contact .form-group textarea {
+  padding: 0.3rem 0.1rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--paper-strong);
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--white);
+}
+#contact .form-group input,
+#contact .form-group textarea { font-family: var(--font-body); font-size: 0.95rem; }
+#contact .form-group textarea {
+  min-height: 140px;
+  line-height: 2rem;
+  border-bottom: none;
+  background-color: transparent;
+  background-image: linear-gradient(to bottom, transparent calc(2rem - 1.5px), var(--paper-strong) calc(2rem - 1.5px));
+  background-size: 100% 2rem;
+  background-repeat: repeat;
+  background-attachment: local;
+}
+#contact .form-group input:focus,
+#contact .form-group select:focus,
+#contact .form-group textarea:focus { outline: none; border-color: var(--stamp); box-shadow: none; }
+
+/* ============ Below the folder: things I know ============ */
+.know {
+  width: min(1100px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 1rem 0 5rem;
+}
+.know-head { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; margin-bottom: 2.2rem; }
+.know-head h2 { margin: 0; font-family: var(--font-display); font-size: clamp(2rem, 4.5vw, 3.2rem); color: var(--white); letter-spacing: -0.02em; }
+.know-note { margin: 0; font-family: var(--font-hand); font-style: italic; font-size: 1.1rem; color: var(--hand); }
+/* Packed word cloud: words are placed by script, biggest in the middle,
+   smaller ones slotted into the gaps — all horizontal, one font */
+.know-cloud { position: relative; min-height: 320px; max-width: 1040px; margin: 0 auto; }
+.know-word {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 0 0.12em;
+  white-space: nowrap;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  color: var(--text-main);
+  opacity: 0;
+  transition: color 0.15s ease, background 0.15s ease, opacity 0.3s ease;
+}
+.know-cloud.is-laid .know-word { opacity: 1; }
+/* Sideways words read bottom-to-top; vertical writing swaps the box's
+   width and height, so the packing math needs no special case */
+.know-word.is-vertical { writing-mode: vertical-rl; rotate: 180deg; padding: 0.12em 0; }
+.know-word:hover { background: transparent; }
+.know-word:focus-visible { outline: 2px dashed var(--folder-accent); outline-offset: 2px; }
+.know-word[aria-expanded="true"] { background: var(--highlight); color: var(--white); }
+.know-word.g-code   { color: var(--w-code); }
+.know-word.g-data   { color: var(--w-data); }
+.know-word.g-it     { color: var(--w-it); }
+.know-word.g-design { color: var(--w-design); }
+.know-word.g-people { color: var(--w-people); }
+.know-word.g-lang   { color: var(--w-lang); }
+
+.know-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem 1.1rem; margin: 2rem 0 0; padding: 0; list-style: none; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--folder-ink); }
+.know-legend li::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: 0.45rem; border-radius: 2px; background: var(--c); vertical-align: 0; }
+
+.know-card {
+  position: absolute;
+  z-index: 5;
+  width: min(360px, calc(100% - 1rem));
+  padding: 1.1rem 1.2rem 1.2rem;
+  text-align: left;
+  background:
+    linear-gradient(var(--paper-rule), var(--paper-rule)) 0 4.4rem / 100% 1.5px no-repeat,
+    var(--paper);
+}
+.know-card[hidden] { display: none; }
+.know-card-group { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--folder-ink); }
+.know-card h3 { margin: 0.15rem 0 1rem; font-family: var(--font-display); font-size: 1.35rem; color: var(--white); }
+.know-card p { margin: 0; font-size: 0.92rem; line-height: 1.65; color: var(--text-main); }
+.know-card-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.7rem;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+  line-height: 1;
+  color: var(--folder-ink);
+}
+.know-card-close:hover { color: var(--stamp); }
+
+/* "Scroll for more" hint — fades out once the word cloud is on screen */
+.more-hint {
+  position: fixed;
+  left: 50%;
+  bottom: 1.1rem;
+  z-index: 900;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.6rem 1rem;
+  translate: -50% 0;
+  border: 1px solid var(--folder-edge);
+  border-radius: 999px;
+  background: var(--folder-tab-bg);
+  box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.45);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--white);
+}
+.more-hint i { color: var(--folder-accent); }
+.more-hint.is-hidden { visibility: hidden; }
+
+@media (max-width: 900px) {
+  .about-layout,
+  .transcript-head,
+  .transcript-body { grid-template-columns: 1fr; }
+  #projects .projects-grid { grid-template-columns: 1fr; }
+  #projects .project-card.featured { grid-row: auto; }
+  #contact .contact-inner { grid-template-columns: 1fr; }
+  #contact .contact-text { padding: 0 0 1.6rem; border-right: none; border-bottom: 1.5px dashed var(--paper-strong); }
+  #contact .contact-cta { padding: 1.6rem 0 0; }
+}
+
+@media (max-width: 720px) {
+  .folder-wrap { width: calc(100% - 1rem); }
+  .folder-bar { padding-top: 0.6rem; }
+  .folder-tab { padding: 0.6rem 0.8rem 0.5rem; font-size: 0.66rem; }
+  .folder-tab[aria-current="page"] { padding-bottom: 0.7rem; }
+  .folder-panel > .container { width: calc(100% - 1.5rem); }
+  .folder-panel.hero { padding-top: 1.5rem; }
+  .letter { padding: 1.9rem 1.1rem 2.2rem 2.6rem; }
+  .letter { background-position: -0.9rem 0, 0 calc(var(--line) * -0.23 + 1px), 0 0; }
+  .transcript { padding: 1.3rem 1.1rem 1.5rem; }
+  #contact .contact-inner { padding: 3.6rem 1.1rem 1.4rem; border-width: 9px; }
+  #contact .contact-inner::after { width: 50px; height: 60px; font-size: 0.75rem; top: 0.8rem; right: 0.8rem; }
+  .know-word.s4 { font-size: 2rem; }
+  .know-word.s3 { font-size: 1.55rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .folder-tab-cover .nav-cursor { animation: none; }
+}

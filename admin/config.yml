@@ -100,26 +100,3 @@ collections:
                 widget: "list"
                 field: {label: "Tag", name: "tag", widget: "string"}
               - {label: "GitHub URL", name: "github", widget: "string"}
-
-  - name: "posts"
-    label: "Blog Posts"
-    files:
-      - name: "posts"
-        label: "Posts"
-        file: "assets/data/posts.json"
-        fields:
-          - label: "Posts"
-            name: "posts"
-            widget: "list"
-            fields:
-              - {label: "Title", name: "title", widget: "string"}
-              - {label: "Slug (URL key)", name: "slug", widget: "string", hint: "URL-friendly — e.g. my-post-title"}
-              - {label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false}
-              - {label: "Category", name: "category", widget: "string"}
-              - {label: "Read Time", name: "readTime", widget: "string", hint: "e.g. 5 min"}
-              - {label: "Excerpt (short summary)", name: "excerpt", widget: "text"}
-              - {label: "Content", name: "content", widget: "markdown"}
-              - label: "Tags"
-                name: "tags"
-                widget: "list"
-                field: {label: "Tag", name: "tag", widget: "string"}

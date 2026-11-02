@@ -1,0 +1,12 @@
+# Jekyll settings. GitHub Pages reads this on every push and builds the site
+# into plain HTML. Restart `jekyll serve` after editing this file.
+
+title: Namrata Karki
+
+# Files that are for working on the site, not part of it
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - .htmlhintrc
+  - vendor
