@@ -8,9 +8,11 @@
   --font-mono: var(--font-body);
   --font-hand: var(--font-display);
 
+  /* One corner size for the folder and every tab */
+  --folder-radius:  12px;
   --folder-bg:      var(--blue-850);
   --folder-tab-bg:  var(--blue-900);
-  --folder-bar-bg:  rgba(14, 37, 53, 0.86);
+  --folder-bar-bg:  var(--blue-900);
   --folder-accent:  var(--gold);
   --folder-edge:    var(--border-strong);
   --folder-ink:     var(--text-muted);
@@ -43,7 +45,7 @@
 [data-theme="light"] {
   --folder-bg:      #EFDAC0;
   --folder-tab-bg:  #E2C9A4;
-  --folder-bar-bg:  rgba(245, 230, 211, 0.9);
+  --folder-bar-bg:  #F5E6D3;
   --folder-accent:  #9E2A2B;
   --folder-edge:    rgba(84, 11, 14, 0.22);
   --folder-ink:     #5C5C5C;
@@ -86,18 +88,15 @@ html, body { overflow-x: clip; }
   margin: 0 auto 3rem;
 }
 
-/* ---- Tab bar: sticks to the top, tabs stick out of the folder ---- */
+/* ---- Tab bar: stays at the top of the folder (scrolls away with the page), tabs stick out of the folder ---- */
 .folder-bar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: flex-end;
   gap: 0.5rem;
   padding-top: 0.9rem;
   background: var(--folder-bar-bg);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 -40px 0 var(--folder-bar-bg);
 }
 .folder-tabs {
   flex: 1;
@@ -107,6 +106,8 @@ html, body { overflow-x: clip; }
   gap: 0.3rem;
   overflow-x: auto;
   scrollbar-width: none;
+  /* Reach 1px into the folder so tabs sit on top of its top edge line */
+  margin-bottom: -1px;
 }
 .folder-tabs::-webkit-scrollbar { display: none; }
 
@@ -119,11 +120,12 @@ html, body { overflow-x: clip; }
   align-items: center;
   gap: 0.5rem;
   padding: 0.7rem 0.75rem 0.6rem;
-  margin-bottom: -1px;
   border: 1px solid var(--folder-edge);
   border-bottom: none;
-  border-radius: 12px 12px 0 0;
+  border-radius: var(--folder-radius) var(--folder-radius) 0 0;
   background: var(--folder-tab-bg);
+  /* Closed tabs keep the folder's edge line along their bottom */
+  box-shadow: inset 0 -1px 0 var(--folder-edge);
   color: var(--folder-ink);
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -132,7 +134,6 @@ html, body { overflow-x: clip; }
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  transform: translateY(4px);
 }
 /* Word only — each tab is as wide as its label */
 .folder-tab i { display: none; }
@@ -144,10 +145,12 @@ html, body { overflow-x: clip; }
   z-index: 1;
   background: var(--folder-bg);
   color: var(--white);
-  transform: translateY(0);
   padding-bottom: 0.85rem;
+  /* No bottom line: the open tab runs straight into its page */
   box-shadow: inset 0 3px 0 var(--folder-accent);
 }
+/* The light cover is a shade lighter than the folder; match it */
+[data-theme="light"] .folder-tab-cover[aria-current="page"] { background: #F5E6D3; }
 .folder-tab[aria-current="page"] i { color: var(--folder-accent); opacity: 1; }
 
 /* Cover tab carries only the logo, inked for contrast on the tab */
@@ -174,7 +177,8 @@ html, body { overflow-x: clip; }
   overflow: hidden;
   background: var(--folder-bg);
   border: 1px solid var(--folder-edge);
-  border-radius: var(--radius) 6px var(--radius) var(--radius);
+  /* Top-right is square: the last tab's rounded corner is the folder's corner */
+  border-radius: var(--folder-radius) 0 var(--folder-radius) var(--folder-radius);
   box-shadow: var(--shadow), 6px 6px 0 -1px var(--folder-tab-bg), 6px 6px 0 0 var(--folder-edge);
 }
 
@@ -389,7 +393,7 @@ html, body { overflow-x: clip; }
 }
 /* Shorter hint so it clears the stamp */
 #experience .impact-flip-hint { font-size: 0; }
-#experience .impact-flip-hint::after { content: "flip me \2192"; font-size: 0.9rem; }
+#experience .impact-flip-hint::after { content: "flip card \2192"; font-size: 0.9rem; }
 /* Back: 1.1 padding + 2.6 title + 0.2 = list starts at the 3.9rem rule */
 /* flex-shrink: 0 — the face is a flex column, and a long list would
    otherwise squeeze the fixed-height title (and the grid) out of place */
@@ -694,7 +698,25 @@ html, body { overflow-x: clip; }
 }
 .know-card[hidden] { display: none; }
 .know-card-group { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--folder-ink); }
-.know-card h3 { margin: 0.15rem 0 1rem; font-family: var(--font-display); font-size: 1.35rem; color: var(--white); }
+/* Title on the left, rating on the right; padding keeps clear of the close button */
+.know-card-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin: 0.15rem 0 1rem;
+  padding-right: 1.4rem;
+}
+.know-card h3 { margin: 0; font-family: var(--font-display); font-size: 1.35rem; color: var(--white); }
+.know-card-rating {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--stamp);
+}
+.know-card-rating[hidden] { display: none; }
 .know-card p { margin: 0; font-size: 0.92rem; line-height: 1.65; color: var(--text-main); }
 .know-card-close {
   position: absolute;

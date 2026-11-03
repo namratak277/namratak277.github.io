@@ -1,9 +1,9 @@
 {%- comment -%}
-  Typed line at the top of a folder page: "No. 02 ——— Experience".
+  Typed line at the top of a folder page: "File 2 ——— Experience".
   The number is the page's position in _data/tabs.yml.
 {%- endcomment -%}
 {%- for t in site.data.tabs -%}
   {%- if t.id == page.tab -%}
-<div class="file-line"><span>No. 0{{ forloop.index0 }}</span><span class="file-line-rule"></span><span>{{ t.label }}</span></div>
+<div class="file-line"><span>File {{ forloop.index0 }}</span><span class="file-line-rule"></span><span>{{ t.label }}</span></div>
   {%- endif -%}
 {%- endfor -%}

@@ -20,6 +20,13 @@
     { w: 'Email API', g: 'code', s: 1, how: "Integrated an Email API into the Creative Newsletter (a duo project) so each issue could be sent out automatically." },
     { w: 'Local Storage', g: 'code', s: 1, how: "Daily Diary keeps every entry and habit in the browser's local storage — no server needed." },
     { w: 'Git / GitHub', g: 'code', s: 2, how: "4.5/5. Version control for all my projects; they live at github.com/namratak277." },
+    { w: 'Web development', g: 'code', s: 3, how: "Front to back: the Dress Web Store, Daily Diary, the Creative Newsletter, and this portfolio." },
+    { w: 'Front-end', g: 'code', s: 2, how: "HTML, CSS, and JavaScript interfaces — every page of this site and the UIs of my three course projects." },
+    { w: 'Back-end', g: 'code', s: 1, how: "CRUD APIs and a PostgreSQL schema for the Dress Web Store, with Spring Boot as my Java framework." },
+    { w: 'Jekyll', g: 'code', s: 1, how: "This portfolio is a Jekyll site: one shared folder layout, one page per tab, built by GitHub Pages." },
+    { w: 'Docker', g: 'code', s: 1, how: "I preview this site in a Docker container running the same Jekyll setup GitHub Pages uses, so I don't have to install Ruby." },
+    { w: 'GitHub Actions', g: 'code', s: 1, how: "This site's CI builds every push and checks the HTML and links before it goes live." },
+    { w: 'GitHub Pages', g: 'code', s: 1, how: "Where this portfolio is hosted — pushing to main publishes it." },
 
     { w: 'PostgreSQL', g: 'data', s: 3, how: "4.5/5. The database behind the Dress Web Store — I designed its schema for products and orders." },
     { w: 'MySQL', g: 'data', s: 2, how: "4.5/5. Relational databases from my Intro to Databases course at UNCG." },
@@ -30,6 +37,10 @@
     { w: 'ERDPlus', g: 'data', s: 1, how: "3.5/5. Where I draw entity-relationship diagrams for data modeling." },
     { w: 'DBeaver', g: 'data', s: 1, how: "3.5/5. My client for browsing and querying databases." },
     { w: 'Neon', g: 'data', s: 1, how: "3.5/5. Hosted Postgres I've used for cloud databases." },
+    { w: 'Databases', g: 'data', s: 2, how: "Intro to Databases at UNCG, then putting it to work in the Dress Web Store's PostgreSQL schema." },
+    { w: 'SQL', g: 'data', s: 2, how: "The query language under my PostgreSQL and MySQL work." },
+    { w: 'Inventory', g: 'data', s: 1, how: "At Family Fare I use sales data to set stock levels and cut waste." },
+    { w: 'Habit tracking', g: 'data', s: 1, how: "Daily Diary logs habits over time and shows the trends." },
 
     { w: 'Troubleshooting', g: 'it', s: 3, how: "Daily work at UNCG ITS: diagnosing hardware, software, and connectivity issues across 30+ classrooms so lectures start on time." },
     { w: 'ServiceNow', g: 'it', s: 2, how: "3.5/5. I track, prioritize, and resolve faculty and student support tickets in ServiceNow at UNCG ITS." },
@@ -38,6 +49,12 @@
     { w: 'Networking', g: 'it', s: 1, how: "Fixing network issues on connected classroom devices at UNCG ITS, plus my Computer Networks course." },
     { w: 'Root-cause fixes', g: 'it', s: 1, how: "At UNCG ITS I document recurring issues with the IT and facilities teams to find root causes and put preventive fixes in place." },
     { w: 'Live event tech', g: 'it', s: 1, how: "As a SOAR intern I configured presentation systems and fixed technical failures in real time during orientation sessions." },
+    { w: 'IT Support', g: 'it', s: 3, how: "My job at UNCG ITS: keeping 30+ classrooms working for faculty and students." },
+    { w: 'Hardware', g: 'it', s: 1, how: "Diagnosing and fixing classroom hardware at UNCG ITS." },
+    { w: 'Help desk', g: 'it', s: 2, how: "Taking faculty and student tickets at UNCG ITS, from first report to fix." },
+    { w: 'Classroom tech', g: 'it', s: 1, how: "Projectors, audio, and connected devices across 30+ UNCG classrooms." },
+    { w: 'Uptime', g: 'it', s: 1, how: "99%+ uptime across the classrooms I support at UNCG ITS." },
+    { w: 'Presentation systems', g: 'it', s: 1, how: "Set up and ran the presentation systems for SOAR orientation sessions." },
 
     { w: 'Figma', g: 'design', s: 2, how: "3.5/5. I designed the Dress Web Store's UI mockups in Figma before writing any code." },
     { w: 'UX Design', g: 'design', s: 1, how: "Daily Diary was built around user-centered design — fast to log, easy to read back." },
@@ -47,6 +64,10 @@
     { w: 'AI / LLM', g: 'design', s: 2, how: "Currently taking Artificial Intelligence at UNCG." },
     { w: 'Agile', g: 'design', s: 1, how: "3.5/5. Familiar with iterative, team-based development." },
     { w: 'Requirements', g: 'design', s: 1, how: "3.5/5. Turning what people need into clear requirements before building." },
+    { w: 'Problem solving', g: 'design', s: 3, how: "From a classroom that won't project five minutes before lecture to a schema that has to hold every order — I like figuring out why something breaks." },
+    { w: 'UI mockups', g: 'design', s: 1, how: "The Dress Web Store's screens started as Figma mockups." },
+    { w: 'Prototyping', g: 'design', s: 1, how: "Mocking screens up in Figma first, then building them out in code." },
+    { w: 'Branding', g: 'design', s: 1, how: "I made this site's logo, color palette, and type rules — the brand page lays them out." },
 
     { w: 'Leadership', g: 'people', s: 3, how: "3 years as President of UNCG Jalwa (Bollywood dance club), 2 years as Vice President of the Nepalese Student Association, a UNCG Bronze Leadership Award, and Assistant Manager at Family Fare." },
     { w: 'Team coordination', g: 'people', s: 2, how: "Scheduling and supervising staff as Assistant Manager at Family Fare, and coordinating orientation logistics with the First Year Experience team." },
@@ -59,10 +80,21 @@
     { w: 'Reliable', g: 'people', s: 2, how: "Keeping 30+ classrooms running with 99%+ uptime at UNCG ITS — people count on the tech working when class starts." },
     { w: 'Detail-oriented', g: 'people', s: 1, how: "Cash handling and compliance at Family Fare, and thorough incident documentation as an RA." },
     { w: 'Curious', g: 'people', s: 2, how: "I'm drawn to the problem nobody's been assigned yet — the recurring ticket that needs a root-cause fix, the process still done by hand." },
+    { w: 'Communication', g: 'people', s: 3, how: "Explaining tech fixes to faculty at UNCG ITS, guiding new students at orientation, and running club meetings as president." },
+    { w: 'Teamwork', g: 'people', s: 2, how: "The Creative Newsletter was a duo project, and every job I've had — ITS, orientation, RA, Family Fare — runs on a team." },
+    { w: 'Scheduling', g: 'people', s: 1, how: "Building staff schedules as Assistant Manager at Family Fare." },
+    { w: 'Cash handling', g: 'people', s: 1, how: "Handling cash and closing out accurately at Family Fare." },
+    { w: 'Compliance', g: 'people', s: 1, how: "Keeping store operations to policy at Family Fare, and enforcing housing policy as an RA." },
+    { w: 'Emergency response', g: 'people', s: 1, how: "Responding to incidents and emergencies as a Residential Advisor." },
+    { w: 'Community building', g: 'people', s: 1, how: "Programming for 350+ residents as an RA, and growing UNCG Jalwa and the Nepalese Student Association." },
+    { w: 'Club president', g: 'people', s: 1, how: "3 years leading UNCG Jalwa, the Bollywood dance club." },
+    { w: 'Onboarding', g: 'people', s: 1, how: "Welcoming 15,000+ incoming students and families as Spartan Orientation Staff." },
+    { w: 'Multitasking', g: 'people', s: 1, how: "Balancing a CS degree with UNCG ITS, Family Fare, and club leadership." },
 
     { w: 'Nepali', g: 'lang', s: 3, how: "Native language." },
     { w: 'English', g: 'lang', s: 2, how: "Native language." },
-    { w: 'Hindi', g: 'lang', s: 2, how: "Professional proficiency." }
+    { w: 'Hindi', g: 'lang', s: 2, how: "Professional proficiency." },
+    { w: 'Trilingual', g: 'lang', s: 1, how: "Nepali, English, and Hindi." }
   ];
 
   const cloud = document.getElementById('know-cloud');
@@ -107,10 +139,10 @@
     const stretch = W / H;
     const setSizes = k => buttons.forEach(b => { b.style.fontSize = (SIZE[b.dataset.s] * k).toFixed(1) + 'px'; });
 
-    // Total ink area at 1x tells us how much to scale to fill ~62% of the box
+    // Total ink area at 1x tells us how much to scale to fill ~68% of the box
     setSizes(1);
     const area = buttons.reduce((sum, b) => sum + b.offsetWidth * b.offsetHeight, 0);
-    let scale = Math.sqrt((W * H * 0.62) / area);
+    let scale = Math.sqrt((W * H * 0.68) / area);
     const widest = Math.max(...buttons.map(b => b.offsetWidth));
     scale = Math.min(scale, (W * 0.9) / widest);
     setSizes(scale);
@@ -163,7 +195,13 @@
     btn.setAttribute('aria-expanded', 'true');
     card.querySelector('.know-card-group').textContent = GROUPS[item.g];
     card.querySelector('h3').textContent = item.w;
-    card.querySelector('p').textContent = item.how;
+    // A leading "4.5/5." in the note becomes the rating beside the title
+    const m = item.how.match(/^(\d(?:\.\d)?\/5)[\s.—–-]*/);
+    const rating = card.querySelector('.know-card-rating');
+    rating.textContent = m ? m[1] : '';
+    rating.hidden = !m;
+    const how = m ? item.how.slice(m[0].length) : item.how;
+    card.querySelector('p').textContent = how.charAt(0).toUpperCase() + how.slice(1);
     card.hidden = false;
     // Drop the note just under the word, kept inside the cloud's edges
     const max = cloud.clientWidth - card.offsetWidth;

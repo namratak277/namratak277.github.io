@@ -72,7 +72,7 @@ There is also `brand.html`, a brand kit page (logo, colors, type, business card)
 - Every color is a named variable (a "design token"). Shared tokens live in `:root` in `assets/css/portfolio.css`; folder-specific ones (`--paper`, `--stamp`, `--folder-bg`, word cloud colors…) live in `:root` in `assets/css/folder.css`. Each is defined once for light and once for dark.
 
 ### Typography: two fonts only
-- **Playfair Display** (serif) for headings and short italic notes ("flip me →", "Click to learn more").
+- **Playfair Display** (serif) for headings and short italic notes ("flip card →", "Click to learn more").
 - **DM Sans** (sans-serif) for everything else: body text, tabs, labels, the word cloud.
 - Small uppercase labels with wide letter spacing ("NO. 02", "INSTITUTION") play the role a typewriter font would have, without adding a third typeface.
 
@@ -135,7 +135,7 @@ Below it is *only* that page's content. Jekyll then combines four kinds of sourc
 |---|---|---|
 | **Layout** | `_layouts/folder.html` | The frame shared by every page: `<head>`, fonts, styles, tab bar, word cloud, footer, scripts. `{{ content }}` marks where the page's own content goes. |
 | **Data** | `_data/tabs.yml` | The ordered list of tabs. The layout loops over it to draw the tab bar, highlights the tab matching the page's `tab:`, and numbers pages by position. |
-| **Includes** | `_includes/brain.html`, `_includes/file-line.html` | Reusable snippets dropped in with `{% include … %}`: the word cloud, and the typed "No. 02 ——— Experience" line at the top of each page. |
+| **Includes** | `_includes/brain.html`, `_includes/file-line.html` | Reusable snippets dropped in with `{% include … %}`: the word cloud, and the typed "File 2 ——— Experience" line at the top of each page. |
 | **Config** | `_config.yml` | Site settings, and which working files (README, Gemfile) stay out of the published site. |
 
 Files with no front matter (CSS, JavaScript, images, `brand.html`) are published unchanged. Folders starting with `_` are build inputs and are never published themselves.
@@ -159,7 +159,7 @@ Files with no front matter (CSS, JavaScript, images, `brand.html`) are published
 **In plain terms:** the big words go in the middle first, then each smaller word looks for the nearest empty gap, a bit like packing a suitcase or playing Tetris. Before it starts, it measures how much room all the words need and scales them so together they fill a neat rectangle.
 
 **Technically** (`layout()` in `brain.js`):
-1. **Measure.** Render every word at base size and add up their areas. Pick a scale so the words cover about 62% of a target rectangle (wide on desktop, taller on phones), capped so the widest word still fits.
+1. **Measure.** Render every word at base size and add up their areas. Pick a scale so the words cover about 68% of a target rectangle (wide on desktop, taller on phones), capped so the widest word still fits.
 2. **Order.** Sort by size, biggest first. A seeded shuffle breaks ties, so the "random" mix is the same on every visit.
 3. **Place.** Walk each word outward from the center along an elliptical spiral. Take the first spot that stays inside the rectangle and doesn't overlap any placed word (a rectangle-intersection check with a 2px gap). If no spot exists, shrink the word 15% and retry up to three times.
 4. **Sideways words.** About a third of the smaller words use `writing-mode: vertical-rl`. That swaps the box's width and height, so the same collision math works without special cases.
@@ -190,7 +190,7 @@ namratak277.github.io/
 ├── _layouts/folder.html         ← The folder frame: head, tabs, word cloud, footer
 ├── _includes/
 │   ├── brain.html               ← Word cloud markup
-│   └── file-line.html           ← "No. 02 ——— Experience" line
+│   └── file-line.html           ← "File 2 ——— Experience" line
 ├── _data/tabs.yml               ← Tab order, labels and links
 │
 ├── index.html                   ← Cover

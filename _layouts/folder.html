@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/portfolio.css?v=20260723">
-  <link rel="stylesheet" href="assets/css/folder.css?v=20261102">
+  <link rel="stylesheet" href="assets/css/portfolio.css?v=20261102b">
+  <link rel="stylesheet" href="assets/css/folder.css?v=20261102e">
 </head>
 
 <body>
@@ -26,6 +26,7 @@
        ============================================================ -->
   <div class="folder-wrap" id="folder">
     <div class="folder-bar">
+      <button class="theme-toggle folder-theme" id="folder-theme" type="button" aria-label="Toggle light/dark mode"><i class="fas fa-moon"></i></button>
       <nav class="folder-tabs" aria-label="Portfolio sections">
         {%- for t in site.data.tabs %}
         <a class="folder-tab{% if t.id == 'cover' %} folder-tab-cover{% endif %}{% if t.leaves %} folder-tab-link{% endif %}" href="{{ t.url }}"{% if t.id == page.tab %} aria-current="page"{% endif %}{% if t.id == 'cover' %} aria-label="{{ t.label }}"{% endif %}>
@@ -43,7 +44,6 @@
         </a>
         {%- endfor %}
       </nav>
-      <button class="theme-toggle folder-theme" id="folder-theme" type="button" aria-label="Toggle light/dark mode"><i class="fas fa-moon"></i></button>
     </div>
     <div class="folder-body">
 {{ content }}
@@ -77,6 +77,6 @@
 
   <script src="assets/js/portfolio.js?v=20260723"></script>
   <script src="assets/js/folder.js?v=20261102"></script>
-  <script src="assets/js/brain.js?v=20261102"></script>
+  <script src="assets/js/brain.js?v=20261102e"></script>
 </body>
 </html>
