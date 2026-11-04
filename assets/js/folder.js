@@ -17,10 +17,10 @@
   if (target && document.getElementById('hero')) location.replace(target);
 })();
 
-// Tabs switch pages instantly: the capture phase runs before portfolio.js's
-// document-level handler, so its fade-out-then-navigate never starts
+// Tabs and the bottom arrows switch pages instantly: the capture phase runs
+// before portfolio.js's document-level handler, so its fade-out-then-navigate never starts
 document.addEventListener('click', e => {
-  if (e.target.closest('.folder-tab')) e.stopPropagation();
+  if (e.target.closest('.folder-tab, .folder-pager-link')) e.stopPropagation();
 }, true);
 
 // Theme toggle — drives the hidden nav's button so portfolio.js keeps

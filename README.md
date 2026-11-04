@@ -146,7 +146,7 @@ Files with no front matter (CSS, JavaScript, images, `brand.html`) are published
 |---|---|---|
 | `assets/js/portfolio.js` | Every page | The original site engine: the light/dark theme, fetching the JSON files and drawing Experience/Projects/Interests cards, card flipping, the cover's character grid and cycling title, the contact form, the custom cursor (desktop), scroll effects. |
 | `assets/js/folder.js` | Folder pages | Makes tab clicks switch instantly (it skips portfolio.js's page-fade), connects the folder's sun/moon button to the theme, keeps the current tab visible on phones, and forwards old links (`index.html#projects` → `projects.html`). |
-| `assets/js/brain.js` | Folder pages | The word cloud: the skills list (`WORDS`), the layout, the click-for-details notes, and the "Scroll for more" hint. |
+| `assets/js/brain.js` | Folder pages | The word cloud: the skills list (`WORDS`), the layout, the click-for-details notes, and the "Scroll" hint. |
 
 ### Step 3: Content as data
 

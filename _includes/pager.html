@@ -1,0 +1,25 @@
+{%- comment -%}
+  Bottom of every folder page: arrow links to the tab before and after
+  this one in _data/tabs.yml, so long pages don't need a scroll back up.
+{%- endcomment -%}
+{%- assign tabs = site.data.tabs -%}
+{%- assign last = tabs.size | minus: 1 -%}
+{%- for t in tabs -%}
+  {%- if t.id == page.tab -%}
+    {%- assign i = forloop.index0 -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- if i != nil -%}
+<nav class="folder-pager" aria-label="More pages">
+  {%- if i > 0 -%}
+    {%- assign p = i | minus: 1 -%}
+    {%- assign prev = tabs[p] %}
+  <a class="folder-pager-link folder-pager-prev" href="{{ prev.url }}"><span aria-hidden="true">&larr;</span> {{ prev.label }}</a>
+  {%- endif -%}
+  {%- if i < last -%}
+    {%- assign n = i | plus: 1 -%}
+    {%- assign next = tabs[n] %}
+  <a class="folder-pager-link folder-pager-next" href="{{ next.url }}">{{ next.label }} <span aria-hidden="true">&rarr;</span></a>
+  {%- endif %}
+</nav>
+{%- endif -%}

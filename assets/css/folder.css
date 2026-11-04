@@ -212,6 +212,36 @@ html, body { overflow-x: clip; }
 }
 .folder-panel > .container { width: calc(100% - 3rem); }
 
+/* Bottom of each page: arrows to the tab before and after, so long pages
+   don't need a scroll back up to the tabs */
+.folder-pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 1.5rem;
+  padding: 1.2rem 0 1.6rem;
+  border-top: 1.5px dashed var(--folder-edge);
+}
+.folder-pager-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 1.1rem;
+  border: 1px solid var(--folder-edge);
+  border-radius: 8px;
+  background: var(--paper);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--white);
+  text-decoration: none;
+}
+.folder-pager-link span { color: var(--folder-accent); }
+.folder-pager-link:hover { border-color: var(--folder-accent); }
+.folder-pager-link:focus-visible { outline: 2px solid var(--folder-accent); outline-offset: 2px; }
+/* Next stays on the right even when there's no previous (the cover) */
+.folder-pager-next { margin-left: auto; }
+
 /* The tab already names the page, so the pill labels go */
 .folder-panel .section-label { display: none; }
 
@@ -733,7 +763,7 @@ html, body { overflow-x: clip; }
 }
 .know-card-close:hover { color: var(--stamp); }
 
-/* "Scroll for more" hint — fades out once the word cloud is on screen */
+/* "Scroll" hint — fades out once the word cloud is on screen */
 .more-hint {
   position: fixed;
   left: 50%;
@@ -776,6 +806,8 @@ html, body { overflow-x: clip; }
   .folder-tab { padding: 0.6rem 0.8rem 0.5rem; font-size: 0.66rem; }
   .folder-tab[aria-current="page"] { padding-bottom: 0.7rem; }
   .folder-panel > .container { width: calc(100% - 1.5rem); }
+  .folder-pager { margin: 0 0.75rem; }
+  .folder-pager-link { padding: 0.6rem 0.85rem; font-size: 0.95rem; }
   .folder-panel.hero { padding-top: 1.5rem; }
   .letter { padding: 1.9rem 1.1rem 2.2rem 2.6rem; }
   .letter { background-position: -0.9rem 0, 0 calc(var(--line) * -0.23 + 1px), 0 0; }

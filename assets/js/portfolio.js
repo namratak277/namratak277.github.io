@@ -683,10 +683,9 @@ function initPageTransitions() {
 function initCustomCursor() {
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
-  const dot   = document.createElement('div');   dot.className   = 'cursor-dot';
-  const label = document.createElement('div');   label.className = 'cursor-label';
+  const dot = document.createElement('div');
+  dot.className = 'cursor-dot';
   document.body.appendChild(dot);
-  document.body.appendChild(label);
 
   let mx = -200, my = -200, prevMx = -200, prevMy = -200;
 
@@ -721,45 +720,17 @@ function initCustomCursor() {
     mx = e.clientX; my = e.clientY;
     dot.style.left   = mx + 'px';
     dot.style.top    = my + 'px';
-    label.style.left = mx + 'px';
-    label.style.top  = (my + 14) + 'px';
     const dx = mx - prevMx, dy = my - prevMy;
     if (Math.hypot(dx, dy) > 8 && Math.random() < 0.4)
       spawnParticle(mx, my, dx, dy);
   });
 
-  // ── Contextual labels ────────────────────────────────────
-  const INTERACTIVE = 'a,button,[role="button"],input,textarea,select,.project-card,.skill-card,.impact-card,.netflix-card,.bento-tile,.carousel-arrow';
-  const LABEL_RULES = [
-    ['.project-card',                                    'VIEW'  ],
-    ['.netflix-card',                                    'OPEN'  ],
-    ['[download],[href*="resume"],[href*="Resume"]',     'SAVE'  ],
-    ['[type="submit"]',                                  'SEND'  ],
-    ['.hero-socials a,.footer-socials a,.contact-link',  'VISIT' ],
-    ['.nav-links a,.nav-logo',                           'GO'    ],
-  ];
-  function detectLabel(t) {
-    for (const [s, l] of LABEL_RULES) { try { if (t.closest(s)) return l; } catch (_) {} }
-    return null;
-  }
-
-  document.addEventListener('mouseover', e => {
-    const el = e.target.closest(INTERACTIVE);
-    if (!el) return;
-    dot.classList.add('hover');
-    const lbl = detectLabel(e.target);
-    if (lbl) { label.textContent = lbl; label.classList.add('visible'); }
-  });
-  document.addEventListener('mouseout', e => {
-    if (!e.target.closest(INTERACTIVE)) return;
-    dot.classList.remove('hover');
-    label.classList.remove('visible');
-  });
+  // No hover labels or grow-on-hover: nothing moves or pops up over links
   document.addEventListener('mousedown', () => dot.classList.add('click'));
   document.addEventListener('mouseup',   () => dot.classList.remove('click'));
 
   document.documentElement.addEventListener('mouseleave', () => {
-    dot.style.opacity = '0'; label.classList.remove('visible');
+    dot.style.opacity = '0';
   });
   document.documentElement.addEventListener('mouseenter', () => {
     dot.style.opacity = '';

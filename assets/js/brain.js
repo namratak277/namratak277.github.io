@@ -41,6 +41,11 @@
     { w: 'SQL', g: 'data', s: 2, how: "The query language under my PostgreSQL and MySQL work." },
     { w: 'Inventory', g: 'data', s: 1, how: "At Family Fare I use sales data to set stock levels and cut waste." },
     { w: 'Habit tracking', g: 'data', s: 1, how: "Daily Diary logs habits over time and shows the trends." },
+    { w: 'Cash reconciliation', g: 'data', s: 1, how: "Balancing the drawer against the day's sales at close as Assistant Manager at Family Fare." },
+    { w: 'Sales reporting', g: 'data', s: 1, how: "Pulling sales numbers at Family Fare to see what's moving and set stock levels." },
+    { w: 'Financial statements', g: 'data', s: 1, how: "Reading and preparing balance sheets and income statements in my accounting coursework at UNCG." },
+    { w: 'Payroll', g: 'data', s: 1, how: "How wages, withholdings, and payroll taxes are recorded, from my accounting coursework at UNCG." },
+    { w: 'Excel', g: 'data', s: 1, how: "Spreadsheets, formulas, and financial schedules from my accounting coursework at UNCG." },
 
     { w: 'Troubleshooting', g: 'it', s: 3, how: "Daily work at UNCG ITS: diagnosing hardware, software, and connectivity issues across 30+ classrooms so lectures start on time." },
     { w: 'ServiceNow', g: 'it', s: 2, how: "3.5/5. I track, prioritize, and resolve faculty and student support tickets in ServiceNow at UNCG ITS." },
@@ -60,8 +65,8 @@
     { w: 'UX Design', g: 'design', s: 1, how: "Daily Diary was built around user-centered design — fast to log, easy to read back." },
     { w: 'Responsive design', g: 'design', s: 1, how: "The Creative Newsletter and this site both adapt from phone to desktop." },
     { w: 'Software Engineering', g: 'design', s: 2, how: "Completed Software Engineering at UNCG. The Dress Web Store covers the whole cycle: schema, APIs, and a Figma-designed UI." },
-    { w: 'Machine Learning', g: 'design', s: 2, how: "Currently taking Machine Learning at UNCG." },
-    { w: 'AI / LLM', g: 'design', s: 2, how: "Currently taking Artificial Intelligence at UNCG." },
+    { w: 'Machine Learning', g: 'design', s: 2, how: "Completed Machine Learning at UNCG." },
+    { w: 'AI / LLM', g: 'design', s: 2, how: "Completed Artificial Intelligence at UNCG." },
     { w: 'Agile', g: 'design', s: 1, how: "3.5/5. Familiar with iterative, team-based development." },
     { w: 'Requirements', g: 'design', s: 1, how: "3.5/5. Turning what people need into clear requirements before building." },
     { w: 'Problem solving', g: 'design', s: 3, how: "From a classroom that won't project five minutes before lecture to a schema that has to hold every order — I like figuring out why something breaks." },
@@ -90,6 +95,9 @@
     { w: 'Club president', g: 'people', s: 1, how: "3 years leading UNCG Jalwa, the Bollywood dance club." },
     { w: 'Onboarding', g: 'people', s: 1, how: "Welcoming 15,000+ incoming students and families as Spartan Orientation Staff." },
     { w: 'Multitasking', g: 'people', s: 1, how: "Balancing a CS degree with UNCG ITS, Family Fare, and club leadership." },
+    { w: 'Empathy', g: 'people', s: 1, how: "Supporting 350+ residents as an RA and helping nervous first-year students settle in at orientation." },
+    { w: 'Developmental psychology', g: 'people', s: 1, how: "From my psychology coursework at UNCG: how people grow and change across their lives." },
+    { w: 'Research methods', g: 'people', s: 1, how: "From my psychology coursework at UNCG: designing studies, collecting data, and judging what results really show." },
 
     { w: 'Nepali', g: 'lang', s: 3, how: "Native language." },
     { w: 'English', g: 'lang', s: 2, how: "Native language." },
@@ -132,27 +140,41 @@
   // rectangle, then walk a spiral out from the centre and drop each word at
   // the first spot inside the rectangle where it overlaps nothing
   const SIZE = { 4: 60, 3: 38, 2: 25, 1: 17 };
+  const setSizes = k => buttons.forEach(b => { b.style.fontSize = (SIZE[b.dataset.s] * k).toFixed(1) + 'px'; });
+
   function layout() {
     const W = cloud.clientWidth;
-    const H = Math.round(W * (W > 700 ? 0.44 : 0.95));
-    const gap = 2;
-    const stretch = W / H;
-    const setSizes = k => buttons.forEach(b => { b.style.fontSize = (SIZE[b.dataset.s] * k).toFixed(1) + 'px'; });
+    const H0 = Math.round(W * (W > 700 ? 0.44 : 0.95));
 
     // Total ink area at 1x tells us how much to scale to fill ~68% of the box
     setSizes(1);
     const area = buttons.reduce((sum, b) => sum + b.offsetWidth * b.offsetHeight, 0);
-    let scale = Math.sqrt((W * H * 0.68) / area);
+    let scale = Math.sqrt((W * H0 * 0.68) / area);
     const widest = Math.max(...buttons.map(b => b.offsetWidth));
     scale = Math.min(scale, (W * 0.9) / widest);
-    setSizes(scale);
 
+    // Narrow screens can run out of room before the last (small, long) words
+    // are placed. Rather than stacking those in a column under the cloud,
+    // make the box 8% taller and pack every word again until they all fit
+    let H = H0;
+    for (let round = 0; round < 8; round++) {
+      setSizes(scale);
+      if (pack(W, H, round === 7)) return;
+      H = Math.round(H * 1.08);
+    }
+  }
+
+  // Returns false (and moves nothing) if a word found no room, unless
+  // `last` is set — then it uses the old tuck-underneath fallback
+  function pack(W, H, last) {
+    const gap = 2;
+    const stretch = W / H;
     const placed = [];
     const fits = (cx, cy, w, h) =>
       cx >= -W / 2 && cx + w <= W / 2 && cy >= -H / 2 && cy + h <= H / 2 &&
       !placed.some(p => cx < p.x + p.w + gap && cx + w + gap > p.x && cy < p.y + p.h + gap && cy + h + gap > p.y);
 
-    buttons.forEach(b => {
+    for (const b of buttons) {
       let spot = null;
       // If a word can't find room, shrink it a little and try again
       for (let tries = 0; tries < 4 && !spot; tries++) {
@@ -166,14 +188,15 @@
           if (fits(cx, cy, w, h)) { spot = { x: cx, y: cy, w, h }; break; }
         }
       }
-      // Last resort: tuck it under the rectangle rather than overlap
       if (!spot) {
+        if (!last) return false;
+        // Last resort: tuck it under the rectangle rather than overlap
         const w = b.offsetWidth, h = b.offsetHeight;
         const below = Math.max(...placed.map(p => p.y + p.h)) + gap;
         spot = { x: -w / 2, y: below, w, h };
       }
       placed.push({ b, ...spot });
-    });
+    }
 
     const top = Math.min(...placed.map(p => p.y));
     const bottom = Math.max(...placed.map(p => p.y + p.h));
@@ -183,6 +206,7 @@
     });
     cloud.style.height = Math.ceil(bottom - top) + 'px';
     cloud.classList.add('is-laid');
+    return true;
   }
   // Widths depend on the web font, so wait for it before measuring
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(layout);
@@ -232,7 +256,7 @@
 })();
 
 // ============================================================
-// "SCROLL FOR MORE" — hidden once the word cloud is on screen
+// "SCROLL" hint — hidden once the word cloud is on screen
 // ============================================================
 (function () {
   const hint = document.getElementById('more-hint');
